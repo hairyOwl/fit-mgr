@@ -1,9 +1,9 @@
 /*
- * @Description: 初始化koa,mong
+ * @Description: 初始化koa,mongo
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-22 14:56:16
+ * @LastEditTime: 2022-02-22 17:10:36
  */
 
 /*
@@ -46,3 +46,5 @@ app.use(async (context) =>{
 app.listen(3000,()=>{
     console.log('启动成功'); //默认在本地
 });
+
+console.log('切换分支');
