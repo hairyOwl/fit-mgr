@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-24 14:39:44
+ * @LastEditTime: 2022-02-24 15:20:51
 -->
 <template>
     <div class="auth">
@@ -82,3 +82,4 @@
 <style lang="scss">
     @import './index.scss';
 </style>
+
