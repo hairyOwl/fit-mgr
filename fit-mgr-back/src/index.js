@@ -3,48 +3,32 @@
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-22 17:10:36
+ * @LastEditTime: 2022-02-25 16:12:00
  */
-
-/*
-每个文件都是一个模块 
- */
-
+//每个文件都是一个模块 
 //导入依赖
 const Koa = require('koa'); //导入koa
-//实例化一个koa对象
-const app = new Koa();
-//通过app.use 注册中间件 。中间件本质上是一个函数
-//每次请求进来中间件就会执行。
-app.use(async(context , next) => {
-    const {request:req} = context;
-    const {url} = req;
+const koaBody = require('koa-body'); //获取页面数据
+const { connect } = require('./db'); //导入 db/index.js
+const registerRouters = require('./routers'); //等同./routers/index.js
+const cors = require('@koa/cors'); //@koa/cors 解决数据跨域
 
-    if(url === '/'){
-        context.body = '<h1>主页</h1>';
-        return;
-    }
-    ///user/list 路由
-    if(url === '/user/list'){
-        context.body = '<h1>用户列表</h1>';
-        return;
-    }
+//实例化
+const app = new Koa(); //实列化一个koa对象
 
-    context.body = '404';
-    console.log(1);
-    await next();
-    console.log(3);
-    context.status = 404;
+//数据库连接成功后再进行请求处理
+connect().then(()=>{
+    //执行函数
+    app.use(koaBody()); //body请求头 页面数据
+    app.use(cors()); //跨域
+
+    //注册路由
+    registerRouters(app);
+    //监听3000端口
+    app.listen(3000,()=>{
+        console.log('启动成功');
+    });
+
 });
 
-app.use(async (context) =>{
-    console.log(2);
-    context.body = '找不到资源';
-});
-//开启一个http服务，接收http请求 并作处理 处理完后响应  https默认端口是443，http默认端口是80
-//监听函数 listen(端口,ip)
-app.listen(3000,()=>{
-    console.log('启动成功'); //默认在本地
-});
 
-console.log('切换分支');

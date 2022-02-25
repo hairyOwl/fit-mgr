@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-24 15:28:33
+ * @LastEditTime: 2022-02-25 14:15:19
 -->
 <template>
     <div class="auth">
@@ -45,14 +45,22 @@
                 <!-- 表单: 注册 -->
                 <a-tab-pane key="2" tab="注册">
                     <div class="item">
-                        <a-input size="large" placeholder="账户">
+                        <a-input 
+                            size="large" 
+                            placeholder="账户"
+                            v-model:value ="regForm.account"
+                        >
                             <template #prefix>
                                 <user-outlined/>
                             </template>
                         </a-input>
                     </div>
                     <div class="item">
-                        <a-input size="large" placeholder="密码">
+                        <a-input 
+                            size="large" 
+                            placeholder="密码"
+                            v-model:value="regForm.password"
+                        >
                             <template #prefix>
                                 <key-outlined />
                             </template>
@@ -66,7 +74,11 @@
                         </a-input>
                     </div>
                     <div class="item">
-                        <a-button size="large" type="primary">注册</a-button>
+                        <a-button 
+                            @click="register"
+                            size="large" 
+                            type="primary"
+                        >注册</a-button>
                     </div>
                 </a-tab-pane>
             </a-tabs>
