@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-25 14:15:19
+ * @LastEditTime: 2022-02-27 10:59:14
 -->
 <template>
     <div class="auth">
@@ -20,14 +20,22 @@
                 <!-- 表单: 登录 -->
                 <a-tab-pane key="1" tab="登录">
                     <div class="item">
-                        <a-input size="large"  placeholder="账号">
+                        <a-input 
+                            size="large"
+                            placeholder="账号"
+                            v-model:value = "loginForm.account"
+                        >
                             <template #prefix>
                                 <user-outlined/>
                             </template>
                         </a-input>
                     </div>
                     <div class="item">
-                        <a-input size="large"  placeholder="密码"> 
+                        <a-input 
+                            size="large"  
+                            placeholder="密码"
+                            v-model:value = "loginForm.password"
+                        > 
                             <template #prefix>
                                 <key-outlined />
                             </template>
@@ -37,7 +45,11 @@
                         <a href="">忘记密码</a>
                     </div>
                     <div class="item">
-                        <a-button size="large" type = "primary">
+                        <a-button 
+                            size="large" 
+                            type = "primary"
+                            @click="login"
+                        >
                             登录
                         </a-button>
                     </div>
@@ -67,7 +79,11 @@
                         </a-input>
                     </div>
                     <div class="item">
-                        <a-input size="large" placeholder="邀请码">
+                        <a-input 
+                            size="large" 
+                            placeholder="邀请码"
+                            v-model:value ="regForm.inviteCode"
+                        >
                             <template #prefix>
                                 <smile-outlined />
                             </template>

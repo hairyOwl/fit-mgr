@@ -3,9 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-02-20 22:28:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-25 16:09:11
+ * @LastEditTime: 2022-02-27 14:44:30
  */
 require('./Schemas/User') //执行User.js
+require('./Schemas/InviteCode') //执行InviteCode.js
 //导入mongoose
 const mongoose = require('mongoose');
 //连接数据库
