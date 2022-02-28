@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 21:42:11
+ * @LastEditTime: 2022-02-27 22:15:59
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 
@@ -22,9 +22,9 @@ const routes = [
     children : [
       //血压信息
       {
-        path: 'bloodMsg',
-        name: 'BloodMsg',
-        component: () => import(/* webpackChunkName: "BloodMsg" */ '../views/BloodMsg/index.vue'),
+        path: 'bp',
+        name: 'BloodPressure ',
+        component: () => import(/* webpackChunkName: "BloodPressure" */ '../views/BloodPressure/index.vue'),
       },
     ],
   },
