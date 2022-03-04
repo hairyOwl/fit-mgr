@@ -3,10 +3,11 @@
  * @Author: hairyOwl
  * @Date: 2022-02-20 22:28:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 14:44:30
+ * @LastEditTime: 2022-02-28 10:31:12
  */
 require('./Schemas/User') //执行User.js
 require('./Schemas/InviteCode') //执行InviteCode.js
+require('./Schemas/BloodPressure') //执行 BloodPressure.js
 //导入mongoose
 const mongoose = require('mongoose');
 //连接数据库

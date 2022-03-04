@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 21:56:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-26 22:23:43
+ * @LastEditTime: 2022-03-03 22:22:55
  */
 import { message } from 'ant-design-vue'; //提示框
 
@@ -12,8 +12,7 @@ export const result = (response , authShowErrorMsg = true ) =>{ //authShowErrorM
 
     const {data} = response;
 
-    if((data.code === 0) && authShowErrorMsg){ //注册登录的错误码
-        console.log('1111');
+    if((data.code === 0) && authShowErrorMsg){ //错误码
         message.error(data.msg);
     }
 
@@ -36,3 +35,25 @@ export const result = (response , authShowErrorMsg = true ) =>{ //authShowErrorM
         }
     };    
 };
+
+//深拷贝
+export const clone = (obj) =>{
+    return JSON.parse(JSON.stringify(obj));
+};
+
+//格式化时间戳
+export const formatTimestamp = (timestamp)=>{
+    const date = new Date(Number(timestamp));
+
+    //获得年月日并拼接
+    const YYYY = date.getFullYear();
+    const MM = date.getMonth() +1 ; //月从9开始
+    const DD = date.getDate();
+
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    const ss = date.getSeconds();
+
+    return `${YYYY}-${MM}-${DD}`;
+};
+
