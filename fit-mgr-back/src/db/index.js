@@ -3,11 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-02-20 22:28:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-28 10:31:12
+ * @LastEditTime: 2022-03-06 11:16:16
  */
+//注册模型
 require('./Schemas/User') //执行User.js
 require('./Schemas/InviteCode') //执行InviteCode.js
 require('./Schemas/BloodPressure') //执行 BloodPressure.js
+require('./Schemas/InventoryLog') //执行 InventoryLog.js
+
 //导入mongoose
 const mongoose = require('mongoose');
 //连接数据库

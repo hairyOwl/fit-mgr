@@ -3,11 +3,11 @@
  * @Author: hairyOwl
  * @Date: 2022-02-24 21:43:43
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-25 10:02:22
+ * @LastEditTime: 2022-03-06 20:49:56
  */
 //导入依赖
 const mongoose = require('mongoose');
-const {getMate} = require('../helpers');
+const {getMeta} = require('../helpers');
 
 //User schema字段
 const UserSchema = new mongoose.Schema({ 
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     password : String,
 
     //元数据
-    meta : getMate(),
+    meta : getMeta(),
 });
 
 //注册为模型

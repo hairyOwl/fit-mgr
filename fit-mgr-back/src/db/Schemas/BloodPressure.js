@@ -3,10 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 09:27:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 20:22:29
+ * @LastEditTime: 2022-03-06 20:49:35
  */
 const mongoose = require('mongoose');
-const { getMate } = require('../helpers');
+const { getMeta } = require('../helpers');
 
 const BPSchema = new mongoose.Schema({
     //高压
@@ -24,7 +24,7 @@ const BPSchema = new mongoose.Schema({
     //计数
     count :Number,
 
-    meta: getMate(),
+    meta: getMeta(),
 });
 
 mongoose.model('BloodPressure',BPSchema);

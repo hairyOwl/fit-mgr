@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 21:56:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 22:22:55
+ * @LastEditTime: 2022-03-06 20:06:21
  */
 import { message } from 'ant-design-vue'; //提示框
 
@@ -41,19 +41,35 @@ export const clone = (obj) =>{
     return JSON.parse(JSON.stringify(obj));
 };
 
-//格式化时间戳
+const timestampPadStart = (str)=>{
+    str = String(str); //转换格式
+    return str.padStart(2,'0'); //不足两位向前填充0
+};
+
+//格式化时间戳年月日
 export const formatTimestamp = (timestamp)=>{
     const date = new Date(Number(timestamp));
 
     //获得年月日并拼接
     const YYYY = date.getFullYear();
-    const MM = date.getMonth() +1 ; //月从9开始
-    const DD = date.getDate();
-
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-    const ss = date.getSeconds();
-
+    const MM = timestampPadStart(date.getMonth() +1) ; //月从9开始
+    const DD = timestampPadStart(date.getDate());
     return `${YYYY}-${MM}-${DD}`;
+};
+
+//格式化时间戳
+export const formatTimestampPlus = (timestamp)=>{
+    const date = new Date(Number(timestamp));
+
+    //获得年月日并拼接
+    const YYYY = date.getFullYear();
+    const MM = timestampPadStart(date.getMonth() +1) ; //月从9开始
+    const DD = timestampPadStart(date.getDate());
+
+    const hh = timestampPadStart(date.getHours());
+    const mm = timestampPadStart(date.getMinutes());
+    const ss = timestampPadStart(date.getSeconds());
+
+    return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss} `;
 };
 

@@ -1,9 +1,9 @@
 <!--
- * @Description: 血压信息模板
+ * @Description: 修改血压信息模板
  * @Author: hairyOwl
- * @Date: 2022-02-27 21:25:49
+ * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 22:31:55
+ * @LastEditTime: 2022-03-05 21:54:11
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -32,7 +32,8 @@
             <!-- 分割线 -->
             <a-divider/> 
             <!-- 血压数据表格 columns表头 data-source数据源 pagination自带分页显示-->
-            <a-table 
+            <a-table
+                bordered
                 :columns="columns" 
                 :data-source="list"
                 :pagination= "false"
@@ -49,6 +50,8 @@
                 </template>
                 <!-- 操作 -->
                 <template #actions = "record">
+                    <a href="javascript:;" @click="updateOne(record)">编辑</a> &nbsp;
+                    <a href="javascript:;" @click="toDetail(record)">详情</a> &nbsp;
                     <a href="javascript:;" @click="deleteOne(record)">删除</a>
                 </template>
             </a-table>    
@@ -68,6 +71,13 @@
         <!-- 添加血压弹窗 -->
         <add-one
             v-model:show = "show"  
+        />
+
+        <!-- 修改血压弹窗 -->
+        <update
+            v-model:show = "showUpdateModal"
+            :bloodP = "curEditBP"
+            @update = "updateCurBloodP"
         />
     </div>
 </template>

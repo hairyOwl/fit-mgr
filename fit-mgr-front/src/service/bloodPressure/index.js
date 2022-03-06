@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 22:15:48
+ * @LastEditTime: 2022-03-05 22:44:09
  */
 import axios from "axios"; //axios 请求库可以帮助简化请求
 
@@ -39,3 +39,18 @@ export const updateCount = (data = {}) =>{
         data,
     );
 };
+
+//修改一条血压数据
+export const update = (data = {}) =>{
+    return axios.post(
+        `http://localhost:3000/bp/update`,
+        data,
+    );
+};
+
+// 血压详情
+export const detail = (id)=>{
+    return axios.get(
+        `http://localhost:3000/bp/detail/${id}`,
+        );
+}

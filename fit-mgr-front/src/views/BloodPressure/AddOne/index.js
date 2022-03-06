@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 20:27:11
+ * @LastEditTime: 2022-03-05 09:58:27
  */
 import { defineComponent ,reactive} from 'vue';
 import { bloodPressure } from '@/service';
@@ -16,7 +16,7 @@ const defaultFormData = {
     dia :  0,
     pul : 0,
     count : 0,
-    recordDate : 0,
+    recordDate : '',
     timeTag : '',
     note : '',
 };

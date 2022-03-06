@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-02 22:13:13
+ * @LastEditTime: 2022-03-05 20:03:16
 -->
 <template>
   <!-- ant 组件中文化 -->
@@ -13,6 +13,9 @@
 </template>
 
 <style lang="scss">
+  body{
+    background: #f6f6f6 !important;
+  }
 </style>
 
 <script>

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-03 23:00:22
+ * @LastEditTime: 2022-03-06 21:19:17
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -18,6 +18,17 @@ const BP_CONST = {
 
 //拿到model
 const BloodPressure = mongoose.model('BloodPressure');
+const InventoryLog = mongoose.model('InventoryLog');
+
+
+//抽取通过id找单条文档的方法
+const findBloodPOne = async (id) =>{
+    const one = await BloodPressure.findOne({
+        _id : id,
+    }).exec();
+
+    return one;
+}
 
 //路由前缀
 const bpRouter = new Router({
@@ -88,6 +99,9 @@ bpRouter.get('/list',async (ctx) =>{
     //分页查询
     const list = await BloodPressure
         .find(query)
+        .sort({
+            recordDate:-1, //倒序排放
+        })
         .skip((page - 1) * size) //跳过目标页之前的的文档
         .limit(size) //查几条
         .exec();
@@ -124,7 +138,7 @@ bpRouter.delete('/:id',async(ctx)=>{
     };
 });
 
-//修改计数
+//修改计数 添加记录日志
 bpRouter.post('/update/count' ,async (ctx) =>{
     const{
         id,
@@ -138,9 +152,7 @@ bpRouter.post('/update/count' ,async (ctx) =>{
 
 
     //找到要修改的文档
-    const bloodP = await BloodPressure.findOne({
-        _id : id,
-    }).exec();
+    const bloodP = await findBloodPOne(id);
 
     if(!bloodP){
         ctx.body = {
@@ -168,6 +180,15 @@ bpRouter.post('/update/count' ,async (ctx) =>{
     }
 
     const res= await bloodP.save(); //更新数据
+
+    // 添加日志记录
+    const log = new InventoryLog({
+        dataId : bloodP._id,
+        type,
+        num: Math.abs(num),
+    });
+    log.save(); //异步  event-loop
+    
     ctx.body = {
         code : 1,
         msg : '更新计数成功',
@@ -175,6 +196,68 @@ bpRouter.post('/update/count' ,async (ctx) =>{
     };
 });
 
+//编辑
+bpRouter.post('/update' , async(ctx)=>{
+    const{
+        id,
+        ...others //扩展运算符 要修改的属性合并
+    } = ctx.request.body;
+
+    const one = await BloodPressure.findOne({
+        _id : id,
+    }).exec();
+
+    //没有找到
+    if(!one){
+        ctx.body = {
+            code : 0,
+            msg : '没有找到相关血压信息',
+            data : null,
+        };
+
+        return;
+    }
+
+    //找到数据修改
+    const newQuery = {};
+    Object.entries(others).forEach(([key,value]) =>{
+        if(value){ //如果这个参数修改
+            newQuery[key] = value;
+        }
+    });
+    //修改和原数据合并
+    Object.assign(one , newQuery); //合并信息需要考虑安全
+
+    const res =  await one.save();
+    ctx.body = {
+        code : 1,
+        msg : '信息修改成功',
+        data : res,
+    };
+});
+
+//详情
+bpRouter.get('/detail/:id',async (ctx)=>{
+    const{
+        id,
+    } = ctx.params;
+
+    const one = await findBloodPOne(id);
+
+    if(!one){
+        ctx.body = {
+            code:0,
+            msg:'没有找对该条血压数据',
+        }
+        return;
+    }
+
+    ctx.body = {
+        code:1,
+        msg : '查询成功',
+        data : one,
+    }
+});
 
 module.exports = bpRouter;
 

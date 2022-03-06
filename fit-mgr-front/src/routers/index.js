@@ -1,9 +1,9 @@
 /*
- * @Description: 
+ * @Description:  前端路由注册
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 22:15:59
+ * @LastEditTime: 2022-03-06 22:38:55
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 
@@ -25,6 +25,11 @@ const routes = [
         path: 'bp',
         name: 'BloodPressure ',
         component: () => import(/* webpackChunkName: "BloodPressure" */ '../views/BloodPressure/index.vue'),
+      },
+      {
+        path: 'bp/:id',
+        name: 'BloodPreDetail ',
+        component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodPreDetail/index.vue'),
       },
     ],
   },
