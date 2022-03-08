@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-05 21:54:11
+ * @LastEditTime: 2022-03-07 21:48:42
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -62,7 +62,6 @@
                 <a-pagination 
                     v-model:current="curPage" 
                     :total="total"
-                    :page-size = "5"
                     @change="setPage"
                 />
             </space-between>
@@ -71,6 +70,7 @@
         <!-- 添加血压弹窗 -->
         <add-one
             v-model:show = "show"  
+            @getList = "getList"
         />
 
         <!-- 修改血压弹窗 -->

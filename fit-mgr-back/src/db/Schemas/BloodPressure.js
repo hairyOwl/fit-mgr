@@ -3,10 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 09:27:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 20:49:35
+ * @LastEditTime: 2022-03-07 21:22:57
  */
 const mongoose = require('mongoose');
-const { getMeta } = require('../helpers');
+const { getMeta ,preSave } = require('../helpers');
 
 const BPSchema = new mongoose.Schema({
     //高压
@@ -26,6 +26,9 @@ const BPSchema = new mongoose.Schema({
 
     meta: getMeta(),
 });
+
+//保存前执行
+BPSchema.pre('save' , preSave);
 
 mongoose.model('BloodPressure',BPSchema);
 

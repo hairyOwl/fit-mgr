@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 21:19:17
+ * @LastEditTime: 2022-03-07 11:32:47
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -71,25 +71,28 @@ bpRouter.post('/add',async (ctx)=>{
 //获取列表接口 分页列表
 bpRouter.get('/list',async (ctx) =>{
     // https://www.xxxx.com/table?page=5&size=20&starDay=开始日期&endDay=结束日期&#sahdoasdhod //?page=5&size=20 query部分
-    const {
-        page = 1, //当前页数 默认为1
-        size = 5,  //一页多少条
-    } = ctx.query;
+    // const {
+    //     page = 1, //当前页数 默认为1
+    //     size = 5,  //一页多少条
+    // } = ctx.query;
 
     let{
+        page, //当前页数 默认为1
+        size,  //一页多少条
         starDay = '', //开始日期
         endDay = '', //结束日期
     } = ctx.query;
 
+    page = Number(page);
+    size = Number(size);
+
     //判断是否有查询条件
     const query = {};
     if (starDay!='' && endDay!=''){
-        console.log( );
         //开始日期从0点
         starDay =new Date(new Date(Number(starDay)).toLocaleDateString()).getTime()
         //结束日期到23:59点
         endDay = new Date(new Date(Number(endDay)).toLocaleDateString()).getTime()+24 * 60 * 60 * 1000 -1;// 当天23:59
-        console.log(starDay+' '+endDay);
         query.recordDate = { 
             $gt: starDay,
             $lt: endDay,

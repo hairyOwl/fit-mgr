@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-05 22:44:09
+ * @LastEditTime: 2022-03-07 11:30:55
  */
 import axios from "axios"; //axios 请求库可以帮助简化请求
 
@@ -16,11 +16,16 @@ export const add = (addForm) =>{
 }; 
 
 //血压数据列表
-export const list = (data) =>{
+export const list = (page ,size , starDay ,endDay) =>{
     return axios.get(
         'http://localhost:3000/bp/list',
         {
-            params : data,
+            params : {
+                page,
+                size,
+                starDay,
+                endDay,
+            },
         }
     );
 };

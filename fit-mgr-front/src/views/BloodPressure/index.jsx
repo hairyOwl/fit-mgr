@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-05 22:05:21
+ * @LastEditTime: 2022-03-07 21:49:57
  */
 import {
     defineComponent , 
@@ -84,11 +84,12 @@ export default defineComponent({
 
         //获取血压列表
         const getList = async () =>{
-            const res = await bloodPressure.list({
-                page : curPage.value,
-                starDay : starDay.value,
-                endDay : endDay.value,
-            });
+            const res = await bloodPressure.list(
+                curPage.value,
+                10,
+                starDay.value,
+                endDay.value,
+            );
 
             result(res)
                 .success(({ data })=>{
@@ -219,6 +220,7 @@ export default defineComponent({
             curPage,//当前页数
             formatTimestamp,    
             total,//总条数
+            getList,
 
             setPage,//修改页数
             //日期范围选择器数据变更

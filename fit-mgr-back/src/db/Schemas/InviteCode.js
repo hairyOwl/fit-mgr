@@ -3,11 +3,11 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 22:42:06
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 20:49:52
+ * @LastEditTime: 2022-03-07 21:23:11
  */
 //导入依赖
 const mongoose = require('mongoose');
-const { getMeta } = require('../helpers');
+const { getMeta ,preSave} = require('../helpers');
 
 const InviteCodeSchema = new mongoose.Schema({
     code : String, //邀请码
@@ -15,5 +15,8 @@ const InviteCodeSchema = new mongoose.Schema({
 
     mate : getMeta(),
 });
+
+//保存前执行
+InviteCodeSchema.pre('save' , preSave);
 
 mongoose.model('InviteCode',InviteCodeSchema);

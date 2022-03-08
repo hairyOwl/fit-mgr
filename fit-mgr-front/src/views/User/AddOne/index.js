@@ -1,24 +1,19 @@
 /*
- * @Description: 添加血压弹窗逻辑
+ * @Description: 添加用户弹窗逻辑
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:51:22
+ * @LastEditTime: 2022-03-07 21:27:01
  */
 import { defineComponent ,reactive} from 'vue';
-import { bloodPressure } from '@/service';
+import { user } from '@/service';
 import { message } from 'ant-design-vue';
 import { result ,clone } from '@/helpers/utils';
 
 //空血压数据表单
 const defaultFormData = {
-    sys : 0,
-    dia :  0,
-    pul : 0,
-    count : 0,
-    recordDate : '',
-    timeTag : '',
-    note : '',
+    account : '',
+    password :  '',
 };
 
 export default defineComponent({
@@ -36,13 +31,14 @@ export default defineComponent({
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
-            form.recordDate = addForm.recordDate.valueOf(); //moment对象转化为时间戳
-            const res = await bloodPressure.add(form);
+            const res = await user.addUser(form.account , form.password);
 
             result(res)
                 .success((data) =>{ //添加数据成功后清空表单
                     Object.assign(addForm ,defaultFormData); //合并数组
                     message.success(data.msg);
+                    close();
+                    context.emit('getList');
                 });
         };
 
@@ -50,8 +46,6 @@ export default defineComponent({
         const close = () =>{
             //触发自定义事件
             context.emit('update:show' , false); //修改双向绑定的show
-            context.emit('getList'); 
-            
         }
 
         return{

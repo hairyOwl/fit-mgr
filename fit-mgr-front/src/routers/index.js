@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 22:38:55
+ * @LastEditTime: 2022-03-06 22:53:46
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 
@@ -26,10 +26,17 @@ const routes = [
         name: 'BloodPressure ',
         component: () => import(/* webpackChunkName: "BloodPressure" */ '../views/BloodPressure/index.vue'),
       },
+      //血压详情
       {
         path: 'bp/:id',
         name: 'BloodPreDetail ',
         component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodPreDetail/index.vue'),
+      },
+      //角色管理
+      {
+        path: 'user',
+        name: 'User ',
+        component: () => import(/* webpackChunkName: "user" */ '../views/User/index.vue'),
       },
     ],
   },

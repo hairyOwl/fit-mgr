@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 11:09:10
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 21:17:46
+ * @LastEditTime: 2022-03-07 10:20:57
  */
 //导入路由依赖
 const Router = require('@koa/router');
@@ -17,7 +17,7 @@ const InventoryLogRouter = new Router({
     prefix : '/inventory-log',
 });
 
-//查询
+//分页查询用户列表
 InventoryLogRouter.get('/list' , async (ctx)=>{
     const{
         dataId,
@@ -37,7 +37,7 @@ InventoryLogRouter.get('/list' , async (ctx)=>{
             type,
         })
         .sort({
-            _id:-1, //倒序排放
+            _id:-1, //以_id为基准倒序排放
         })
         .skip((page -1 )* size)
         .limit(size)
