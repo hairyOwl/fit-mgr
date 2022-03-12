@@ -3,13 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-02-24 16:09:47
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 10:54:08
+ * @LastEditTime: 2022-03-11 17:53:49
  */
 //导入路由依赖
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const {getBody} = require('../../helpers/utils');
+const config = require('../../project.config');
 
 //拿到model
 const User = mongoose.model('User');
@@ -37,7 +38,6 @@ authRouter.post('/register', async (ctx) =>{
         ctx.body = {
             code : 0, //请求成功
             msg: '字段不能为空',
-            data : null,
         }
 
         return ;
@@ -51,7 +51,6 @@ authRouter.post('/register', async (ctx) =>{
         ctx.body = {
             code : 0, //请求成功
             msg: '邀请码不正确',
-            data : null,
         }
         return; //终止
     }
@@ -65,7 +64,6 @@ authRouter.post('/register', async (ctx) =>{
         ctx.body = {
             code : 0, //请求成功
             msg: '账号已存在',
-            data : null,
         }
         return; //终止
     }
@@ -86,6 +84,7 @@ authRouter.post('/register', async (ctx) =>{
         msg: '注册成功',
         data : res,
     }
+    return;
 });
 
 /* 
@@ -96,14 +95,13 @@ authRouter.post('/login', async (ctx) =>{
     const{
         account,
         password,
-    } = getBody(ctx);
+    } = ctx.request.body;
 
     //数据校验
     if(account === '' || password===''){
         ctx.body = {
             code : 0, //请求成功
             msg: '字段不能为空',
-            data : null,
         }
 
         return ;
@@ -120,16 +118,15 @@ authRouter.post('/login', async (ctx) =>{
         ctx.body = {
             code: 0,
             msg : '用户名或密码错误',
-            data : null,
         };
         return;
     }
 
-
     //存在 判断密码
     //返回的user 剔除敏感信息
-    const user = {
+    const oneUser = {
         account : one.account,
+        character : one.character,
         _id : one._id,
     };
     if(one.password === password){
@@ -137,11 +134,10 @@ authRouter.post('/login', async (ctx) =>{
             code: 1,
             msg : '登入成功',
             data : {
-                user : user, //返回用户
-                token: jwt.sign(user,'fit-mgr'), //加密生成令牌
+                user : oneUser, //返回用户
+                token: jwt.sign(oneUser,config.JWT_SECRET), 
             },
         };
-
         return;
     }
 
@@ -149,7 +145,6 @@ authRouter.post('/login', async (ctx) =>{
     ctx.body = {
         code: 0,
         msg : '用户名或密码错误',
-        data : null,
     };
     return;
 });

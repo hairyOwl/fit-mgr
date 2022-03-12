@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:22
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-08 09:57:15
+ * @LastEditTime: 2022-03-10 10:35:44
 -->
 # fit-mgr
 居家健康指标记录平台，用于记录血压，血糖。可视化指标变化
@@ -14,6 +14,7 @@
 | inviteCodes   | 邀请码信息 |
 | BloodPressure | 血压数据   | 
 | InventoryLog  | 库存操作   |
+| character     | 角色权限   |
 
 
 # 进度
@@ -39,6 +40,7 @@
     -[x] 列表
     -[x] 增删
     -[x] 重置密码
+    -[x] 角色
 
 
 

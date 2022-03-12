@@ -3,10 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 22:53:46
+ * @LastEditTime: 2022-03-11 22:02:37
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
-
+import store from '../store';
 //路由配置顺序从上到下，如果已匹配就不会向下走
 const routes = [
   {
@@ -46,6 +46,17 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+//在遍历路由前执行
+//to目标页 from发起页是对象。next是函数
+router.beforeEach(async (to,from,next)=>{
+  //获取权限列表
+  if(!store.state.characterInfo.length){
+    store.dispatch('getCharacterInfo'); //触发action
+  }
+  store.dispatch('getUserInfo');
+  next();
 });
 
 export default router;

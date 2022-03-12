@@ -3,13 +3,17 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:27
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 14:34:05
+ * @LastEditTime: 2022-03-11 21:44:05
  */
 import { defineComponent , reactive } from 'vue';
+import { message } from 'ant-design-vue'; //提示框
 import { UserOutlined , KeyOutlined,SmileOutlined } from '@ant-design/icons-vue' //icon 作为组件导入
 import { auth } from '@/service'
-import { message } from 'ant-design-vue'; //提示框
 import { result } from '@/helpers/utils'
+import { setToken,getToken } from '@/helpers/token'
+import { getCharacterInfoById } from '@/helpers/character'
+import store from '@/store'; //vuex
+import { useRouter } from 'vue-router'; 
 
 export default defineComponent({
     //注册组件
@@ -22,6 +26,7 @@ export default defineComponent({
 
     //只在初始化的时候运行
     setup(){
+        const router = useRouter(); //获取路由操作
         /* 
         注册
         */
@@ -78,11 +83,20 @@ export default defineComponent({
                 message.info('请输入密码');
                 return;
             }
-            登录情况提醒
+            // 登录情况提醒
             const res = await auth.login(loginForm.account,loginForm.password);
             result(res)
-                .success((data) =>{
-                    message.success(data.msg);
+                .success(( { msg ,data :{ user,token }} ) =>{
+                    message.success(msg);
+                    //将登录用户信息存入全局
+                    store.commit('setUserInfo',user);
+                    console.log(user);
+                    store.commit('setUserCharacter',getCharacterInfoById(user.character));
+                    
+                    //token 存入localStorage
+                    setToken(token);
+                    //登录成功后跳转到首页
+                    router.replace('/bp'); //进入下一页后不能通过回退按钮回到上页
                 });
 
         }

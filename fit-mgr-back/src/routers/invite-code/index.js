@@ -1,9 +1,9 @@
 /*
- * @Description: 邀请码服务端逻辑
+ * @Description: 邀请码 路由处理
  * @Author: hairyOwl
  * @Date: 2022-02-26 22:51:41
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 14:36:58
+ * @LastEditTime: 2022-03-08 16:10:09
  */
 //导入路由依赖
 const Router = require('@koa/router');

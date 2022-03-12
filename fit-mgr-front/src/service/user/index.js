@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 11:05:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 23:08:00
+ * @LastEditTime: 2022-03-11 22:04:48
  */
 import axios from 'axios';
 
@@ -27,10 +27,11 @@ export const deleteUser = (id)=>{
 };
 
 //添加用户
-export const addUser = (account , password) =>{
+export const addUser = (account , password ,character) =>{
     return axios.post('http://localhost:3000/user/add',{
         account,
         password,
+        character,
     });
 };
 
@@ -39,4 +40,17 @@ export const resetPW = (id) =>{
     return axios.post('http://localhost:3000/user/reset/password',{
         id,
     });
+};
+
+//编辑角色
+export const updateCharacter = (userId , character) =>{
+    return axios.post('http://localhost:3000/user/update/character',{
+        userId,
+        character,
+    });
+};
+
+//获取登录Token信息
+export const info = () =>{
+    return axios.get('http://localhost:3000/user/info');
 };

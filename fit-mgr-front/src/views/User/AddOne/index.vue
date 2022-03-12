@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:10:29
+ * @LastEditTime: 2022-03-09 22:16:36
 -->
 <!-- 添加血压弹窗模板 -->
 <template>
@@ -31,6 +31,20 @@
                     <a-input
                         v-model:value="addForm.password"
                         :min="0" :max="200" />
+                </a-form-item>
+
+                <a-form-item label="角色">
+                    <a-select
+                        v-model:value="addForm.character"
+                        >
+                        <a-select-option
+                            v-for="item in characterInfo"
+                            :key = "item._id"
+                            :value = "item._id"
+                        >
+                            {{ item.title }}
+                        </a-select-option>
+                    </a-select>
                 </a-form-item>
 
             </a-form>

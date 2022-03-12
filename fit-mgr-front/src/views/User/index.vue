@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:33
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 23:14:58
+ * @LastEditTime: 2022-03-11 09:34:21
 -->
 <template>
     <div>
@@ -40,6 +40,11 @@
                     <template #createdAt=" {record} ">
                         {{ formatTimestampPlus(record.meta.createdAt) }}
                     </template>
+                    <!-- 角色插槽 -->
+                    <template #character=" {record} ">
+                        <a href="javascript:;" @click="onEdit(record)"><edit-outlined /></a>&nbsp;
+                        {{getCharacterInfoById( record.character).title }}
+                    </template>
                     <!-- 操作插槽 -->
                     <template #actions=" {record} ">
                         <a href="javascript:;" @click="resetPassword(record)" >重置密码</a>&nbsp;
@@ -63,6 +68,26 @@
             v-model:show="showAddModel"
             @getList = "getUserList"
         />
+
+        <!-- 修改角色的弹窗 -->
+        <a-modal
+            v-model:visible="showEditCharacterModal"
+            title="修改角色"
+            @ok="editCharacter"
+        >
+            <a-select
+                style="width: 200px"
+                v-model:value="editFrom.character"
+            >
+                <a-select-option
+                    v-for="item in characterInfo"
+                    :key = "item._id"
+                    :value = "item._id"
+                >
+                    {{ item.title }}
+                </a-select-option>
+            </a-select>
+        </a-modal>
     </div>
 </template>
 

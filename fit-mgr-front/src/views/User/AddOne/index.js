@@ -3,17 +3,19 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:27:01
+ * @LastEditTime: 2022-03-09 22:18:54
  */
 import { defineComponent ,reactive} from 'vue';
 import { user } from '@/service';
 import { message } from 'ant-design-vue';
 import { result ,clone } from '@/helpers/utils';
+import store from '@/store'; //拿到权限表渲染数据
 
 //空血压数据表单
 const defaultFormData = {
     account : '',
     password :  '',
+    character : '',
 };
 
 export default defineComponent({
@@ -24,14 +26,15 @@ export default defineComponent({
     
     //初始化时执行一次 ，生命周期的钩子
     setup(props , context){
-        
+        const { characterInfo } = store.state;
 
         const addForm = reactive(clone(defaultFormData)); //防止reactive直接操作defaultFormData
+        addForm.character = characterInfo[1]._id; //默认角色是成员
 
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
-            const res = await user.addUser(form.account , form.password);
+            const res = await user.addUser(form.account , form.password , form.character);
 
             result(res)
                 .success((data) =>{ //添加数据成功后清空表单
@@ -57,6 +60,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            characterInfo, //全局数据权限表
         };
     },
 });

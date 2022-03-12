@@ -3,9 +3,9 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 22:14:52
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 22:18:59
+ * @LastEditTime: 2022-03-11 17:52:13
  */
 module.exports = {
     DEFAULT_PASSWORD : '111222',
-
+    JWT_SECRET : 'fit-mgr',
 };

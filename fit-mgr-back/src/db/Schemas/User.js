@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-24 21:43:43
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:23:03
+ * @LastEditTime: 2022-03-08 17:37:57
  */
 //导入依赖
 const mongoose = require('mongoose');
@@ -13,6 +13,7 @@ const {getMeta ,preSave } = require('../helpers');
 const UserSchema = new mongoose.Schema({ 
     account : String,
     password : String,
+    character : String, //character._id
 
     //元数据
     meta : getMeta(),
@@ -21,5 +22,5 @@ const UserSchema = new mongoose.Schema({
 //保存前执行
 UserSchema.pre('save' , preSave);
 
-//注册为模型
+//保存前执行
 mongoose.model('User',UserSchema);

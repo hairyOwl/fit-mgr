@@ -1,16 +1,17 @@
 /*
- * @Description: 
+ * @Description: 用户路由处理
  * @Author: hairyOwl
  * @Date: 2022-03-07 10:02:28
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 23:13:14
+ * @LastEditTime: 2022-03-11 22:07:08
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
-const { v4:uuidv4 } =require('uuid');
-const config = require('../../project.config');
+const config = require('../../project.config'); //默认配置
+const { verifyToken , getToken } = require('../../helpers/token'); //jwt解析
 
 const User = mongoose.model('User');
+const Character = mongoose.model('Character'); //权限表
 
 const userRouter = new Router({
     prefix : '/user',
@@ -85,11 +86,32 @@ userRouter.post('/add',async(ctx)=>{
     const {
         account,
         password,
+        character,
     } = ctx.request.body;
+
+    //判断角色是否存在
+    if(character ===""){
+        ctx.body ={
+            code : 0,
+            msg : '添加用户失败',
+        }
+        return;
+    }
+    const role = await Character.findOne({
+        _id : character,
+    }).exec();
+    if(!role){
+        ctx.body ={
+            code : 0,
+            msg : '添加用户失败',
+        }
+        return;
+    }
 
     const user = new User({
         account,
         password : password || config.DEFAULT_PASSWORD,
+        character,
     });
 
     const res = await user.save();
@@ -140,6 +162,62 @@ userRouter.post('/reset/password', async (ctx)=>{
             account :res.account,
         },
     }
+});
+
+//修改角色
+userRouter.post('/update/character' , async (ctx)=>{
+    const{
+        userId,
+        character,
+    } = ctx.request.body;
+
+    if(character ===""){
+        ctx.body ={
+            code : 0,
+            msg : '修改失败',
+        }
+        return;
+    }
+    const role = await Character.findOne({
+        _id : character,
+    }).exec();
+    if(!role){
+        ctx.body ={
+            code : 0,
+            msg : '出错啦',
+        }
+        return;
+    }
+
+    const user = await User.findOne({
+        _id : userId,
+    }).exec();
+    if(!user){
+        ctx.body ={
+            code : 0,
+            msg : '出错啦',
+        }
+        return;
+    }
+
+    user.character = character;
+
+    const res = await user.save();
+    ctx.body = {
+        code : 1,
+        msg : '成功修改',
+        data : res,
+    };
+});
+
+//通过token换取用户信息
+userRouter.get('/info',async(ctx)=>{
+    //Authorization : Bearer de^*huwihduiedds123123  需要去掉'Bearer '
+    ctx.body={
+        code : 1,
+        msg : '登录获取成功',
+        data : await verifyToken(getToken(ctx)),
+    };
 });
 
 module.exports = userRouter;

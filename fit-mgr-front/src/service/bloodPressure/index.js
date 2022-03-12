@@ -3,9 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 11:30:55
+ * @LastEditTime: 2022-03-11 21:52:57
  */
 import axios from "axios"; //axios 请求库可以帮助简化请求
+import {getToken} from '@/helpers/token';
+
+//统一为请求添加headers
+axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 
 //添加血压
 export const add = (addForm) =>{

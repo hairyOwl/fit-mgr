@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-25 10:25:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 11:06:32
+ * @LastEditTime: 2022-03-08 17:35:14
  */
 //导入依赖
 //import {register} from './auth'  //相当于./auth/index.js 导入的是一个大对象 register是其中一个属性
@@ -11,6 +11,7 @@ export * as auth from './auth'; //相当于./auth/index.js 导出的所有内容
 export * as bloodPressure from './bloodPressure'; 
 export * as inventoryLog from './inventoryLog'; 
 export * as user from './user'; 
+export * as character from './character'; 
 
 
 

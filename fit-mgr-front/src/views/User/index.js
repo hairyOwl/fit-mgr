@@ -3,13 +3,16 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-08 09:15:38
+ * @LastEditTime: 2022-03-10 22:37:37
  */
-import { defineComponent ,onMounted,ref, withCtx } from 'vue';
+import { defineComponent ,onMounted,ref, reactive } from 'vue';
 import { user } from '@/service';
 import { result , formatTimestampPlus } from '@/helpers/utils';
-import { message } from 'ant-design-vue';
-import AddOne from './AddOne/index.vue';
+import { message } from 'ant-design-vue'; //antd提示
+import { EditOutlined } from '@ant-design/icons-vue';
+import AddOne from './AddOne/index.vue'; //添加弹窗
+import { getCharacterInfoById } from '@/helpers/character';
+import store from '@/store';
 
 const columns = [
     {
@@ -23,6 +26,12 @@ const columns = [
         }
     },
     {
+        title: '角色',
+        slots : {
+            customRender : 'character'
+        }
+    },
+    {
         title: '操作',
         slots : {
             customRender : 'actions'
@@ -33,6 +42,7 @@ const columns = [
 export default defineComponent({
     components : {
         AddOne, //添加弹窗
+        EditOutlined, //编辑icon
     },
     setup(){
         //响应式数据
@@ -41,8 +51,12 @@ export default defineComponent({
         const curPage = ref(1);
         const showAddModel = ref(false);
         const keyword = ref('');//搜索关键字
-        const isSearch = ref(false);
-        
+        const isSearch = ref(false); //搜索flag
+        const showEditCharacterModal = ref(false); //编辑角色弹窗flag
+        const editFrom = reactive({
+            current:{},
+            character : '',
+        });
         
         //获取用户列表
         const getUserList = async () =>{
@@ -99,6 +113,23 @@ export default defineComponent({
             getUserList();
         };
 
+        //点击编辑角色按钮事件
+        const onEdit = (record)=>{
+            editFrom.current = record;
+            editFrom.character = record.character;
+            showEditCharacterModal.value = true;
+        };
+
+        const editCharacter = async ( ) =>{
+            const res = await user.updateCharacter(editFrom.current._id , editFrom.character);
+            result(res)
+                .success(({msg} )=>{
+                    message.success(msg);
+                    showEditCharacterModal.value = false;
+                    editFrom.current.character = editFrom.character;
+                });
+        }
+
         return{
             //表头
             columns,
@@ -118,6 +149,13 @@ export default defineComponent({
             isSearch,
             onSearch,
             backAll,
+            //角色
+            getCharacterInfoById, //通过id获取角色对象
+            showEditCharacterModal,
+            editFrom,
+            onEdit,
+            characterInfo : store.state.characterInfo,
+            editCharacter,
         };
     },
 });

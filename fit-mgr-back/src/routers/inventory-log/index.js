@@ -1,9 +1,9 @@
 /*
- * @Description: 库存逻辑
+ * @Description: 库存 路由处理
  * @Author: hairyOwl
  * @Date: 2022-03-06 11:09:10
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 10:20:57
+ * @LastEditTime: 2022-03-08 16:10:01
  */
 //导入路由依赖
 const Router = require('@koa/router');
