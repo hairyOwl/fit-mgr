@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 22:24:05
+ * @LastEditTime: 2022-03-15 10:53:29
  */
 import { createStore } from 'vuex';
 import { character , user } from '@/service';
@@ -49,7 +49,6 @@ export default createStore({
         .success(( {data} )=>{
           store.commit('setUserInfo' , data);
           store.commit('setUserCharacter' , getCharacterInfoById(data.character) );
-          // console.log(store.state);
         });
     },
   },

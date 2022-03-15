@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 18:32:47
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 21:17:46
+ * @LastEditTime: 2022-03-12 23:03:36
 -->
 <!-- 基础布局模板 -->
 <template>
@@ -20,7 +20,7 @@
             <!-- 上部分右 用户信息 -->
             <div class="right">
                 <div class="hello-msg">
-                    你好，xxx
+                    你好，{{userInfo.account}}
                 </div>
                 <div class="logout">退出</div>
             </div>

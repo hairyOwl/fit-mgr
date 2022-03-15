@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 10:58:16
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 21:02:02
+ * @LastEditTime: 2022-03-12 21:13:39
  */
 const mongoose = require('mongoose');
 const {getMeta , preSave} = require('../helpers');
 
-const LogSchema = mongoose.Schema({
+const InventoryLogSchema = mongoose.Schema({
     //标记是那条数据的日志
     dataId : String,
     //增加还是减少
@@ -22,6 +22,6 @@ const LogSchema = mongoose.Schema({
 });
 
 //保存前执行
-LogSchema.pre('save' , preSave);
+InventoryLogSchema.pre('save' , preSave);
 
-mongoose.model('InventoryLog',LogSchema);
+mongoose.model('InventoryLog',InventoryLogSchema);

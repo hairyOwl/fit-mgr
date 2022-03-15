@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:44
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 21:14:05
+ * @LastEditTime: 2022-03-14 22:31:32
 -->
 <template>
     <div>
@@ -13,8 +13,8 @@
             <space-between>
                 <h2>{{ formatTimestamp(d.recordDate) }}</h2>
                 <div>
-                    <a-button size="small" @click="showUpdateModal=true">编辑</a-button>&nbsp;
-                    <a-button size="small" type="danger" @click="deleteCur">删除</a-button>&emsp;
+                    <a-button v-only-admin size="small" @click="showUpdateModal=true">编辑</a-button>&nbsp;
+                    <a-button v-only-admin size="small" type="danger" @click="deleteCur">删除</a-button>&emsp;
                     <a-button size="small" @click="goToPre">返回</a-button>
                 </div>
             </space-between>

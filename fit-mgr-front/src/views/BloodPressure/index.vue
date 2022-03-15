@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:48:42
+ * @LastEditTime: 2022-03-14 22:32:20
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -27,7 +27,12 @@
                         </template>
                     </a-range-picker>
                 </div>
-                <a-button @click="show = true">添加一条</a-button>
+                <a-button 
+                    v-only-admin
+                    @click="show = true"
+                >
+                    添加一条
+                </a-button>
             </space-between>
             <!-- 分割线 -->
             <a-divider/> 
@@ -50,9 +55,9 @@
                 </template>
                 <!-- 操作 -->
                 <template #actions = "record">
-                    <a href="javascript:;" @click="updateOne(record)">编辑</a> &nbsp;
+                    <a v-only-admin href="javascript:;" @click="updateOne(record)">编辑</a> &nbsp;
                     <a href="javascript:;" @click="toDetail(record)">详情</a> &nbsp;
-                    <a href="javascript:;" @click="deleteOne(record)">删除</a>
+                    <a v-only-admin href="javascript:;" @click="deleteOne(record)">删除</a>
                 </template>
             </a-table>    
             <!-- 分页 -->

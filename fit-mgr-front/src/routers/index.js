@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 22:02:37
+ * @LastEditTime: 2022-03-14 22:22:56
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -38,6 +38,12 @@ const routes = [
         name: 'User ',
         component: () => import(/* webpackChunkName: "user" */ '../views/User/index.vue'),
       },
+      //日志管理
+      {
+        path: 'actionLog',
+        name: 'ActionLog ',
+        component: () => import(/* webpackChunkName: "ActionLog" */ '../views/ActionLog/index.vue'),
+      },
     ],
   },
   
@@ -51,11 +57,19 @@ const router = createRouter({
 //在遍历路由前执行
 //to目标页 from发起页是对象。next是函数
 router.beforeEach(async (to,from,next)=>{
+  //请求数组
+  // const reqArr = []; // promise数据store.dispatch返回一个promise
+
   //获取权限列表
   if(!store.state.characterInfo.length){
-    store.dispatch('getCharacterInfo'); //触发action
+    await store.dispatch('getCharacterInfo'); //触发action
   }
-  store.dispatch('getUserInfo');
+  //获取登录用户信息
+  if(!store.state.userInfo.account){
+    await store.dispatch('getUserInfo');
+  }
+  
+  // await Promise.all(reqArr); //获取上述信息成功后执行next
   next();
 });
 

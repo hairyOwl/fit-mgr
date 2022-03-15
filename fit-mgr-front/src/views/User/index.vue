@@ -3,11 +3,11 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:33
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 09:34:21
+ * @LastEditTime: 2022-03-14 22:33:03
 -->
 <template>
     <div>
-        <a-card>
+        <a-card v-only-admin>
             <!-- 标题 -->
             <h2>用户管理</h2>
             <!-- 分割线 -->

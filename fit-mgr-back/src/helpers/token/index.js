@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-11 17:46:40
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-12 14:08:06
+ * @LastEditTime: 2022-03-13 22:36:44
  */
 const jwt = require('jsonwebtoken');
 const config = require('../../project.config');
