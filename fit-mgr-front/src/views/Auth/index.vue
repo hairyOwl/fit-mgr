@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-27 10:59:14
+ * @LastEditTime: 2022-03-15 22:17:21
 -->
 <template>
     <div class="auth">
@@ -42,7 +42,7 @@
                         </a-input>
                     </div>
                     <div class="item">
-                        <a href="">忘记密码</a>
+                        <a href="javascript:;" @click="resetPw">忘记密码</a>
                     </div>
                     <div class="item">
                         <a-button 
@@ -104,7 +104,7 @@
 
 
 <!-- 认证页面逻辑 -->
-<script src = "./index.js" ></script>
+<script src = "./index.jsx" ></script>
 
 <!-- 认证页面样式 -->
 <style lang="scss">

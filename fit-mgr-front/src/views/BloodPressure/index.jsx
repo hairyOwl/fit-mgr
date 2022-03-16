@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:49:57
+ * @LastEditTime: 2022-03-16 09:51:56
  */
 import {
     defineComponent , 
@@ -152,8 +152,7 @@ export default defineComponent({
             if(type === 'ADD_COUNT'){
                 word = '增加';
             }
-
-
+            
             Modal.confirm({ //确认框
                 title : `要${word}多少`,
                 //虚拟dom树上的虚拟节点

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 10:02:28
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 22:07:08
+ * @LastEditTime: 2022-03-16 09:48:39
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
@@ -108,6 +108,19 @@ userRouter.post('/add',async(ctx)=>{
         return;
     }
 
+    //确保账户唯一
+    const oneUser = await User.findOne({
+        account,
+    }).exec();
+
+    if(oneUser){
+        ctx.body ={
+            code : 0,
+            msg : '添加用户失败',
+        }
+        return;
+    }
+
     const user = new User({
         account,
         password : password || config.DEFAULT_PASSWORD,
@@ -118,7 +131,7 @@ userRouter.post('/add',async(ctx)=>{
     if(!res){
         ctx.body={
             code : 0,
-            msg : '添加用户失败',
+            msg : '添加用户失败!',
         };
 
         return;

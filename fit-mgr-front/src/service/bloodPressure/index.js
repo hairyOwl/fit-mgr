@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 21:52:57
+ * @LastEditTime: 2022-03-15 22:11:45
  */
 import axios from "axios"; //axios 请求库可以帮助简化请求
 import {getToken} from '@/helpers/token';
@@ -41,7 +41,7 @@ export const deleteOne = (id) =>{
     );
 };
 
-//删除一条血压数据
+//更新一条血压数据
 export const updateCount = (data = {}) =>{
     return axios.post(
         `http://localhost:3000/bp/update/count`,

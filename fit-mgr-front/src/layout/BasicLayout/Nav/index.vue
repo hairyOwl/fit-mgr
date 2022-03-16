@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 20:11:30
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 22:27:06
+ * @LastEditTime: 2022-03-15 17:31:11
 -->
 <!--导航栏模板-->
 <template>
@@ -23,14 +23,16 @@
                 v-if = "item.children"
                 :key="item.title"
             >
+                <!-- 子菜单列表头 -->
                 <template #title>
                     <span>{{ item.title }}</span>
                 </template>
+                <!-- 子菜单列表 -->
                 <a-menu-item
+                    v-for = "(child) in item.children "
+                    :key = "child.url"
                     @click="to(child.url)"
-                    v-for="(child) in item.children"
-                    :key="child.url"
-                    >
+                >
                     {{ child.title }}
                 </a-menu-item>
             </a-sub-menu>

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 22:18:05
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 21:38:22
+ * @LastEditTime: 2022-03-15 21:33:10
  */
 import { defineComponent , ref ,onMounted } from 'vue';
 import { actionLog } from '@/service';
@@ -50,7 +50,7 @@ export default defineComponent({
         // 获取日志列表
         const getList = async ()=>{
             loading.value = true;
-            const res = await actionLog.list(curPage.value , 20);
+            const res = await actionLog.list(curPage.value , pageSize);
             loading.value = false;
 
             result(res)

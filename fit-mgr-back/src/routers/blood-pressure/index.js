@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-08 16:09:49
+ * @LastEditTime: 2022-03-16 09:50:44
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -109,7 +109,7 @@ bpRouter.get('/list',async (ctx) =>{
         .limit(size) //查几条
         .exec();
     //获取总条数
-    const total = await BloodPressure.countDocuments();
+    const total = await BloodPressure.countDocuments(query);
     
     ctx.body = {
         code : 1,

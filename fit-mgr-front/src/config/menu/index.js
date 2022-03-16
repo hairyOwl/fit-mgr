@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 22:45:32
+ * @LastEditTime: 2022-03-15 17:21:27
  */
 // 导航栏列表
 export default[
@@ -24,7 +24,18 @@ export default[
     },
     {
         title: '操作日志',
-        url : '/ActionLog',
+        url : '/action-log',
         onlyAdmin : true,
+    },
+    {
+        title : '杂项',
+        onlyAdmin : false,
+        children : [
+            {
+                title: '重置密码列表',
+                url : '/reset/password',
+                onlyAdmin : true,
+            },
+        ],
     },
 ];

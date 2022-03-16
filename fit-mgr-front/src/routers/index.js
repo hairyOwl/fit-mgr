@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 22:22:56
+ * @LastEditTime: 2022-03-15 17:50:31
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -40,9 +40,15 @@ const routes = [
       },
       //日志管理
       {
-        path: 'actionLog',
+        path: 'action-log',
         name: 'ActionLog ',
         component: () => import(/* webpackChunkName: "ActionLog" */ '../views/ActionLog/index.vue'),
+      },
+      // 重置密码
+      {
+        path: 'reset/password',
+        name: 'ResetPassword ',
+        component: () => import(/* webpackChunkName: "ResetPassword" */ '../views/ResetPassword/index.vue'),
       },
     ],
   },
