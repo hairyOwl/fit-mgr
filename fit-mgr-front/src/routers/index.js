@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 17:50:31
+ * @LastEditTime: 2022-03-16 22:09:47
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -44,11 +44,17 @@ const routes = [
         name: 'ActionLog ',
         component: () => import(/* webpackChunkName: "ActionLog" */ '../views/ActionLog/index.vue'),
       },
-      // 重置密码
+      // 重置密码列表
       {
         path: 'reset/password',
         name: 'ResetPassword ',
         component: () => import(/* webpackChunkName: "ResetPassword" */ '../views/ResetPassword/index.vue'),
+      },
+      // 邀请码管理
+      {
+        path: 'invite-code',
+        name: 'InviteCode ',
+        component: () => import(/* webpackChunkName: "InviteCode" */ '../views/InviteCode/index.vue'),
       },
     ],
   },

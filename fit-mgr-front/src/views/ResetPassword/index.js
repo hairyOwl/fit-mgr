@@ -3,10 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-03-15 17:33:09
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 09:42:33
+ * @LastEditTime: 2022-03-16 22:44:00
  */
 
-import { defineComponent , reactive ,ref, onMounted } from 'vue';
+import { defineComponent ,ref, onMounted } from 'vue';
 import { resetPassword } from '@/service';
 import { result ,formatTimestampPlus } from '@/helpers/utils';
 import { message } from 'ant-design-vue';

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 17:21:27
+ * @LastEditTime: 2022-03-16 22:03:36
  */
 // 导航栏列表
 export default[
@@ -34,6 +34,11 @@ export default[
             {
                 title: '重置密码列表',
                 url : '/reset/password',
+                onlyAdmin : true,
+            },
+            {
+                title: '邀请码管理',
+                url : '/invite-code',
                 onlyAdmin : true,
             },
         ],
