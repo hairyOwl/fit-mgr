@@ -1,18 +1,18 @@
 <!--
- * @Description: 修改血压信息模板
+ * @Description: 修改血糖信息模板
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:04:57
+ * @LastEditTime: 2022-03-19 22:04:31
 -->
-<!-- 血压信息模板 -->
+<!-- 血糖信息模板 -->
 <template>
-    <!-- 血压信息 -->
+    <!-- 血糖信息 -->
     <div>
-        <!-- 血压列表 -->
+        <!-- 血糖列表 -->
         <a-card>
             <!-- 标题 -->
-            <h2>血压数据</h2>
+            <h2>血糖数据</h2>
             <!-- 分割线 -->
             <a-divider/> 
             <!-- 搜索添加数据 弹性盒子 两端对齐 -->
@@ -35,7 +35,7 @@
             </space-between>
             <!-- 分割线 -->
             <a-divider/> 
-            <!-- 血压数据表格 columns表头 data-source数据源 pagination自带分页显示-->
+            <!-- 血糖数据表格 columns表头 data-source数据源 pagination自带分页显示-->
             <a-table
                 bordered
                 :columns="columns" 
@@ -50,12 +50,6 @@
                 <!-- 时间戳格式化 -->
                 <template #recordDate = "data">
                     {{ formatTimestamp(data.record.recordDate) }}
-                </template>
-                <!-- 计数 -->
-                <template #count = "data">
-                    <a class="count" href="javascript:;" @click="updateCount('SUB_COUNT' , data.record)">-</a>
-                    {{ data.record.count }}
-                    <a class="count" href="javascript:;" @click="updateCount('ADD_COUNT' , data.record)">+</a>
                 </template>
                 <!-- 操作 -->
                 <template #actions = "record">
@@ -76,24 +70,24 @@
             </space-between>
         </a-card>
 
-        <!-- 添加血压弹窗 -->
+        <!-- 添加血糖弹窗 -->
         <add-one
             v-model:show = "show"  
             @getList = "getList"
         />
 
-        <!-- 修改血压弹窗 -->
+        <!-- 修改血糖弹窗 -->
         <update
             v-model:show = "showUpdateModal"
-            :bloodP = "curEditBP"
-            @update = "updateCurBloodP"
+            :bloodG = "curEditBG"
+            @update = "updateCurBloodG"
         />
     </div>
 </template>
-<!--血压信息逻辑  -->
+<!--血糖信息逻辑  -->
 <script src="./index.jsx" ></script>
 
-<!-- 血压信息样式 -->
+<!-- 血糖信息样式 -->
 <style lang="scss" scoped>
     @import './index.scss';
 </style>

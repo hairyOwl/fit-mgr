@@ -3,19 +3,31 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 22:03:36
+ * @LastEditTime: 2022-03-19 22:00:42
  */
 // 导航栏列表
 export default[
     {
         // 一级导航
         title: '健康记录',
-        url: '/bp',
         onlyAdmin : false,
-        // 二级导航
-        // children:[
-            
-        // ],
+        children : [
+            {
+                title: '血压数据管理',
+                url: '/blood-pressure',
+                onlyAdmin : false,
+            },
+            {
+                title: '血糖数据管理',
+                url : '/blood-glucose',
+                onlyAdmin : false,
+            },
+            {
+                title: '药品与试剂存量管理',
+                url : '/medicine-inventory',
+                onlyAdmin : false,
+            },
+        ],
     },
     {
         title: '用户管理',
@@ -29,7 +41,6 @@ export default[
     },
     {
         title : '杂项',
-        onlyAdmin : false,
         children : [
             {
                 title: '重置密码列表',

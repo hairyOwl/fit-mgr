@@ -1,9 +1,9 @@
 /*
- * @Description: 血压信息逻辑
+ * @Description: 血糖信息逻辑
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 10:41:13
+ * @LastEditTime: 2022-03-18 14:37:44
  */
 import {
     defineComponent , 
@@ -13,7 +13,7 @@ import {
 import { useRouter } from 'vue-router'; //操作路由的方法 前进一页后退一页跳转某一页
 import AddOne from './AddOne/index.vue'; //添加信息弹窗
 import Update from './Update/index.vue'; //修改信息弹窗
-import { bloodPressure } from '@/service'
+import { bloodGlucose } from '@/service'
 import { message , Modal ,Input} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { result , formatTimestamp } from '@/helpers/utils';
@@ -34,22 +34,8 @@ const columns = [
         dataIndex : 'timeTag',
     },
     {
-        title : '高压',
-        dataIndex : 'sys',
-    },
-    {
-        title : '低压',
-        dataIndex : 'dia',
-    },
-    {
-        title : '心跳',
-        dataIndex : 'pul',
-    },
-    {
-        title : '计数',
-        slots : {
-            customRender : 'count',
-        },
+        title : '血糖',
+        dataIndex : 'glucose',
     },
     {
         title : '备注',
@@ -86,20 +72,20 @@ export default defineComponent({
     setup(){
         const router = useRouter();
         //数据列表
-        const show = ref(false); //添加血压窗口点击事件 flag
-        const showUpdateModal = ref(false); //修改血压窗口点击事件 flag
+        const show = ref(false); //添加血糖窗口点击事件 flag
+        const showUpdateModal = ref(false); //修改血糖窗口点击事件 flag
         const list = ref([]); //默认是空数组
         const curPage = ref(1);
         const total = ref(0);
         const starDay = ref('');
         const endDay = ref('');
-        const curEditBP = ref({});
+        const curEditBG = ref({});
         const {account} = store.state.userInfo;
         const userAdmin = isAdmin();
 
-        //获取血压列表
+        //获取血糖列表
         const getList = async () =>{
-            const res = await bloodPressure.list(
+            const res = await bloodGlucose.list(
                 userAdmin,
                 account,
                 curPage.value,
@@ -114,8 +100,6 @@ export default defineComponent({
                     total.value = listTotal
                 });
         }
-
-        
 
         //当组件被挂载的时候会调用 ,当组件初始化完成放在页面上时会做的事情
         onMounted(async () =>{
@@ -147,91 +131,36 @@ export default defineComponent({
         const deleteOne = async ({ record }) =>{
             const { _id } = record ;
             //service 的 接口
-            const res = await bloodPressure.deleteOne(_id);
+            const res = await bloodGlucose.deleteOne(_id);
 
             result(res)
                 .success((data)=>{
                     message.success(data.msg);
-
-                    // //mongo已无这条数据 然后删除在本地list对应的_id 避免多次网络请求
-                    // //找到本地id要删除的
-                    // const idx = list.value.findIndex((item) =>{
-                    //     return item._id === _id;
-                    // });
-                    // list.value.splice(idx , 1); //删除
-
                     getList();
                 });
         };
 
-        //计数变更数量弹窗
-        const updateCount = (type ,record) =>{
-            let word = '减少';
-            if(type === 'ADD_COUNT'){
-                word = '增加';
-            }
-            
-            Modal.confirm({ //确认框
-                title : `要${word}多少`,
-                //虚拟dom树上的虚拟节点
-                content : ( //vue中插件把jsx中的这段代码编译成 createVNode的格式
-                    <div>
-                        <Input class="__bloodP_input_count"/>
-                    </div>
-                ), 
-                //点击确认
-                onOk : async()=>{
-                    const el = document.querySelector('.__bloodP_input_count');
-                    let num = el.value;
-                    const res = await bloodPressure.updateCount({
-                        id : record._id,
-                        type,
-                        num,
-                    });
-                    result(res)
-                        .success((data)=>{
-                            //找到了文档
-                            if( type === 'ADD_COUNT' ){ //加
-                                num = Math.abs(num); //绝对值
-                            }else{ //出库
-                                num = -Math.abs(num);
-                            }
-                            const one = list.value.find((item)=>{ //find返回数据，findIndex返回下标
-                                return item._id === record._id;
-                            });
-                            
-                            if(one){
-                                one.count = one.count + num;
-                                message.success(`成功${word} ${Math.abs(num)}`);
-                            }
-
-                            
-                        })
-                },
-            });
-        };
-        
-        //修改血压信息
+        //修改血糖信息
         const updateOne = ({ record }) =>{
             showUpdateModal.value = true;
-            curEditBP.value = record;
+            curEditBG.value = record;
             
         };
 
         //更新一条数据
-        const updateCurBloodP = (newData) =>{
-            Object.assign(curEditBP.value , newData);
+        const updateCurBloodG = (newData) =>{
+            Object.assign(curEditBG.value , newData);
         };
         //跳转详情页面
         const toDetail = ({record}) =>{
-            router.push(`/blood-pressure/${record._id}`);
+            router.push(`/blood-glucose/${record._id}`);
         }
 
         return{
             //弹窗点击事件flag
             show, //添加
             showUpdateModal, //修改
-            //血压信息列表
+            //血糖信息列表
             list,
             columns,//列表配置
             curPage,//当前页数
@@ -244,10 +173,9 @@ export default defineComponent({
             onChange,
             //数据修改
             deleteOne, //删除
-            updateCount, //修改计数
             updateOne, //修改
-            curEditBP, //要修改的那条
-            updateCurBloodP,
+            curEditBG, //要修改的那条
+            updateCurBloodG,
             toDetail, //跳转详情页面
             isAdmin,
         }

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 22:09:47
+ * @LastEditTime: 2022-03-19 22:05:47
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -22,15 +22,39 @@ const routes = [
     children : [
       //血压信息
       {
-        path: 'bp',
+        path: 'blood-pressure',
         name: 'BloodPressure ',
         component: () => import(/* webpackChunkName: "BloodPressure" */ '../views/BloodPressure/index.vue'),
       },
       //血压详情
       {
-        path: 'bp/:id',
+        path: 'blood-pressure/:id',
         name: 'BloodPreDetail ',
         component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodPreDetail/index.vue'),
+      },
+      //血糖信息
+      {
+        path: 'blood-glucose',
+        name: 'BloodGlucose ',
+        component: () => import(/* webpackChunkName: "BloodGlucose" */ '../views/BloodGlucose/index.vue'),
+      },
+      //血糖详情
+      {
+        path: 'blood-glucose/:id',
+        name: 'BloodGluDetail ',
+        component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodGluDetail/index.vue'),
+      },
+      //药品信息
+      {
+        path: 'medicine-inventory',
+        name: 'MedicineInventory',
+        component: () => import(/* webpackChunkName: "Medicine" */ '../views/MedicineInventory/index.vue'),
+      },
+      //血糖详情
+      {
+        path: 'medicine-inventory/:id',
+        name: 'MedicineInvDetail ',
+        component: () => import(/* webpackChunkName: "MedicineInvDetail" */ '../views/MedicineInvDetail/index.vue'),
       },
       //角色管理
       {

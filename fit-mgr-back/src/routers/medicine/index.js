@@ -1,9 +1,9 @@
 /*
- * @Description: 血压数据 路由处理
+ * @Description: 药品路由处理
  * @Author: hairyOwl
- * @Date: 2022-02-28 10:59:45
+ * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 23:28:52
+ * @LastEditTime: 2022-03-19 11:37:17
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -11,18 +11,18 @@ const mongoose = require('mongoose');
 const { getBody,formatTimestamp } = require('../../helpers/utils');
 
 //常量
-const BP_CONST = {
+const MEDICINE_CONST = {
     ADD: 'ADD_COUNT',
     SUB : 'SUB_COUNT',
 };
 
 //拿到model
-const BloodPressure = mongoose.model('BloodPressure');
-const InventoryLog = mongoose.model('InventoryLog');
+const Medicine = mongoose.model('Medicine');
+const InventoryLog = mongoose.model('InventoryLog'); 
 
 //抽取通过id找单条文档的方法
-const findBloodPOne = async (id) =>{
-    const one = await BloodPressure.findOne({
+const findMedicineOne = async (id) =>{
+    const one = await Medicine.findOne({
         _id : id,
     }).exec();
 
@@ -30,102 +30,79 @@ const findBloodPOne = async (id) =>{
 }
 
 //路由前缀
-const bpRouter = new Router({
-    prefix : '/bp',
+const medicineRouter = new Router({
+    prefix : '/medicine',
 }); 
 
-//添加血压接口
-bpRouter.post('/add',async (ctx)=>{
+//添加药品接口
+medicineRouter.post('/add',async (ctx)=>{
     //拿取添加页面上的信息
     const {
         userAccount,
-        sys,
-        dia,
-        pul,
+        name,
+        purchaseDate,
+        shelfLife,
         count,
-        recordDate,
-        timeTag,
+        tag,
         note,
     } =getBody(ctx);
 
     
-    const bloodPressure = new BloodPressure({
+    const medicine = new Medicine({
         userAccount,
-        sys,
-        dia,
-        pul,
+        name,
+        purchaseDate,
+        shelfLife,
         count,
-        recordDate,
-        timeTag,
+        tag,
         note,
     });
 
-    const res = await bloodPressure.save();
+    const res = await medicine.save();
 
     ctx.body = {
         code : 1,
-        msg : '添加血压信息成功',
+        msg : '添加药品信息成功',
         data : res,
     };
 });
 
 //获取列表接口 分页列表
-bpRouter.get('/list',async (ctx) =>{
-    // https://www.xxxx.com/table?page=5&size=20&starDay=开始日期&endDay=结束日期&#sahdoasdhod //?page=5&size=20 query部分
-    // const {
-    //     page = 1, //当前页数 默认为1
-    //     size = 5,  //一页多少条
-    // } = ctx.query;
-
+medicineRouter.get('/list',async (ctx) =>{
     let{
         userAdmin,
         account,
         page, //当前页数 默认为1
         size,  //一页多少条
-        starDay = '', //开始日期
-        endDay = '', //结束日期
+        keyword,
     } = ctx.query;
-
-    page = Number(page);
-    size = Number(size);
 
     //判断是否有查询条件
     const query = {};
-    //非管理员用户只能看自己的血压
+    //非管理员用户只能看自己的药品
     if(userAdmin === 'false'){
         console.log(1111);
         query.userAccount = account;
     }
-
-    //有日期查询
-    if (starDay!='' && endDay!=''){
-        //开始日期从0点
-        starDay =new Date(new Date(Number(starDay)).toLocaleDateString()).getTime()
-        //结束日期到23:59点
-        endDay = new Date(new Date(Number(endDay)).toLocaleDateString()).getTime()+24 * 60 * 60 * 1000 -1;// 当天23:59
-        query.recordDate = { 
-            $gt: starDay,
-            $lt: endDay,
-        };
+    if(keyword !=''){
+        query.account =keyword;
     }
 
-    console.log(query);
-
     //分页查询
-    const list = await BloodPressure
+    const list = await Medicine
         .find(query)
         .sort({
-            recordDate:-1, //倒序排放
+            _id:-1, //倒序排放
         })
         .skip((page - 1) * size) //跳过目标页之前的的文档
         .limit(size) //查几条
         .exec();
     //获取总条数
-    const total = await BloodPressure.countDocuments(query);
+    const total = await Medicine.countDocuments(query);
     
     ctx.body = {
         code : 1,
-        msg : '获取血压列表内容成功',
+        msg : '获取药品列表内容成功',
         data: {
             list,
             total,
@@ -135,14 +112,14 @@ bpRouter.get('/list',async (ctx) =>{
     }
 });
 
-//删除血压接口 http delete接口
-bpRouter.delete('/:id',async(ctx)=>{
-    //bloodPressure/12344
+//删除药品接口 http delete接口
+medicineRouter.delete('/:id',async(ctx)=>{
+    //medicine/12344
     const{
         id,
     } = ctx.params;
 
-    const delMsg = await BloodPressure.deleteOne({
+    const delMsg = await Medicine.deleteOne({
         _id: id,
     });
 
@@ -154,7 +131,7 @@ bpRouter.delete('/:id',async(ctx)=>{
 });
 
 //修改计数 添加记录日志
-bpRouter.post('/update/count' ,async (ctx) =>{
+medicineRouter.post('/update/count' ,async (ctx) =>{
     const{
         id,
         type, //增加还是减少
@@ -165,11 +142,10 @@ bpRouter.post('/update/count' ,async (ctx) =>{
     }= ctx.request.body;
     num = Number(num);
 
-
     //找到要修改的文档
-    const bloodP = await findBloodPOne(id);
+    const medicine = await findMedicineOne(id);
 
-    if(!bloodP){
+    if(!medicine){
         ctx.body = {
             code : 0,
             msg : '没有找到要修改的数据',
@@ -178,14 +154,14 @@ bpRouter.post('/update/count' ,async (ctx) =>{
         return;
     }
     //找到了文档
-    if( type === BP_CONST.ADD ){ //加
+    if( type === MEDICINE_CONST.ADD ){ //加
         num = Math.abs(num); //绝对值
     }else{ //出库
         num = -Math.abs(num);
     }
 
-    bloodP.count = bloodP.count + num ;
-    if( bloodP.count < 0 ){
+    medicine.count = medicine.count + num ;
+    if( medicine.count < 0 ){
         ctx.body = {
             code : 0,
             msg : '减少的数大于现存',
@@ -194,11 +170,11 @@ bpRouter.post('/update/count' ,async (ctx) =>{
         return;
     }
 
-    const res= await bloodP.save(); //更新数据
+    const res= await medicine.save(); //更新数据
 
     // 添加日志记录
     const log = new InventoryLog({
-        dataId : bloodP._id,
+        dataId : medicine._id,
         type,
         num: Math.abs(num),
     });
@@ -212,21 +188,19 @@ bpRouter.post('/update/count' ,async (ctx) =>{
 });
 
 //编辑
-bpRouter.post('/update' , async(ctx)=>{
+medicineRouter.post('/update' , async(ctx)=>{
     const{
         id,
         ...others //扩展运算符 要修改的属性合并
     } = ctx.request.body;
 
-    const one = await BloodPressure.findOne({
-        _id : id,
-    }).exec();
+    const one = await findMedicineOne(id);
 
     //没有找到
     if(!one){
         ctx.body = {
             code : 0,
-            msg : '没有找到相关血压信息',
+            msg : '没有找到相关药品信息',
             data : null,
         };
 
@@ -252,17 +226,17 @@ bpRouter.post('/update' , async(ctx)=>{
 });
 
 //详情
-bpRouter.get('/detail/:id',async (ctx)=>{
+medicineRouter.get('/detail/:id',async (ctx)=>{
     const{
         id,
     } = ctx.params;
 
-    const one = await findBloodPOne(id);
+    const one = await findMedicineOne(id);
 
     if(!one){
         ctx.body = {
             code:0,
-            msg:'没有找对该条血压数据',
+            msg:'没有找对该条药品数据',
         }
         return;
     }
@@ -274,7 +248,4 @@ bpRouter.get('/detail/:id',async (ctx)=>{
     }
 });
 
-module.exports = bpRouter;
-
-
-
+module.exports = medicineRouter;

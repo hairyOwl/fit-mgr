@@ -3,14 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 22:51:41
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 16:57:08
+ * @LastEditTime: 2022-03-17 17:40:50
  */
 //导入路由依赖
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid'); //UUID
-
-// const {getBody} = require('../../helpers/utils');
 
 //拿到model
 const InviteCode = mongoose.model('InviteCode');

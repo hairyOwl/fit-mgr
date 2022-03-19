@@ -1,26 +1,24 @@
 /*
- * @Description: 添加血压弹窗逻辑
+ * @Description: 添加药品弹窗逻辑
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 10:12:57
+ * @LastEditTime: 2022-03-19 11:35:23
  */
 import { defineComponent ,reactive} from 'vue';
-import { bloodPressure } from '@/service';
+import { medicine } from '@/service';
 import { message } from 'ant-design-vue';
 import { result ,clone } from '@/helpers/utils';
 import store from '@/store';
 
-//空血压数据表单
+//空药品数据表单
 const defaultFormData = {
-    sys : 0,
-    dia :  0,
-    pul : 0,
+    name : '',
+    tag : '',
+    purchaseDate : '',
+    shelfLife : '',
     count : 0,
-    recordDate : '',
-    timeTag : '',
     note : '',
-    userId:'',
 };
 
 export default defineComponent({
@@ -31,15 +29,15 @@ export default defineComponent({
     
     //初始化时执行一次 ，生命周期的钩子
     setup(props , context){
-        const user = store.state.userInfo; //获取当前用户 添加血压信息时带入
+        const user = store.state.userInfo; //获取当前用户 添加药品信息时带入
         const addForm = reactive(clone(defaultFormData)); //防止reactive直接操作defaultFormData
 
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
-            form.recordDate = addForm.recordDate.valueOf(); //moment对象转化为时间戳
+            form.purchaseDate = addForm.purchaseDate.valueOf(); //moment对象转化为时间戳
             form.userAccount = user.account;
-            const res = await bloodPressure.add(form);
+            const res = await medicine.add(form);
 
             result(res)
                 .success((data) =>{ //添加数据成功后清空表单
@@ -57,7 +55,7 @@ export default defineComponent({
         }
 
         return{
-            //添加血压
+            //添加药品
             addForm,
             //提交表单事件
             submit,

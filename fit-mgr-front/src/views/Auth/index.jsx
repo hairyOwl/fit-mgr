@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:27
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 22:43:15
+ * @LastEditTime: 2022-03-17 22:54:40
  */
 import { defineComponent , reactive } from 'vue';
 import { message , Modal , Input} from 'ant-design-vue'; //提示toast 弹窗
@@ -91,13 +91,12 @@ export default defineComponent({
                     message.success(msg);
                     //将登录用户信息存入全局
                     store.commit('setUserInfo',user);
-                    console.log(user);
                     store.commit('setUserCharacter',getCharacterInfoById(user.character));
                     
                     //token 存入localStorage
                     setToken(token);
                     //登录成功后跳转到首页
-                    router.replace('/bp'); //进入下一页后不能通过回退按钮回到上页
+                    router.replace('/blood-pressure'); //进入下一页后不能通过回退按钮回到上页
                 });
 
         }

@@ -1,9 +1,9 @@
 <!--
- * @Description: 药品详情页面模板
+ * @Description: 血糖详情页面模板
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:44
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 21:43:50
+ * @LastEditTime: 2022-03-18 14:34:06
 -->
 <template>
     <div>
@@ -25,34 +25,21 @@
                 <!-- 第一行 -->
                 <div class="items">
                     <div class="item">
-                        <div class="title">高压</div>
-                        <div class="">{{d.sys}}</div>
+                        <div class="title">血糖</div>
+                        <div class="">{{d.glucose}}</div>
                     </div>
                     <div class="item">
-                        <div class="title">低压</div>
-                        <div class="content">{{d.dia}}</div>
-                    </div>
-                    <div class="item">
-                        <div class="title">心跳</div>
-                        <div class="content">{{ d.pul }}</div>
+                        <div class="title">时间段</div>
+                        <div class="content">{{d.timeTag}}</div>
                     </div>
                 </div>
                 <!-- 第二行 -->
-                <div class="items">
-                    <div class="item">
-                        <div class="title">种类</div>
-                        <div class="content">{{ d.timeTag }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="title">备注</div>
-                        <div class="content">{{ d.note }}</div>
-                    </div>
-                </div>
+
             </div>
         </a-card>
-        <!-- 药品数量日志 -->
+        <!-- 血糖数量日志 -->
         <div class="log">
-            <a-card title="药品数量日志">
+            <a-card title="血糖数量日志">
                 <!-- 筛选按钮 -->
                 <template #extra>
                     <span>
@@ -98,7 +85,7 @@
         <!-- 编辑组件 -->
         <update
             v-model:show = "showUpdateModal"
-            :bloodP = "d"
+            :bloodG = "d"
             @update = "updateDetail"
         />
     </div>

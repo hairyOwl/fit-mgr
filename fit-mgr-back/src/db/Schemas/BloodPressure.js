@@ -3,12 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 09:27:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-07 21:22:57
+ * @LastEditTime: 2022-03-17 22:36:27
  */
 const mongoose = require('mongoose');
 const { getMeta ,preSave } = require('../helpers');
 
 const BPSchema = new mongoose.Schema({
+    //用户id
+    userAccount : String, 
     //高压
     sys : Number,
     //低压

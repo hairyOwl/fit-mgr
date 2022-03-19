@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:52
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 21:40:16
+ * @LastEditTime: 2022-03-19 22:20:18
  */
 import { 
     defineComponent,
@@ -11,11 +11,11 @@ import {
     ref,
 } from 'vue';
 import { useRoute , useRouter } from 'vue-router'; //useRoute当前页面有哪些路由信息对应的params, query
-import { bloodPressure , inventoryLog} from '@/service';
+import { medicine , inventoryLog} from '@/service';
 import { result , formatTimestamp ,formatTimestampPlus} from '@/helpers/utils';
 import { message } from 'ant-design-vue';
 import { CheckOutlined } from '@ant-design/icons-vue';
-import Update from '@/views/BloodPressure/Update/index.vue'; //编辑模块
+import Update from '@/views/MedicineInventory/Update/index.vue'; //编辑模块
 
 //日志表头
 const logColumns = [
@@ -55,7 +55,7 @@ export default defineComponent({
         */
         // 获得该条文档所有数据
         const getDetail = async ()=>{
-            const res = await bloodPressure.detail(id);
+            const res = await medicine.detail(id);
             result(res)
                 .success(( {data} )=>{
                     detailInfo.value = data;
@@ -63,20 +63,20 @@ export default defineComponent({
         }
         //删除该条文档
         const deleteCur = async ()=>{
-            const res = await bloodPressure.deleteOne(id);
+            const res = await medicine.deleteOne(id);
 
             result(res)
                 .success(({msg})=>{
                     message.success(msg);
-                    router.replace('/blood-pressure'); //回到之前
+                    router.replace('/medicine-inventory'); //回到之前
                 });
         };
         const goToPre = async ()=>{
-            router.replace('/blood-pressure'); //回到之前
+            router.replace('/medicine-inventory'); //回到之前
         };
         //编辑方法
-        const updateDetail = async(bloodP)=>{
-            Object.assign(detailInfo.value , bloodP);
+        const updateDetail = async(medicine)=>{
+            Object.assign(detailInfo.value , medicine);
         };
 
         /* 

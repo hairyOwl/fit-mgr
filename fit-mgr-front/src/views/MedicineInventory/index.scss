@@ -1,0 +1,23 @@
+/*
+ * @Description: 血压信息样式
+ * @Author: hairyOwl
+ * @Date: 2022-02-27 21:26:00
+ * @LastEditors: hairyOwl
+ * @LastEditTime: 2022-03-19 10:45:51
+ */
+.search{
+    display: flex;
+    align-items: center; //垂直居中
+
+    a{
+        width: 60px;
+        margin-left: 16px;
+    }
+}
+
+.count{
+    font-size:  16px;
+    margin: 0 10px;
+    font-weight: 700; //加粗
+}
+

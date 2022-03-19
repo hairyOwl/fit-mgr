@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:44
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 21:43:50
+ * @LastEditTime: 2022-03-19 22:18:54
 -->
 <template>
     <div>
@@ -11,7 +11,7 @@
         <a-card>
             <!-- 数据头 -->
             <space-between>
-                <h2>{{ formatTimestamp(d.recordDate) }}</h2>
+                <h2>{{ d.name }}</h2>
                 <div>
                     <a-button size="small" @click="showUpdateModal=true">编辑</a-button>&nbsp;
                     <a-button size="small" type="danger" @click="deleteCur">删除</a-button>&emsp;
@@ -25,23 +25,19 @@
                 <!-- 第一行 -->
                 <div class="items">
                     <div class="item">
-                        <div class="title">高压</div>
-                        <div class="">{{d.sys}}</div>
+                        <div class="title">购买日期</div>
+                        <div class="">{{formatTimestamp(d.purchaseDate)}}</div>
                     </div>
                     <div class="item">
-                        <div class="title">低压</div>
-                        <div class="content">{{d.dia}}</div>
-                    </div>
-                    <div class="item">
-                        <div class="title">心跳</div>
-                        <div class="content">{{ d.pul }}</div>
+                        <div class="title">保质期</div>
+                        <div class="content">{{d.shelfLife}}</div>
                     </div>
                 </div>
                 <!-- 第二行 -->
                 <div class="items">
                     <div class="item">
                         <div class="title">种类</div>
-                        <div class="content">{{ d.timeTag }}</div>
+                        <div class="content">{{ d.tag }}</div>
                     </div>
                     <div class="item">
                         <div class="title">备注</div>
@@ -98,7 +94,7 @@
         <!-- 编辑组件 -->
         <update
             v-model:show = "showUpdateModal"
-            :bloodP = "d"
+            :medicine = "d"
             @update = "updateDetail"
         />
     </div>

@@ -1,0 +1,36 @@
+/*
+ * @Description: 药品详情页面样式
+ * @Author: hairyOwl
+ * @Date: 2022-03-05 17:07:52
+ * @LastEditors: hairyOwl
+ * @LastEditTime: 2022-03-05 20:08:31
+ */
+//两行三列数据样式
+.base-info{
+    // 行样式
+    .items{
+        display: flex;
+        margin-bottom: 16px;
+        // 列样式
+        .item{
+            flex: 1; //一行有几个item就均等几份
+            display: flex;
+            .title{
+                min-width: 70px;
+                font-weight: 700;
+                color: rgba($color: #000000, $alpha: 0.7);
+            }
+            .content{
+                
+            }
+        }
+        //伪类最后一行
+        &:last-child{
+            margin-bottom: 0px;
+        }
+    }
+}
+
+.log{
+    margin-top: 24px;
+}
