@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 11:35:23
+ * @LastEditTime: 2022-03-21 16:22:06
  */
 import { defineComponent ,reactive} from 'vue';
 import { medicine } from '@/service';
@@ -30,8 +30,12 @@ export default defineComponent({
     //初始化时执行一次 ，生命周期的钩子
     setup(props , context){
         const user = store.state.userInfo; //获取当前用户 添加药品信息时带入
+        const classifyList = store.state.medClassify;
         const addForm = reactive(clone(defaultFormData)); //防止reactive直接操作defaultFormData
-
+        
+        if(classifyList.length){ //当无药剂分类,没有默认项
+            addForm.tag = classifyList[0]._id;
+        }
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
@@ -63,6 +67,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            classifyList,
         };
     },
 });

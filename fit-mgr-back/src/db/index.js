@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-20 22:28:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 17:35:56
+ * @LastEditTime: 2022-03-20 10:03:08
  */
 //注册模型
 require('./Schemas/User') //执行User.js
@@ -16,6 +16,7 @@ require('./Schemas/ActionLogResponse') //执行 ActionLogResponse.js
 require('./Schemas/ResetPassword') //执行 ForgetPassword.js
 require('./Schemas/BloodGlucose') //执行 BloodGlucose.js
 require('./Schemas/Medicine') //执行 Medicine.js
+require('./Schemas/MedicineClassify') //执行 MedicineClassify.js
 
 //导入mongoose
 const mongoose = require('mongoose');

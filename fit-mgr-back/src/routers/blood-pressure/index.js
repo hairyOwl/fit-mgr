@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 23:28:52
+ * @LastEditTime: 2022-03-20 13:55:34
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -93,7 +93,6 @@ bpRouter.get('/list',async (ctx) =>{
     const query = {};
     //非管理员用户只能看自己的血压
     if(userAdmin === 'false'){
-        console.log(1111);
         query.userAccount = account;
     }
 
@@ -108,8 +107,6 @@ bpRouter.get('/list',async (ctx) =>{
             $lt: endDay,
         };
     }
-
-    console.log(query);
 
     //分页查询
     const list = await BloodPressure

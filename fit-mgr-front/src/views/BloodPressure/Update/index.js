@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-04 23:09:27
+ * @LastEditTime: 2022-03-21 15:44:52
  */
 import { 
     defineComponent,
@@ -20,6 +20,7 @@ export default defineComponent({
     props: {
         show : Boolean,
         bloodP: Object,
+        timeTagList : Array,
     },
     
     //初始化时执行一次 ，生命周期的钩子

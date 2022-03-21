@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-24 16:13:40
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 10:21:09
+ * @LastEditTime: 2022-03-20 10:08:17
  */
 const authRouter = require('./auth'); //等同 /auth/index.js
 const inviteCodeRouter = require('./invite-code');
@@ -15,6 +15,7 @@ const logRouter = require('./action-log');
 const resetPasswordRouter = require('./reset-password');
 const bloodGlucoseRouter = require('./blood-glucose');
 const medicineRouter = require('./medicine');
+const medicineClassifyRouter = require('./medicine-classify');
 
 //接收当前koa的一个实列 app
 module.exports = (app) =>{
@@ -29,5 +30,6 @@ module.exports = (app) =>{
     app.use(resetPasswordRouter.routes());
     app.use(bloodGlucoseRouter.routes());
     app.use(medicineRouter.routes());
+    app.use(medicineClassifyRouter.routes());
     
 };

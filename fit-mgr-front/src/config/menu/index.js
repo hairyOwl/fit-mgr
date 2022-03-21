@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:00:42
+ * @LastEditTime: 2022-03-20 15:21:08
  */
 // 导航栏列表
 export default[
@@ -50,6 +50,11 @@ export default[
             {
                 title: '邀请码管理',
                 url : '/invite-code',
+                onlyAdmin : true,
+            },
+            {
+                title: '药剂分类管理',
+                url : '/medicine-classify',
                 onlyAdmin : true,
             },
         ],

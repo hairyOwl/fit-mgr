@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:04:31
+ * @LastEditTime: 2022-03-21 15:28:23
 -->
 <!-- 血糖信息模板 -->
 <template>
@@ -72,13 +72,15 @@
 
         <!-- 添加血糖弹窗 -->
         <add-one
-            v-model:show = "show"  
+            v-model:show = "show"
+            :timeTagList = "TimeTagList"
             @getList = "getList"
         />
 
         <!-- 修改血糖弹窗 -->
         <update
             v-model:show = "showUpdateModal"
+            :timeTagList = "TimeTagList"
             :bloodG = "curEditBG"
             @update = "updateCurBloodG"
         />

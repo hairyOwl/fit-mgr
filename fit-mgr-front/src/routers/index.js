@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:05:47
+ * @LastEditTime: 2022-03-21 16:00:50
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -80,6 +80,12 @@ const routes = [
         name: 'InviteCode ',
         component: () => import(/* webpackChunkName: "InviteCode" */ '../views/InviteCode/index.vue'),
       },
+      // 药剂分类管理
+      {
+        path: 'medicine-classify',
+        name: 'MedicineClassify ',
+        component: () => import(/* webpackChunkName: "MedicineClassify" */ '../views/MedicineClassify/index.vue'),
+      },
     ],
   },
   
@@ -105,6 +111,7 @@ router.beforeEach(async (to,from,next)=>{
     await store.dispatch('getUserInfo');
   }
   
+  await store.dispatch('getMedicineClassify');
   // await Promise.all(reqArr); //获取上述信息成功后执行next
   next();
 });

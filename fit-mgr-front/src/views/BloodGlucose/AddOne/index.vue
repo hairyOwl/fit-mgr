@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 11:15:09
+ * @LastEditTime: 2022-03-21 15:29:55
 -->
 <!-- 添加血糖弹窗模板 -->
 <template>
@@ -32,7 +32,18 @@
                 </a-form-item>
 
                 <a-form-item  label="时间段">
-                    <a-input  v-model:value="addForm.timeTag" placeholder="上午"/>
+                    <a-select
+                        v-model:value="addForm.timeTag"
+                        style="width: 120px"
+                    >
+                        <a-select-option 
+                            v-for="item in timeTagList"
+                            :value = "item.timeTag"
+                            :key = "item.timeTag"
+                        >
+                            {{ item.timeTag }}
+                        </a-select-option>
+                    </a-select>
                 </a-form-item>
 
                 <a-form-item  label="备注">

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-04 20:42:41
+ * @LastEditTime: 2022-03-21 15:37:43
 -->
 <!-- 添加血压弹窗模板 -->
 <template>
@@ -45,7 +45,18 @@
                 </a-form-item>
 
                 <a-form-item  label="时间段">
-                    <a-input  v-model:value="editForm.timeTag" placeholder="上午"/>
+                    <a-select
+                        v-model:value="editForm.timeTag"
+                        style="width: 120px"
+                    >
+                        <a-select-option 
+                            v-for="item in timeTagList"
+                            :value = "item.timeTag"
+                            :key = "item.timeTag"
+                        >
+                            {{ item.timeTag }}
+                        </a-select-option>
+                    </a-select>
                 </a-form-item>
 
                 <a-form-item  label="备注">

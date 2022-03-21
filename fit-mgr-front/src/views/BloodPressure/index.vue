@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:04:57
+ * @LastEditTime: 2022-03-21 15:33:30
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -80,6 +80,7 @@
         <add-one
             v-model:show = "show"  
             @getList = "getList"
+            :timeTagList = "TimeTagList"
         />
 
         <!-- 修改血压弹窗 -->
@@ -87,6 +88,7 @@
             v-model:show = "showUpdateModal"
             :bloodP = "curEditBP"
             @update = "updateCurBloodP"
+            :timeTagList = "TimeTagList"
         />
     </div>
 </template>

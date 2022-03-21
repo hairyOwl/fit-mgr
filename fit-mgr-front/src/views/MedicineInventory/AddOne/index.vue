@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 11:29:28
+ * @LastEditTime: 2022-03-21 15:07:16
 -->
 <!-- 添加药品弹窗模板 -->
 <template>
@@ -26,7 +26,18 @@
                 </a-form-item>
 
                 <a-form-item  label="用途">
-                    <a-input  v-model:value="addForm.tag" placeholder="降压"/>
+                    <a-select
+                        v-model:value="addForm.tag"
+                        style="width: 120px"
+                    >
+                        <a-select-option 
+                            v-for = "item in classifyList"
+                            :key = "item._id"
+                            :value="item._id"
+                        >
+                            {{ item.title }}
+                        </a-select-option>
+                    </a-select>
                 </a-form-item>
 
                 <a-form-item label="购买日期">

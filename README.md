@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:22
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:27:54
+ * @LastEditTime: 2022-03-21 17:44:10
 -->
 # fit-mgr
 居家健康指标记录平台，用于记录血压，血糖。可视化指标变化
@@ -20,6 +20,7 @@
 | actionLog          | 操作日志       |
 | actionlogresponses | 单条操作响应   |
 | ForgetPassword     | 重置密码申请表 |
+| MedicineClassify   | 药剂分类列表   |
 
 
 # 进度
@@ -62,9 +63,18 @@
 - [x] 杂项
     - [x] 重置密码申请
     - [x] 邀请码管理
+    - [x] 药剂分类管理
 
 
 # 更新日志
+2022年3月21日
+- Added : 
+    1. 药剂分类管理
+    2. 血压,血糖 时间段选择项
+- Changed : 无
+- Removed : 无
+- Security : 无
+
 2022年3月19日
 - Added : 
     1. 血糖模块
@@ -72,7 +82,6 @@
 - Changed : 无
 - Removed : 无
 - Security : 无
-
 
 2022年3月17日
 - Added : 

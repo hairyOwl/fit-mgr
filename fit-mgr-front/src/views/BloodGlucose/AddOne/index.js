@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 11:19:52
+ * @LastEditTime: 2022-03-21 15:45:12
  */
 import { defineComponent ,reactive} from 'vue';
 import { bloodGlucose } from '@/service';
@@ -19,24 +19,23 @@ const defaultFormData = {
     note : '',
     userId:'',
 };
-
 export default defineComponent({
     //父组件传递的自定义属性名(str)
     props: {
         show : Boolean,
+        timeTagList : Array,
     },
     
     //初始化时执行一次 ，生命周期的钩子
     setup(props , context){
         const user = store.state.userInfo; //获取当前用户 添加血糖信息时带入
         const addForm = reactive(clone(defaultFormData)); //防止reactive直接操作defaultFormData
-
+        addForm.timeTag = props.timeTagList[0].timeTag;
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
             form.recordDate = addForm.recordDate.valueOf(); //moment对象转化为时间戳
             form.userAccount = user.account;
-            console.log(form);
             const res = await bloodGlucose.add(form);
 
             result(res)

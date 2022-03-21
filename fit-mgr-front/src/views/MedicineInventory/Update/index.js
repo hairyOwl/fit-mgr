@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:21:15
+ * @LastEditTime: 2022-03-21 17:41:33
  */
 import { 
     defineComponent,
@@ -14,6 +14,7 @@ import { medicine } from '@/service';
 import { message } from 'ant-design-vue';
 import { result ,clone } from '@/helpers/utils';
 import moment from 'moment';
+import store from '@/store';
 
 export default defineComponent({
     //父组件传递的自定义属性名(str)
@@ -72,6 +73,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            classifyList: store.state.medClassify,
         };
     },
 });

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 14:37:44
+ * @LastEditTime: 2022-03-21 15:32:20
  */
 import {
     defineComponent , 
@@ -60,7 +60,30 @@ if(isAdmin()){
         }
     },);
 };
-
+//时间段列表
+const TimeTagList = [
+    {
+        timeTag : "早餐前",
+    },
+    {
+        timeTag : "早餐后",
+    },
+    {
+        timeTag : "中餐前",
+    },
+    {
+        timeTag : "中餐后",
+    },
+    {
+        timeTag : "晚餐前",
+    },
+    {
+        timeTag : "晚餐后",
+    },
+    {
+        timeTag : "睡前",
+    },
+];
 export default defineComponent({
     //组件注册
     components : {
@@ -163,6 +186,7 @@ export default defineComponent({
             //血糖信息列表
             list,
             columns,//列表配置
+            TimeTagList,//
             curPage,//当前页数
             formatTimestamp,    
             total,//总条数

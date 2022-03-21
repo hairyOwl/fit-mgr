@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:11:25
+ * @LastEditTime: 2022-03-21 16:52:11
 -->
 <!-- 药品信息模板 -->
 <template>
@@ -46,7 +46,10 @@
                 <template v-if="isAdmin" #user = "data">
                         {{ data.record.userAccount }}
                 </template>
-                
+                <!-- 分类 -->
+                <template #MedicineTag = "data">
+                        {{getClassifyTitleById(data.record.tag)}}
+                </template>
                 <!-- 时间戳格式化 -->
                 <template #purchaseDate = "data">
                     {{ formatTimestamp(data.record.purchaseDate) }}
@@ -79,6 +82,7 @@
         <!-- 添加药品弹窗 -->
         <add-one
             v-model:show = "show"  
+            :classifyList="medicineClassifyList"
             @getList = "getList"
         />
 

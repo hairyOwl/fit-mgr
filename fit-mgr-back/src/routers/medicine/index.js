@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 11:37:17
+ * @LastEditTime: 2022-03-20 13:55:55
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -81,7 +81,6 @@ medicineRouter.get('/list',async (ctx) =>{
     const query = {};
     //非管理员用户只能看自己的药品
     if(userAdmin === 'false'){
-        console.log(1111);
         query.userAccount = account;
     }
     if(keyword !=''){

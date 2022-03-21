@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 10:22:20
+ * @LastEditTime: 2022-03-20 13:55:43
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -89,8 +89,6 @@ bgRouter.get('/list',async (ctx) =>{
             $lt: endDay,
         };
     }
-
-    console.log(query);
 
     //分页查询
     const list = await BloodGlucose

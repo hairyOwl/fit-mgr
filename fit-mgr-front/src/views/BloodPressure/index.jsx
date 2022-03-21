@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 10:41:13
+ * @LastEditTime: 2022-03-21 15:33:07
  */
 import {
     defineComponent , 
@@ -74,7 +74,21 @@ if(isAdmin()){
         }
     },);
 };
-
+//时间段列表
+const TimeTagList = [
+    {
+        timeTag : "早上",
+    },
+    {
+        timeTag : "中午",
+    },
+    {
+        timeTag : "下午",
+    },
+    {
+        timeTag : "晚上",
+    },
+];
 export default defineComponent({
     //组件注册
     components : {
@@ -250,6 +264,7 @@ export default defineComponent({
             updateCurBloodP,
             toDetail, //跳转详情页面
             isAdmin,
+            TimeTagList,
         }
     },
 });
