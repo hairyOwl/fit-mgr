@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 16:00:50
+ * @LastEditTime: 2022-03-21 21:10:32
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -86,6 +86,12 @@ const routes = [
         name: 'MedicineClassify ',
         component: () => import(/* webpackChunkName: "MedicineClassify" */ '../views/MedicineClassify/index.vue'),
       },
+      // 个人设置
+      {
+        path: 'profile',
+        name: 'Profile ',
+        component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile/index.vue'),
+      },
     ],
   },
   
@@ -100,7 +106,7 @@ const router = createRouter({
 //to目标页 from发起页是对象。next是函数
 router.beforeEach(async (to,from,next)=>{
   //请求数组
-  // const reqArr = []; // promise数据store.dispatch返回一个promise
+  const reqArr = []; // promise数据store.dispatch返回一个promise
 
   //获取权限列表
   if(!store.state.characterInfo.length){
@@ -108,11 +114,12 @@ router.beforeEach(async (to,from,next)=>{
   }
   //获取登录用户信息
   if(!store.state.userInfo.account){
-    await store.dispatch('getUserInfo');
+    reqArr.push(store.dispatch('getUserInfo'));
   }
-  
-  await store.dispatch('getMedicineClassify');
-  // await Promise.all(reqArr); //获取上述信息成功后执行next
+  if(!store.state.medClassify.length){
+    reqArr.push(store.dispatch('getMedicineClassify'));
+  }
+  await Promise.all(reqArr); //获取上述信息成功后执行next
   next();
 });
 

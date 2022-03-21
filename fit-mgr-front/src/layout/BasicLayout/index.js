@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 18:32:37
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 22:44:08
+ * @LastEditTime: 2022-03-21 22:14:58
  */
 import {defineComponent} from 'vue';
 import Nav from './Nav/index.vue'; //导入导航栏逻辑
@@ -18,7 +18,8 @@ export default defineComponent({
 
         //跳转登录页
         const toAuth = ({record}) =>{
-            localStorage.removeItem('_fit'); //清除当前用户token
+            // localStorage.removeItem('_fit'); //清除当前用户token 但Authorization不会变化
+            localStorage.clear(); //清除所有值
             router.push('/auth');
         }
 

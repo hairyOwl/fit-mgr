@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-18 10:34:46
+ * @LastEditTime: 2022-03-21 22:33:22
 -->
 <template>
     <div class="auth">
@@ -32,6 +32,7 @@
                     </div>
                     <div class="item">
                         <a-input 
+                            type="password"
                             size="large"  
                             placeholder="密码"
                             v-model:value = "loginForm.password"

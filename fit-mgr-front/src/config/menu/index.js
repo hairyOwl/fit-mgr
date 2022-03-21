@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 15:21:08
+ * @LastEditTime: 2022-03-21 21:10:57
  */
 // 导航栏列表
 export default[
@@ -58,5 +58,10 @@ export default[
                 onlyAdmin : true,
             },
         ],
+    },
+    {
+        title: '个人设置',
+        url : '/profile',
+        onlyAdmin : false,
     },
 ];
