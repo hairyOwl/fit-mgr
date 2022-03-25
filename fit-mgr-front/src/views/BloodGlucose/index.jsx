@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:32:20
+ * @LastEditTime: 2022-03-25 11:00:55
  */
 import {
     defineComponent , 
@@ -40,13 +40,6 @@ const columns = [
     {
         title : '备注',
         dataIndex : 'note',
-        ellipsis: true,//单元格内容根据宽度自动省略。
-    },
-    {
-        title : '操作',
-        slots :{
-            customRender:'actions',
-        }
     },
 ];
 //当用户是管理员的适合添加用户列
@@ -55,6 +48,7 @@ if(isAdmin()){
     {
         title : '用户',
         onlyAdmin : true,
+        fixed : true,
         slots :{
             customRender:'user',
         }
@@ -91,8 +85,11 @@ export default defineComponent({
         Update, //修改弹窗
         SearchOutlined, //搜索图标
     },
+    props:{
+        simple: Boolean,
+    },
     
-    setup(){
+    setup(props){
         const router = useRouter();
         //数据列表
         const show = ref(false); //添加血糖窗口点击事件 flag
@@ -105,6 +102,15 @@ export default defineComponent({
         const curEditBG = ref({});
         const {account} = store.state.userInfo;
         const userAdmin = isAdmin();
+
+        if(!props.simple){
+            columns.push(    {
+                title : '操作',
+                slots :{
+                    customRender:'actions',
+                }
+            },);
+        }
 
         //获取血糖列表
         const getList = async () =>{
@@ -202,6 +208,7 @@ export default defineComponent({
             updateCurBloodG,
             toDetail, //跳转详情页面
             isAdmin,
+            simple : props.simple, //控制在总览显示
         }
     },
 });

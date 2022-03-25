@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 16:49:28
+ * @LastEditTime: 2022-03-25 10:59:59
  */
 import {
     defineComponent , 
@@ -52,13 +52,6 @@ const columns = [
     {
         title : '备注',
         dataIndex : 'note',
-        ellipsis: true,//单元格内容根据宽度自动省略。
-    },
-    {
-        title : '操作',
-        slots :{
-            customRender:'actions',
-        }
     },
 ];
 //当用户是管理员的适合添加用户列
@@ -66,6 +59,7 @@ if(isAdmin()){
     columns.splice(0,0,
     {
         title : '用户',
+        fixed : true,
         onlyAdmin : true,
         slots :{
             customRender:'user',
@@ -80,8 +74,10 @@ export default defineComponent({
         Update, //修改弹窗
         SearchOutlined, //搜索图标
     },
-    
-    setup(){
+    props:{
+        simple : Boolean,
+    },
+    setup(props){
         const router = useRouter();
         //数据列表
         const show = ref(false); //添加药品窗口点击事件 flag
@@ -94,6 +90,15 @@ export default defineComponent({
         const curEditMedicine = ref({});
         const {account} = store.state.userInfo; //当前登录用户的账户
         const userAdmin = isAdmin(); //当前登录用户是否是管理员
+
+        if(!props.simple){
+            columns.push(    {
+                title : '操作',
+                slots :{
+                    customRender:'actions',
+                }
+            },);
+        };
         
         //获取药品列表
         const getList = async () =>{
@@ -110,7 +115,7 @@ export default defineComponent({
                     list.value = l
                     total.value = listTotal
                 });
-        }
+        };
         //当组件被挂载的时候会调用 ,当组件初始化完成放在页面上时会做的事情
         onMounted(async () =>{
             getList();
@@ -126,14 +131,14 @@ export default defineComponent({
         //根据药品关键词查询
         const onSearch = async ()=>{
             isSearch.value = !!keyword.value; //根据关键词的有无作为是否在搜索的判断
-            getUserList();
+            getList();
         };
 
         //查询结束返回
         const backAll = async ()=>{
             isSearch.value = false;
             keyword.value = '';
-            getUserList();
+            getList();
         };
 
         //删除数据
@@ -241,6 +246,7 @@ export default defineComponent({
             toDetail, //跳转详情页面
             isAdmin,
             getClassifyTitleById,
+            simple : props.simple,
         }
     },
 });

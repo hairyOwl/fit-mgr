@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 21:10:32
+ * @LastEditTime: 2022-03-25 10:02:37
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -20,6 +20,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "BasicLayout" */ '../layout/BasicLayout/index.vue'),
     //孩子路由
     children : [
+      //总览信息
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard/index.vue'),
+      },
       //血压信息
       {
         path: 'blood-pressure',

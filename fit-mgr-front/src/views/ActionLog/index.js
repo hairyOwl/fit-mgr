@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 22:18:05
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 21:33:10
+ * @LastEditTime: 2022-03-24 22:56:33
  */
 import { defineComponent , ref ,onMounted } from 'vue';
 import { actionLog } from '@/service';
@@ -30,22 +30,31 @@ const columns = [
             customRender : 'createdAt',
         },
     },
-    {
-        title:'操作',
-        slots : {
-            customRender : 'actions',
-        },
-    },
+
 
 ];
 
 export default defineComponent({
-    setup(){
+    props:{
+        simple : Boolean,
+    },
+
+    setup(props){
         const pageSize = 20; //页面大小
         const curPage = ref(1); //当前页
         const total = ref(0); //所有
         const list = ref([]); //列表
         const loading = ref(true); //加载flag
+
+        if(!props.simple){
+            columns.push(    {
+                title:'操作',
+                slots : {
+                    customRender : 'actions',
+                },
+            },);
+        }
+
 
         // 获取日志列表
         const getList = async ()=>{
@@ -99,6 +108,7 @@ export default defineComponent({
             loading, //刷新flag
             formatTimestampPlus, 
             deleteActionLog, //删除日志
+            simple : props.simple,
         }
     },
 });

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:33:07
+ * @LastEditTime: 2022-03-25 11:11:12
  */
 import {
     defineComponent , 
@@ -24,7 +24,6 @@ import store from '@/store'; //vuex
 const columns = [
     {
         title : '日期',
-        // dataIndex : 'recordDate',
         slots :{
             customRender:'recordDate',
         }
@@ -46,21 +45,8 @@ const columns = [
         dataIndex : 'pul',
     },
     {
-        title : '计数',
-        slots : {
-            customRender : 'count',
-        },
-    },
-    {
         title : '备注',
         dataIndex : 'note',
-        ellipsis: true,//单元格内容根据宽度自动省略。
-    },
-    {
-        title : '操作',
-        slots :{
-            customRender:'actions',
-        }
     },
 ];
 //当用户是管理员的适合添加用户列
@@ -69,6 +55,7 @@ if(isAdmin()){
     {
         title : '用户',
         onlyAdmin : true,
+        fixed : true,
         slots :{
             customRender:'user',
         }
@@ -96,8 +83,10 @@ export default defineComponent({
         Update, //修改弹窗
         SearchOutlined, //搜索图标
     },
-    
-    setup(){
+    props:{
+        simple : Boolean,
+    },
+    setup(props){
         const router = useRouter();
         //数据列表
         const show = ref(false); //添加血压窗口点击事件 flag
@@ -111,6 +100,15 @@ export default defineComponent({
         const {account} = store.state.userInfo;
         const userAdmin = isAdmin();
 
+        //总览不显示操作列
+        if(!props.simple){
+            columns.push({
+                title : '操作',
+                slots :{
+                    customRender:'actions',
+                }
+            },);
+        }
         //获取血压列表
         const getList = async () =>{
             const res = await bloodPressure.list(
@@ -128,8 +126,6 @@ export default defineComponent({
                     total.value = listTotal
                 });
         }
-
-        
 
         //当组件被挂载的时候会调用 ,当组件初始化完成放在页面上时会做的事情
         onMounted(async () =>{
@@ -178,53 +174,6 @@ export default defineComponent({
                 });
         };
 
-        //计数变更数量弹窗
-        const updateCount = (type ,record) =>{
-            let word = '减少';
-            if(type === 'ADD_COUNT'){
-                word = '增加';
-            }
-            
-            Modal.confirm({ //确认框
-                title : `要${word}多少`,
-                //虚拟dom树上的虚拟节点
-                content : ( //vue中插件把jsx中的这段代码编译成 createVNode的格式
-                    <div>
-                        <Input class="__bloodP_input_count"/>
-                    </div>
-                ), 
-                //点击确认
-                onOk : async()=>{
-                    const el = document.querySelector('.__bloodP_input_count');
-                    let num = el.value;
-                    const res = await bloodPressure.updateCount({
-                        id : record._id,
-                        type,
-                        num,
-                    });
-                    result(res)
-                        .success((data)=>{
-                            //找到了文档
-                            if( type === 'ADD_COUNT' ){ //加
-                                num = Math.abs(num); //绝对值
-                            }else{ //出库
-                                num = -Math.abs(num);
-                            }
-                            const one = list.value.find((item)=>{ //find返回数据，findIndex返回下标
-                                return item._id === record._id;
-                            });
-                            
-                            if(one){
-                                one.count = one.count + num;
-                                message.success(`成功${word} ${Math.abs(num)}`);
-                            }
-
-                            
-                        })
-                },
-            });
-        };
-        
         //修改血压信息
         const updateOne = ({ record }) =>{
             showUpdateModal.value = true;
@@ -258,13 +207,13 @@ export default defineComponent({
             onChange,
             //数据修改
             deleteOne, //删除
-            updateCount, //修改计数
             updateOne, //修改
             curEditBP, //要修改的那条
             updateCurBloodP,
             toDetail, //跳转详情页面
             isAdmin,
             TimeTagList,
+            simple : props.simple, //组件显示部分设置
         }
     },
 });

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 13:55:55
+ * @LastEditTime: 2022-03-24 18:15:48
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -84,7 +84,7 @@ medicineRouter.get('/list',async (ctx) =>{
         query.userAccount = account;
     }
     if(keyword !=''){
-        query.account =keyword;
+        query.name =keyword;
     }
 
     //分页查询

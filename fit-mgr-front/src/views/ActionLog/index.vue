@@ -3,39 +3,43 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 22:17:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 21:10:10
+ * @LastEditTime: 2022-03-25 11:17:53
 -->
 <template>
     <div>
         <!-- 加载器 -->
         <a-spin :spinning= "loading">
             <!-- 卡片 -->
-            <a-card>
-                <!-- 标题 -->
-                <h2>操作日志</h2>
-                <!-- 分割线 -->
-                <a-divider />
-                <!-- 操作表格 -->
+            <a-card :title="simple ? '最近添加的日志' : ''">
+                <div v-if="!simple">
+                    <!-- 标题 -->
+                    <h2>操作日志</h2>
+                    <!-- 分割线 -->
+                    <a-divider />
+                </div>
+
+                <!-- 日志表格 -->
                 <div>
                     <a-table
-                        bordered
+                        bordered 
                         :columns = "columns"
                         :data-source = "list"
                         :pagination="false"
+                        :scroll="{ x:'100%'}"
                     >
                     <!-- 时间插槽 -->
                     <template #createdAt = "{ record }">
                         {{ formatTimestampPlus(record.meta.createdAt) }}
                     </template>
                     <!-- 操作插槽 -->
-                    <template #actions = "{ record }">
+                    <template v-if="!simple" #actions = "{ record }">
                         <a href="javascript:;" @click="deleteActionLog(record)">删除</a>
                     </template>
                     </a-table>
                 </div>
                 <!-- 分页 -->
                 <div>
-                    <flex-end>
+                    <flex-end v-if="!simple">
                         <a-pagination style="margin-top:24px;"
                             v-model:current="curPage"
                             :pageSize = "pageSize"

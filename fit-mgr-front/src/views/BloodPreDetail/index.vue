@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:44
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 21:43:50
+ * @LastEditTime: 2022-03-24 17:14:20
 -->
 <template>
     <div>
@@ -47,6 +47,7 @@
                         <div class="title">备注</div>
                         <div class="content">{{ d.note }}</div>
                     </div>
+                    <div class="item"></div>
                 </div>
             </div>
         </a-card>

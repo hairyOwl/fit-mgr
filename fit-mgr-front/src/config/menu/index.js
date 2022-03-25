@@ -3,10 +3,15 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 21:10:57
+ * @LastEditTime: 2022-03-22 22:47:43
  */
 // 导航栏列表
 export default[
+    {
+        title: '总览',
+        url : '/dashboard',
+        onlyAdmin : true,
+    },
     {
         // 一级导航
         title: '健康记录',
