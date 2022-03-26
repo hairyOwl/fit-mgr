@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-10 22:37:37
+ * @LastEditTime: 2022-03-26 21:23:41
  */
 import { defineComponent ,onMounted,ref, reactive } from 'vue';
 import { user } from '@/service';
@@ -119,7 +119,8 @@ export default defineComponent({
             editFrom.character = record.character;
             showEditCharacterModal.value = true;
         };
-
+        
+        //编辑用户角色
         const editCharacter = async ( ) =>{
             const res = await user.updateCharacter(editFrom.current._id , editFrom.character);
             result(res)
@@ -128,6 +129,19 @@ export default defineComponent({
                     showEditCharacterModal.value = false;
                     editFrom.current.character = editFrom.character;
                 });
+        }
+
+        //上传状态发生变化  e : file.response.target就是响应返回内容
+        const onUploadChange = ({ file })=>{
+            //上传完成后
+            if(file.response){
+                result(file.response)
+                    .success(async ( key)=>{
+                        const res = await user.addUserMany(key);
+                        message.success(res.data.msg);
+                        getUserList();
+                    });
+            }
         }
 
         return{
@@ -156,6 +170,8 @@ export default defineComponent({
             onEdit,
             characterInfo : store.state.characterInfo,
             editCharacter,
+            //上传
+            onUploadChange,
         };
     },
 });

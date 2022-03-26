@@ -3,11 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-03-20 10:00:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 22:51:59
+ * @LastEditTime: 2022-03-25 21:14:14
  */
 const mongoose = require('mongoose');
 const Router = require('@koa/router');
-const { on } = require('koa');
 
 const MedicineClassify = mongoose.model('MedicineClassify');
 

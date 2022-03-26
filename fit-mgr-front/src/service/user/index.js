@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 11:05:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-11 22:04:48
+ * @LastEditTime: 2022-03-26 20:51:40
  */
 import axios from 'axios';
 
@@ -32,6 +32,13 @@ export const addUser = (account , password ,character) =>{
         account,
         password,
         character,
+    });
+};
+
+//添加多个用户
+export const addUserMany = (fileKey) =>{
+    return axios.post('http://localhost:3000/user/add/many',{
+        fileKey,
     });
 };
 

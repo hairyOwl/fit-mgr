@@ -3,12 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 10:02:28
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 09:48:39
+ * @LastEditTime: 2022-03-26 21:28:04
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
 const config = require('../../project.config'); //默认配置
 const { verifyToken , getToken } = require('../../helpers/token'); //jwt解析
+const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
 
 const User = mongoose.model('User');
 const Character = mongoose.model('Character'); //权限表
@@ -82,7 +83,7 @@ userRouter.delete('/:id',async (ctx)=>{
 });
 
 //添加用户
-userRouter.post('/add',async(ctx)=>{
+userRouter.post('/add',async (ctx)=>{
     const {
         account,
         password,
@@ -143,6 +144,45 @@ userRouter.post('/add',async(ctx)=>{
         data: res,
     };
 
+});
+
+//批量添加
+userRouter.post('/add/many', async (ctx)=>{
+    const {
+        fileKey = '',
+    } = ctx.request.body;
+    
+    //获取硬盘上的路径
+    const path = `${config.UPLOAD_DIR}/${fileKey}`;
+
+    //解析excel
+    const excel = loadExcel(path);
+    const sheet = getFirstSheet(excel);
+
+    //获取角色表中的成员
+    const character = await Character.find().exec();
+    const member = character.find((item) => item.name === 'member');
+    
+    //解析到的用户数据重组为数组
+    const arr = [];
+    sheet.forEach((record) => {
+        //每一行数据 第一列是账户 第二列是密码没有时设置默认密码
+        const [account , password = config.DEFAULT_PASSWORD] = record; 
+        
+        arr.push({
+            account,
+            password,
+            character: member._id,
+        });
+    });
+
+    //用户字典存入数据库
+    await User.insertMany(arr);
+
+    ctx.body = {
+        code : 1,
+        msg : '成功添加多条用户信息',
+    }
 });
 
 //重置为默认密码
@@ -224,7 +264,7 @@ userRouter.post('/update/character' , async (ctx)=>{
 });
 
 //通过token换取用户信息
-userRouter.get('/info',async(ctx)=>{
+userRouter.get('/info',async (ctx)=>{
     //Authorization : Bearer de^*huwihduiedds123123  需要去掉'Bearer '
     ctx.body={
         code : 1,
@@ -232,5 +272,6 @@ userRouter.get('/info',async(ctx)=>{
         data : await verifyToken(getToken(ctx)),
     };
 });
+
 
 module.exports = userRouter;

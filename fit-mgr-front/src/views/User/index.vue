@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:33
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-14 22:33:03
+ * @LastEditTime: 2022-03-26 20:42:38
 -->
 <template>
     <div>
@@ -24,7 +24,16 @@
                     <a v-if="isSearch" href="javascript:;" @click="backAll">返回</a>
                 </div>
 
-                <a-button @click="showAddModel=true">添加用户</a-button>
+                <div>
+                    <a-button @click="showAddModel=true">添加用户</a-button>&nbsp;
+                    <!-- 文件上传 -->
+                    <a-upload
+                        @change="onUploadChange"
+                        action="http://localhost:3000/upload/file"
+                    >
+                        <a-button @click="upload" type="primary">上传 Excel添加</a-button>
+                    </a-upload>
+                </div>
             </space-between>
             <!-- 分割线 -->
             <a-divider />

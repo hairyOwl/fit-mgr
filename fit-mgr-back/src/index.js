@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-22 22:41:02
+ * @LastEditTime: 2022-03-25 22:26:35
  */
 //每个文件都是一个模块 
 //导入依赖
@@ -21,10 +21,15 @@ const app = new Koa(); //实列化一个koa对象
 //数据库连接成功后再进行请求处理
 connect().then(()=>{
     //执行函数 中间件
-    app.use(koaBody()); //body请求头 页面数据
+    app.use(koaBody({
+        multipart : true, //开启支持文件上传
+        formidable : { //文件大小阈值
+            maxFileSize : 200 * 1024 * 1024, //200M
+        }
+    })); //body请求头 页面数据
     app.use(cors()); //跨域
-    app.use(catchTokenError); //自定义koaJwt报错
-    koaJwtMiddleware(app);//校验token合法性
+    // app.use(catchTokenError); //自定义koaJwt报错
+    // koaJwtMiddleware(app);//校验token合法性
     app.use(actionLogMiddleware);//操作日志 中间件
     
     //注册路由
