@@ -3,18 +3,15 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 13:55:34
+ * @LastEditTime: 2022-03-27 21:44:10
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
 const { getBody,formatTimestamp } = require('../../helpers/utils');
+const config = require('../../project.config'); //默认配置
+const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
 
-//常量
-const BP_CONST = {
-    ADD: 'ADD_COUNT',
-    SUB : 'SUB_COUNT',
-};
 
 //拿到model
 const BloodPressure = mongoose.model('BloodPressure');
@@ -42,7 +39,6 @@ bpRouter.post('/add',async (ctx)=>{
         sys,
         dia,
         pul,
-        count,
         recordDate,
         timeTag,
         note,
@@ -54,7 +50,7 @@ bpRouter.post('/add',async (ctx)=>{
         sys,
         dia,
         pul,
-        count,
+        
         recordDate,
         timeTag,
         note,
@@ -67,6 +63,61 @@ bpRouter.post('/add',async (ctx)=>{
         msg : '添加血压信息成功',
         data : res,
     };
+});
+
+//批量添加
+bpRouter.post('/add/many', async (ctx)=>{
+    const {
+        fileKey = '',
+        userAccount,
+    } = ctx.request.body;
+
+    //获取硬盘上的路径
+    const path = `${config.UPLOAD_DIR}/${fileKey}`;
+
+    //解析excel
+    const excel = loadExcel(path);
+    const sheet = getFirstSheet(excel);
+
+    //解析到的用户数据重组为数组
+    const arr = [];    
+    for(let i=1 ; i<sheet.length ; i++){
+         //每一行数据 封装为对象 
+        const [
+            recordDate,
+            timeTag,
+            sys,
+            dia,
+            pul,
+            note,
+        ] = sheet[i]; 
+        
+        //把时间字符串转为时间戳
+        let rDate = recordDate;
+        //purchaseDate 2022-03-16T15:59:17.000Z
+        rDate = (new Date(rDate)).getTime();
+    
+        arr.push({
+            userAccount,
+            recordDate,
+            timeTag,
+            sys,
+            dia,
+            pul,
+            note,
+        });
+    }
+
+    //用户字典存入数据库
+    await BloodPressure.insertMany(arr);
+
+    ctx.body = {
+        code : 1,
+        msg : '成功添加多条血压信息',
+        data : {
+            addCount : arr.length,
+        }
+    }
 });
 
 //获取列表接口 分页列表
@@ -147,64 +198,6 @@ bpRouter.delete('/:id',async(ctx)=>{
         code : 1,
         msg : '删除成功',
         data : delMsg,
-    };
-});
-
-//修改计数 添加记录日志
-bpRouter.post('/update/count' ,async (ctx) =>{
-    const{
-        id,
-        type, //增加还是减少
-    } = ctx.request.body;
-
-    let{
-        num, //要修改的数量
-    }= ctx.request.body;
-    num = Number(num);
-
-
-    //找到要修改的文档
-    const bloodP = await findBloodPOne(id);
-
-    if(!bloodP){
-        ctx.body = {
-            code : 0,
-            msg : '没有找到要修改的数据',
-            data : null,
-        }
-        return;
-    }
-    //找到了文档
-    if( type === BP_CONST.ADD ){ //加
-        num = Math.abs(num); //绝对值
-    }else{ //出库
-        num = -Math.abs(num);
-    }
-
-    bloodP.count = bloodP.count + num ;
-    if( bloodP.count < 0 ){
-        ctx.body = {
-            code : 0,
-            msg : '减少的数大于现存',
-            data : null,
-        };
-        return;
-    }
-
-    const res= await bloodP.save(); //更新数据
-
-    // 添加日志记录
-    const log = new InventoryLog({
-        dataId : bloodP._id,
-        type,
-        num: Math.abs(num),
-    });
-    log.save(); //异步  event-loop
-    
-    ctx.body = {
-        code : 1,
-        msg : '更新计数成功',
-        data : res,
     };
 });
 

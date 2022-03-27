@@ -3,12 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 13:55:43
+ * @LastEditTime: 2022-03-27 21:40:20
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
 const { getBody,formatTimestamp } = require('../../helpers/utils');
+const config = require('../../project.config'); //默认配置
+const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
 
 //拿到model
 const BloodGlucose = mongoose.model('BloodGlucose');
@@ -54,6 +56,57 @@ bgRouter.post('/add',async (ctx)=>{
         msg : '添加血糖信息成功',
         data : res,
     };
+});
+
+//批量添加
+bgRouter.post('/add/many', async (ctx)=>{
+    const {
+        fileKey = '',
+        userAccount,
+    } = ctx.request.body;
+
+    //获取硬盘上的路径
+    const path = `${config.UPLOAD_DIR}/${fileKey}`;
+
+    //解析excel
+    const excel = loadExcel(path);
+    const sheet = getFirstSheet(excel);
+
+    //解析到的用户数据重组为数组
+    const arr = [];    
+    for(let i=1 ; i<sheet.length ; i++){
+         //每一行数据 封装为对象 
+        const [
+            recordDate,
+            timeTag,
+            glucose,
+            note,
+        ] = sheet[i]; 
+        
+        //把时间字符串转为时间戳
+        let rDate = recordDate;
+        //purchaseDate 2022-03-16T15:59:17.000Z
+        rDate = (new Date(rDate)).getTime();
+    
+        arr.push({
+            userAccount,
+            recordDate,
+            timeTag,
+            glucose,
+            note,
+        });
+    }
+
+    //用户字典存入数据库
+    await BloodGlucose.insertMany(arr);
+
+    ctx.body = {
+        code : 1,
+        msg : '成功添加多条血糖信息',
+        data : {
+            addCount : arr.length,
+        }
+    }
 });
 
 //获取列表接口 分页列表

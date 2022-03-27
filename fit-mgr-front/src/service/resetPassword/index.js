@@ -3,10 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-03-15 21:14:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-16 09:25:55
+ * @LastEditTime: 2022-03-27 20:15:28
  */
 import axios from 'axios';
+import {getToken} from '@/helpers/token';
 
+//统一为请求添加headers
+axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 // 获取列表
 export const list = (page ,size)=>{
     return axios.get('http://localhost:3000/reset-password/list',{

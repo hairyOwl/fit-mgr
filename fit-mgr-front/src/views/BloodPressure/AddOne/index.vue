@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:36:05
+ * @LastEditTime: 2022-03-27 09:51:57
 -->
 <!-- 添加血压弹窗模板 -->
 <template>
@@ -37,11 +37,6 @@
                     <a-input-number 
                         v-model:value="addForm.pul"
                         :min="0" :max="200" />
-                </a-form-item>
-                <a-form-item label="计数">
-                    <a-input-number 
-                        v-model:value="addForm.count"
-                        :min="0" :max="50" />
                 </a-form-item>
                 <a-form-item label="日期">
                     <a-date-picker 

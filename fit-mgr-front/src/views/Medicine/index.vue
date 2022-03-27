@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 11:12:50
+ * @LastEditTime: 2022-03-27 21:31:52
 -->
 <!-- 药品信息模板 -->
 <template>
@@ -28,11 +28,19 @@
 
                         <a v-if="isSearch" href="javascript:;" @click="backAll">返回</a>
                     </div>
-                    <a-button 
-                        @click="show = true"
-                    >
-                        添加一条
-                    </a-button>
+
+                    <!-- 添加按钮 -->
+                    <div >
+                        <a-button @click="show = true">添加一条</a-button>&nbsp;
+                        <!-- 文件上传 -->
+                        <a-upload v-only-member
+                            @change="onUploadChange"
+                            action="http://localhost:3000/upload/file"
+                            :headers = "headers"
+                        >
+                            <a-button type="primary">上传 Excel添加</a-button>
+                        </a-upload>
+                    </div>
                 </space-between>
                 <!-- 分割线 -->
                 <a-divider/> 

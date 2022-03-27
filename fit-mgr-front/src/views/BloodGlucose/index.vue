@@ -28,11 +28,19 @@
                             </template>
                         </a-range-picker>
                     </div>
-                    <a-button 
-                        @click="show = true"
-                    >
-                        添加一条
-                    </a-button>
+                    
+                    <!-- 添加按钮 -->
+                    <div >
+                        <a-button @click="show = true">添加一条</a-button>&nbsp;
+                        <!-- 文件上传 -->
+                        <a-upload v-only-member
+                            @change="onUploadChange"
+                            action="http://localhost:3000/upload/file"
+                            :headers = "headers"
+                        >
+                            <a-button type="primary">上传 Excel添加</a-button>
+                        </a-upload>
+                    </div>
                 </space-between>
                 <!-- 分割线 -->
                 <a-divider/> 

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 10:02:28
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-26 21:28:04
+ * @LastEditTime: 2022-03-27 18:45:41
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
@@ -165,16 +165,23 @@ userRouter.post('/add/many', async (ctx)=>{
     
     //解析到的用户数据重组为数组
     const arr = [];
-    sheet.forEach((record) => {
-        //每一行数据 第一列是账户 第二列是密码没有时设置默认密码
-        const [account , password = config.DEFAULT_PASSWORD] = record; 
+    for(let i=1 ; i<sheet.length ; i++){
+         //每一行数据 第一列是账户 第二列是密码没有时设置默认密码
+        const [account , password = config.DEFAULT_PASSWORD] = sheet[i]; 
         
+        //判断无重复用户名
+        const one = await User.findOne({
+            account,
+        });
+        if(one){
+            continue; //重复跳入下一次循环
+        };
         arr.push({
             account,
             password,
             character: member._id,
         });
-    });
+    }
 
     //用户字典存入数据库
     await User.insertMany(arr);
@@ -182,6 +189,9 @@ userRouter.post('/add/many', async (ctx)=>{
     ctx.body = {
         code : 1,
         msg : '成功添加多条用户信息',
+        data : {
+            addCount : arr.length,
+        }
     }
 });
 

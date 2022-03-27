@@ -3,14 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-03-22 22:44:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-24 22:52:44
+ * @LastEditTime: 2022-03-27 16:03:28
  */
 import { defineComponent , ref, onMounted } from 'vue';
 import { dashboard } from '@/service';
 import { result } from '@/helpers/utils'
 import bloodP from '@/views/BloodPressure/index.vue'
 import bloodG from '@/views/BloodGlucose/index.vue'
-import medicine from '@/views/MedicineInventory/index.vue'
+import medicine from '@/views/Medicine/index.vue'
 import actionLog from '@/views/ActionLog/index.vue'
 
 export default defineComponent({

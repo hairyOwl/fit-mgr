@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 22:26:35
+ * @LastEditTime: 2022-03-27 20:00:55
  */
 //每个文件都是一个模块 
 //导入依赖
@@ -28,8 +28,8 @@ connect().then(()=>{
         }
     })); //body请求头 页面数据
     app.use(cors()); //跨域
-    // app.use(catchTokenError); //自定义koaJwt报错
-    // koaJwtMiddleware(app);//校验token合法性
+    app.use(catchTokenError); //自定义koaJwt报错
+    koaJwtMiddleware(app);//校验token合法性
     app.use(actionLogMiddleware);//操作日志 中间件
     
     //注册路由

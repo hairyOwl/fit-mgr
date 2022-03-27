@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-26 21:23:41
+ * @LastEditTime: 2022-03-27 20:26:22
  */
 import { defineComponent ,onMounted,ref, reactive } from 'vue';
 import { user } from '@/service';
@@ -12,7 +12,9 @@ import { message } from 'ant-design-vue'; //antd提示
 import { EditOutlined } from '@ant-design/icons-vue';
 import AddOne from './AddOne/index.vue'; //添加弹窗
 import { getCharacterInfoById } from '@/helpers/character';
+import { getHeaders } from '@/helpers/request';
 import store from '@/store';
+
 
 const columns = [
     {
@@ -138,11 +140,16 @@ export default defineComponent({
                 result(file.response)
                     .success(async ( key)=>{
                         const res = await user.addUserMany(key);
-                        message.success(res.data.msg);
-                        getUserList();
+                        
+                        result(res)
+                            .success(({ data : {addCount} })=>{
+                                message.success(`成功添加 ${addCount} 个用户`);
+
+                                getUserList();
+                            });
                     });
             }
-        }
+        };
 
         return{
             //表头
@@ -172,6 +179,7 @@ export default defineComponent({
             editCharacter,
             //上传
             onUploadChange,
+            headers : getHeaders(),
         };
     },
 });

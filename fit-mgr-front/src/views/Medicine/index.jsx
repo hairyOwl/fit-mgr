@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 10:59:59
+ * @LastEditTime: 2022-03-27 20:29:25
  */
 import {
     defineComponent , 
@@ -19,6 +19,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 import { result , formatTimestamp } from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
 import { getClassifyTitleById } from '@/helpers/medicine-classify';
+import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
 
 //列表配置项
@@ -92,7 +93,7 @@ export default defineComponent({
         const userAdmin = isAdmin(); //当前登录用户是否是管理员
 
         if(!props.simple){
-            columns.push(    {
+            columns.splice(   7,8, {
                 title : '操作',
                 slots :{
                     customRender:'actions',
@@ -215,7 +216,25 @@ export default defineComponent({
 
         //跳转详情页面
         const toDetail = ({record}) =>{
-            router.push(`/medicine-inventory/${record._id}`);
+            router.push(`/medicine/${record._id}`);
+        }
+
+        //excel 添加药剂信息
+        //上传状态发生变化  e : file.response.target就是响应返回内容
+        const onUploadChange = ({ file })=>{
+            //上传完成后
+            if(file.response){
+                result(file.response)
+                    .success(async ( key)=>{
+                        const res = await medicine.addMany(key , account);
+                        result(res)
+                            .success(({ data : {addCount} })=>{
+                                message.success(`成功添加 ${addCount} 个药剂信息`);
+
+                                getList();
+                            });
+                    });
+            }
         }
 
         return{
@@ -247,6 +266,8 @@ export default defineComponent({
             isAdmin,
             getClassifyTitleById,
             simple : props.simple,
+            onUploadChange,
+            headers : getHeaders(),
         }
     },
 });

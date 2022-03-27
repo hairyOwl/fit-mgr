@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:33
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-26 20:42:38
+ * @LastEditTime: 2022-03-27 20:21:57
 -->
 <template>
     <div>
@@ -30,8 +30,9 @@
                     <a-upload
                         @change="onUploadChange"
                         action="http://localhost:3000/upload/file"
+                        :headers = "headers"
                     >
-                        <a-button @click="upload" type="primary">上传 Excel添加</a-button>
+                        <a-button type="primary">上传 Excel添加</a-button>
                     </a-upload>
                 </div>
             </space-between>

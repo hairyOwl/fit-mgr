@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 10:02:37
+ * @LastEditTime: 2022-03-27 16:06:43
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import store from '../store';
@@ -52,13 +52,13 @@ const routes = [
       },
       //药品信息
       {
-        path: 'medicine-inventory',
-        name: 'MedicineInventory',
-        component: () => import(/* webpackChunkName: "Medicine" */ '../views/MedicineInventory/index.vue'),
+        path: 'medicine',
+        name: 'Medicine',
+        component: () => import(/* webpackChunkName: "Medicine" */ '../views/Medicine/index.vue'),
       },
-      //血糖详情
+      //药品详情
       {
-        path: 'medicine-inventory/:id',
+        path: 'medicine/:id',
         name: 'MedicineInvDetail ',
         component: () => import(/* webpackChunkName: "MedicineInvDetail" */ '../views/MedicineInvDetail/index.vue'),
       },

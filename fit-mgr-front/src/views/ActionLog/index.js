@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 22:18:05
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-24 22:56:33
+ * @LastEditTime: 2022-03-27 10:01:32
  */
 import { defineComponent , ref ,onMounted } from 'vue';
 import { actionLog } from '@/service';
@@ -47,7 +47,7 @@ export default defineComponent({
         const loading = ref(true); //加载flag
 
         if(!props.simple){
-            columns.push(    {
+            columns.splice(5,6,{
                 title:'操作',
                 slots : {
                     customRender : 'actions',

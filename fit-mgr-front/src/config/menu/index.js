@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-22 22:47:43
+ * @LastEditTime: 2022-03-27 16:06:16
  */
 // 导航栏列表
 export default[
@@ -29,7 +29,7 @@ export default[
             },
             {
                 title: '药品与试剂存量管理',
-                url : '/medicine-inventory',
+                url : '/medicine',
                 onlyAdmin : false,
             },
         ],

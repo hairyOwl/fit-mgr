@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:52
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:20:18
+ * @LastEditTime: 2022-03-27 16:04:34
  */
 import { 
     defineComponent,
@@ -15,7 +15,7 @@ import { medicine , inventoryLog} from '@/service';
 import { result , formatTimestamp ,formatTimestampPlus} from '@/helpers/utils';
 import { message } from 'ant-design-vue';
 import { CheckOutlined } from '@ant-design/icons-vue';
-import Update from '@/views/MedicineInventory/Update/index.vue'; //编辑模块
+import Update from '@/views/Medicine/Update/index.vue'; //编辑模块
 
 //日志表头
 const logColumns = [
@@ -68,11 +68,11 @@ export default defineComponent({
             result(res)
                 .success(({msg})=>{
                     message.success(msg);
-                    router.replace('/medicine-inventory'); //回到之前
+                    router.replace('/medicine'); //回到之前
                 });
         };
         const goToPre = async ()=>{
-            router.replace('/medicine-inventory'); //回到之前
+            router.replace('/medicine'); //回到之前
         };
         //编辑方法
         const updateDetail = async(medicine)=>{

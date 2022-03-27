@@ -3,12 +3,15 @@
  * @Author: hairyOwl
  * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-24 18:15:48
+ * @LastEditTime: 2022-03-27 21:27:11
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
 const { getBody,formatTimestamp } = require('../../helpers/utils');
+const config = require('../../project.config'); //默认配置
+const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
+
 
 //常量
 const MEDICINE_CONST = {
@@ -18,6 +21,7 @@ const MEDICINE_CONST = {
 
 //拿到model
 const Medicine = mongoose.model('Medicine');
+const MedicineClassify = mongoose.model('MedicineClassify');
 const InventoryLog = mongoose.model('InventoryLog'); 
 
 //抽取通过id找单条文档的方法
@@ -40,10 +44,10 @@ medicineRouter.post('/add',async (ctx)=>{
     const {
         userAccount,
         name,
+        tag,
         purchaseDate,
         shelfLife,
         count,
-        tag,
         note,
     } =getBody(ctx);
 
@@ -51,10 +55,10 @@ medicineRouter.post('/add',async (ctx)=>{
     const medicine = new Medicine({
         userAccount,
         name,
+        tag,
         purchaseDate,
         shelfLife,
         count,
-        tag,
         note,
     });
 
@@ -65,6 +69,70 @@ medicineRouter.post('/add',async (ctx)=>{
         msg : '添加药品信息成功',
         data : res,
     };
+});
+
+//批量添加
+medicineRouter.post('/add/many', async (ctx)=>{
+    const {
+        fileKey = '',
+        userAccount,
+    } = ctx.request.body;
+
+    //获取硬盘上的路径
+    const path = `${config.UPLOAD_DIR}/${fileKey}`;
+
+    //解析excel
+    const excel = loadExcel(path);
+    const sheet = getFirstSheet(excel);
+
+    //解析到的用户数据重组为数组
+    const arr = [];    
+    for(let i=1 ; i<sheet.length ; i++){
+         //每一行数据 封装为对象 
+        const [
+            name,
+            tag,
+            purchaseDate,
+            shelfLife,
+            count,
+            note,
+        ] = sheet[i]; 
+        
+        //把时间字符串转为时间戳
+        let pDate = purchaseDate;
+        //purchaseDate 2022-03-16T15:59:17.000Z
+        pDate = (new Date(pDate)).getTime();
+    
+        //因为excel中药品种类是名字数据库需要种类id
+        let tangId = tag;
+        const one = await MedicineClassify.findOne({
+            title : tag,
+        }).exec();
+        if(one){
+            tangId =  one._id;
+        }
+
+        arr.push({
+            userAccount,
+            name,
+            tag : tangId,
+            purchaseDate : pDate,
+            shelfLife,
+            count,
+            note,
+        });
+    }
+
+    //用户字典存入数据库
+    await Medicine.insertMany(arr);
+
+    ctx.body = {
+        code : 1,
+        msg : '成功添加多条药剂信息',
+        data : {
+            addCount : arr.length,
+        }
+    }
 });
 
 //获取列表接口 分页列表
@@ -91,7 +159,7 @@ medicineRouter.get('/list',async (ctx) =>{
     const list = await Medicine
         .find(query)
         .sort({
-            _id:-1, //倒序排放
+            purchaseDate:-1, //倒序排放
         })
         .skip((page - 1) * size) //跳过目标页之前的的文档
         .limit(size) //查几条

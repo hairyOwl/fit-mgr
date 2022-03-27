@@ -3,9 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 11:05:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-26 20:51:40
+ * @LastEditTime: 2022-03-27 20:15:33
  */
 import axios from 'axios';
+import {getToken} from '@/helpers/token';
+
+//统一为请求添加headers
+axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 
 //用户列表
 export const list = (page ,size ,keyword)=>{

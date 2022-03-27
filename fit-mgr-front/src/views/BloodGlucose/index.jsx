@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 11:00:55
+ * @LastEditTime: 2022-03-27 21:45:20
  */
 import {
     defineComponent , 
@@ -18,6 +18,7 @@ import { message , Modal ,Input} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { result , formatTimestamp } from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
+import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
 
 //列表配置项
@@ -104,7 +105,7 @@ export default defineComponent({
         const userAdmin = isAdmin();
 
         if(!props.simple){
-            columns.push(    {
+            columns.splice(6,7,    {
                 title : '操作',
                 slots :{
                     customRender:'actions',
@@ -180,10 +181,30 @@ export default defineComponent({
         const updateCurBloodG = (newData) =>{
             Object.assign(curEditBG.value , newData);
         };
+
         //跳转详情页面
         const toDetail = ({record}) =>{
             router.push(`/blood-glucose/${record._id}`);
         }
+
+        //excel 添加血糖信息
+        //上传状态发生变化  e : file.response.target就是响应返回内容
+        const onUploadChange = ({ file })=>{
+            //上传完成后
+            if(file.response){
+                result(file.response)
+                    .success(async ( key)=>{
+                        const res = await bloodGlucose.addMany(key , account);
+                        result(res)
+                            .success(({ data : {addCount} })=>{
+                                message.success(`成功添加 ${addCount} 个血糖信息`);
+
+                                getList();
+                            });
+                    });
+            }
+        }
+
 
         return{
             //弹窗点击事件flag
@@ -209,6 +230,8 @@ export default defineComponent({
             toDetail, //跳转详情页面
             isAdmin,
             simple : props.simple, //控制在总览显示
+            onUploadChange,
+            headers : getHeaders(),
         }
     },
 });

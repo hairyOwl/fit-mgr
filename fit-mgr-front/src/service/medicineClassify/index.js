@@ -3,9 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-03-20 15:48:37
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-20 22:31:15
+ * @LastEditTime: 2022-03-27 20:15:13
  */
 import axios from 'axios';
+import {getToken} from '@/helpers/token';
+
+//统一为请求添加headers
+axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 //列表查询
 export const list = ()=>{
     return axios.get('http://localhost:3000/medicine-classify/list');

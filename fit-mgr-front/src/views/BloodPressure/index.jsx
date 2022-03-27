@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 11:11:12
+ * @LastEditTime: 2022-03-27 21:50:46
  */
 import {
     defineComponent , 
@@ -18,6 +18,7 @@ import { message , Modal ,Input} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { result , formatTimestamp } from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
+import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
 
 //列表配置项
@@ -102,7 +103,7 @@ export default defineComponent({
 
         //总览不显示操作列
         if(!props.simple){
-            columns.push({
+            columns.splice(7,8,{
                 title : '操作',
                 slots :{
                     customRender:'actions',
@@ -125,7 +126,7 @@ export default defineComponent({
                     list.value = l
                     total.value = listTotal
                 });
-        }
+        };
 
         //当组件被挂载的时候会调用 ,当组件初始化完成放在页面上时会做的事情
         onMounted(async () =>{
@@ -185,10 +186,30 @@ export default defineComponent({
         const updateCurBloodP = (newData) =>{
             Object.assign(curEditBP.value , newData);
         };
+
         //跳转详情页面
         const toDetail = ({record}) =>{
             router.push(`/blood-pressure/${record._id}`);
-        }
+        };
+
+        //excel 添加血压信息
+        //上传状态发生变化  e : file.response.target就是响应返回内容
+        const onUploadChange = ({ file })=>{
+            //上传完成后
+            if(file.response){
+                result(file.response)
+                    .success(async ( key)=>{
+                        const res = await bloodPressure.addMany(key , account);
+                        result(res)
+                            .success(({ data : {addCount} })=>{
+                                message.success(`成功添加 ${addCount} 个血糖信息`);
+
+                                getList();
+                            });
+                    });
+            }
+        };
+
 
         return{
             //弹窗点击事件flag
@@ -214,6 +235,8 @@ export default defineComponent({
             isAdmin,
             TimeTagList,
             simple : props.simple, //组件显示部分设置
+            onUploadChange,
+            headers : getHeaders(),
         }
     },
 });
