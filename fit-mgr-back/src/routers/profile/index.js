@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-21 20:43:56
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 21:59:10
+ * @LastEditTime: 2022-03-28 21:22:42
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
@@ -25,12 +25,12 @@ profileRouter.post('/update/password', async(ctx)=>{
     } = ctx.request.body;
 
     //通过Token获取当前用户信息
-    const id= verifyToken(getToken(ctx))._id;
-
+    const { _id } = await verifyToken(getToken(ctx));
+    
     const one = await User.findOne({
-        id,
+        _id,
     }).exec();
-    console.log(one);
+
     //用户不存在
     if(!one){
         ctx.body = {

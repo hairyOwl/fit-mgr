@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:44:10
+ * @LastEditTime: 2022-04-08 20:09:04
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody,formatTimestamp } = require('../../helpers/utils');
+const { getBody,formatTimestamp ,formatExcelDate, findNumFromBPExcel} = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
 const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
 
@@ -38,19 +38,22 @@ bpRouter.post('/add',async (ctx)=>{
         userAccount,
         sys,
         dia,
-        pul,
-        recordDate,
+        pul,        
         timeTag,
         note,
     } =getBody(ctx);
 
+    let {
+        recordDate,
+    } = ctx.request.body;
+
+    recordDate = (new Date(formatTimestamp(recordDate))).getTime();
     
     const bloodPressure = new BloodPressure({
         userAccount,
         sys,
         dia,
         pul,
-        
         recordDate,
         timeTag,
         note,
@@ -78,7 +81,7 @@ bpRouter.post('/add/many', async (ctx)=>{
     //解析excel
     const excel = loadExcel(path);
     const sheet = getFirstSheet(excel);
-
+    
     //解析到的用户数据重组为数组
     const arr = [];    
     for(let i=1 ; i<sheet.length ; i++){
@@ -93,14 +96,12 @@ bpRouter.post('/add/many', async (ctx)=>{
         ] = sheet[i]; 
         
         //把时间字符串转为时间戳
-        let rDate = recordDate;
-        //purchaseDate 2022-03-16T15:59:17.000Z
-        rDate = (new Date(rDate)).getTime();
-    
+        let rDate = (new Date((formatExcelDate((new Date(recordDate)).getTime())))).getTime();
+
         arr.push({
             userAccount,
-            recordDate,
-            timeTag,
+            recordDate: rDate,
+            timeTag : findNumFromBPExcel(timeTag),
             sys,
             dia,
             pul,
@@ -120,7 +121,7 @@ bpRouter.post('/add/many', async (ctx)=>{
     }
 });
 
-//获取列表接口 分页列表
+//获取列表接口 分页列表 日期范围搜索
 bpRouter.get('/list',async (ctx) =>{
     // https://www.xxxx.com/table?page=5&size=20&starDay=开始日期&endDay=结束日期&#sahdoasdhod //?page=5&size=20 query部分
     // const {
@@ -158,16 +159,18 @@ bpRouter.get('/list',async (ctx) =>{
             $lt: endDay,
         };
     }
-
+    
     //分页查询
     const list = await BloodPressure
         .find(query)
         .sort({
-            recordDate:-1, //倒序排放
+            recordDate : -1,
+            timeTag : -1,
         })
         .skip((page - 1) * size) //跳过目标页之前的的文档
         .limit(size) //查几条
         .exec();
+
     //获取总条数
     const total = await BloodPressure.countDocuments(query);
     
@@ -239,29 +242,6 @@ bpRouter.post('/update' , async(ctx)=>{
         msg : '信息修改成功',
         data : res,
     };
-});
-
-//详情
-bpRouter.get('/detail/:id',async (ctx)=>{
-    const{
-        id,
-    } = ctx.params;
-
-    const one = await findBloodPOne(id);
-
-    if(!one){
-        ctx.body = {
-            code:0,
-            msg:'没有找对该条血压数据',
-        }
-        return;
-    }
-
-    ctx.body = {
-        code:1,
-        msg : '查询成功',
-        data : one,
-    }
 });
 
 module.exports = bpRouter;

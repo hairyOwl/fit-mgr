@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:29:55
+ * @LastEditTime: 2022-03-31 21:37:37
 -->
 <!-- 添加血糖弹窗模板 -->
 <template>
@@ -41,7 +41,7 @@
                             :value = "item.timeTag"
                             :key = "item.timeTag"
                         >
-                            {{ item.timeTag }}
+                            {{ bgNumberToTag(item.timeTag) }}
                         </a-select-option>
                     </a-select>
                 </a-form-item>

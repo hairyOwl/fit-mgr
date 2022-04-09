@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-13 15:05:21
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 16:41:59
+ * @LastEditTime: 2022-03-29 22:23:45
  */
 import { isAdmin } from '@/helpers/character';
 
@@ -23,7 +23,7 @@ export const regDirectives = (app) => {
         mounted(el, { value = true }) { //el 聚焦元素
         const res = isAdmin();
 
-        if (res && value) { //不是管理员
+        if (res && value) { //是管理员
             el.style.display = 'none'; //隐藏
         }
         },

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:52
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 16:04:34
+ * @LastEditTime: 2022-03-30 11:20:13
  */
 import { 
     defineComponent,
@@ -16,6 +16,7 @@ import { result , formatTimestamp ,formatTimestampPlus} from '@/helpers/utils';
 import { message } from 'ant-design-vue';
 import { CheckOutlined } from '@ant-design/icons-vue';
 import Update from '@/views/Medicine/Update/index.vue'; //编辑模块
+import { getClassifyTitleById } from '@/helpers/medicine-classify';
 
 //日志表头
 const logColumns = [
@@ -133,6 +134,7 @@ export default defineComponent({
             curLogType, //日志种类
             setLogPage, //切页函数
             logFilter,
+            getClassifyTitleById,
         };
     },
 });

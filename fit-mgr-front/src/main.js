@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:39:21
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 09:14:18
+ * @LastEditTime: 2022-04-08 22:13:01
  */
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -13,6 +13,7 @@ import Antd from 'ant-design-vue';
 import SpaceBetween from './components/SpaceBetween/index.vue';
 import FlexEnd from './components/FlexEnd/index.vue';
 import { regDirectives } from '@/helpers/directive';//权限
+
 
 import 'ant-design-vue/dist/antd.less';
 
@@ -26,3 +27,4 @@ app.use(store)
     .component('space-between' , SpaceBetween)
     .component('flex-end' , FlexEnd)
     .mount('#app');
+

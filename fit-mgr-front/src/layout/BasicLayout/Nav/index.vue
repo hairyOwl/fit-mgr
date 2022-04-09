@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 20:11:30
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-15 17:31:11
+ * @LastEditTime: 2022-03-29 22:31:56
 -->
 <!--导航栏模板-->
 <template>
@@ -17,6 +17,7 @@
             v-for = "(item) in menu "
             :key = "item.url"
             v-only-admin = "item.onlyAdmin"
+            v-only-member = "item.onlyMember"
         >
             <!-- 有子菜单渲染 a-sub-menu-->
             <a-sub-menu 

@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:00:55
+ * @LastEditTime: 2022-03-28 22:27:22
  */
 //每个文件都是一个模块 
 //导入依赖
@@ -12,7 +12,7 @@ const koaBody = require('koa-body'); //获取页面数据
 const { connect } = require('./db'); //导入 db/index.js
 const registerRouters = require('./routers'); //等同./routers/index.js
 const cors = require('@koa/cors'); //@koa/cors 解决数据跨域
-const { middleware: koaJwtMiddleware  , catchTokenError} = require('./helpers/token'); //jwt中间件
+const { middleware: koaJwtMiddleware  , checkUser, catchTokenError} = require('./helpers/token'); //jwt中间件
 const { actionLogMiddleware } = require('./helpers/actionLog'); //操作日志 中间件
 
 //实例化
@@ -30,6 +30,7 @@ connect().then(()=>{
     app.use(cors()); //跨域
     app.use(catchTokenError); //自定义koaJwt报错
     koaJwtMiddleware(app);//校验token合法性
+    app.use(checkUser);
     app.use(actionLogMiddleware);//操作日志 中间件
     
     //注册路由

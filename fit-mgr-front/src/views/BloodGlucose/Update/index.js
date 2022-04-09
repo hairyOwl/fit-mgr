@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:28:50
+ * @LastEditTime: 2022-03-31 21:36:36
  */
 import { 
     defineComponent,
@@ -12,7 +12,7 @@ import {
 } from 'vue';
 import { bloodGlucose } from '@/service';
 import { message } from 'ant-design-vue';
-import { result ,clone } from '@/helpers/utils';
+import { result ,bgNumberToTag } from '@/helpers/utils';
 import moment from 'moment';
 
 export default defineComponent({
@@ -70,6 +70,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            bgNumberToTag,
         };
     },
 });

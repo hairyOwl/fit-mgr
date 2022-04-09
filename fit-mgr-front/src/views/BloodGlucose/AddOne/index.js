@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:45:12
+ * @LastEditTime: 2022-03-31 21:37:22
  */
 import { defineComponent ,reactive} from 'vue';
 import { bloodGlucose } from '@/service';
 import { message } from 'ant-design-vue';
-import { result ,clone } from '@/helpers/utils';
+import { result, clone, bgNumberToTag} from '@/helpers/utils';
 import store from '@/store';
 
 //空血糖数据表单
@@ -62,6 +62,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            bgNumberToTag,
         };
     },
 });

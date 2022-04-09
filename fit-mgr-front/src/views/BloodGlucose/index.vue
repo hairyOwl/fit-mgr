@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-25 09:56:16
+ * @LastEditTime: 2022-03-31 21:35:44
 -->
 <!-- 血糖信息模板 -->
 <template>
@@ -63,10 +63,15 @@
                 <template #recordDate = "data">
                     {{ formatTimestamp(data.record.recordDate) }}
                 </template>
+
+                <!-- 时间段数字 转文本 -->
+                <template #timeTag = "data">
+                    {{ bgNumberToTag(data.record.timeTag) }}
+                </template>
+
                 <!-- 操作 -->
                 <template #actions = "record" v-if="!simple">
                     <a href="javascript:;" @click="updateOne(record)">编辑</a> &nbsp;
-                    <a href="javascript:;" @click="toDetail(record)">详情</a> &nbsp;
                     <a href="javascript:;" @click="deleteOne(record)">删除</a>
                 </template>
             </a-table>   

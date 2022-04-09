@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 09:51:44
+ * @LastEditTime: 2022-03-31 09:15:56
  */
 import { defineComponent ,reactive} from 'vue';
 import { bloodPressure } from '@/service';
 import { message } from 'ant-design-vue';
-import { result ,clone } from '@/helpers/utils';
+import { result ,clone ,bpNumberToTag } from '@/helpers/utils';
 import store from '@/store';
 
 //空血压数据表单
@@ -65,6 +65,7 @@ export default defineComponent({
             props,
             //触发自定义事件
             close,
+            bpNumberToTag,
         };
     },
 });

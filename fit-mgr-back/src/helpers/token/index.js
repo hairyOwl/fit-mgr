@@ -3,11 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-03-11 17:46:40
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-13 22:36:44
+ * @LastEditTime: 2022-03-29 22:40:19
  */
 const jwt = require('jsonwebtoken');
 const config = require('../../project.config');
 const koaJwt = require('koa-jwt');
+const mongoose = require('mongoose');
+
+const User = mongoose.model('User'); 
 
 //获取token
 //Authorization : Bearer de^*huwihduiedds123123  需要去掉'Bearer '
@@ -30,7 +33,7 @@ const verifyToken = (token) =>{
     });
 };
 
-//校验token合法性 app koa实列
+//校验token合法性(能不能被解析) app koa实列
 const middleware = (app) =>{
     app.use(koaJwt({
         secret : config.JWT_SECRET,
@@ -39,8 +42,48 @@ const middleware = (app) =>{
         path : [
             /^\/auth\/login/, //登录接口
             /^\/auth\/register/, //注册接口
-        ],
+            /^\/reset-password\/add/, //注册接口
+        ],  
     }));
+};
+
+const res401 = (ctx) =>{
+    ctx.status = 401;
+    ctx.body = {
+        code : '401',
+        msg : '用户校验失败',
+    };
+};
+
+
+//校验 token中的用户正确性
+const checkUser = async (ctx , next) =>{
+    const { path } = ctx;
+    //过滤登录和注册
+    if(path === '/auth/login' || path === '/auth/register' || path === '/reset-password/add'){
+        await next();
+        return;
+    }
+
+
+    const { _id , account , character } = await verifyToken(getToken(ctx));
+
+    const user = await User.findOne({_id}).exec();
+    //非正常用户信息
+    if(!user){
+        res401(ctx);
+        return;
+    };
+    if(account !== user.account){
+        res401(ctx);
+        return;
+    };
+    if(character !== user.character){
+        res401(ctx);
+        return;
+    };
+    
+    await next();
 };
 
 //抓取koaJwt 错误
@@ -64,5 +107,6 @@ module.exports = {
     getToken,
     verifyToken,
     middleware,
+    checkUser,
     catchTokenError,
 };

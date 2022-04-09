@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 15:41:27
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 22:54:40
+ * @LastEditTime: 2022-03-29 22:43:01
  */
 import { defineComponent , reactive } from 'vue';
 import { message , Modal , Input} from 'ant-design-vue'; //提示toast 弹窗
@@ -11,7 +11,7 @@ import { UserOutlined , KeyOutlined,SmileOutlined } from '@ant-design/icons-vue'
 import { auth , resetPassword} from '@/service'
 import { result } from '@/helpers/utils'
 import { setToken,getToken } from '@/helpers/token'
-import { getCharacterInfoById } from '@/helpers/character'
+import { getCharacterInfoById ,isAdmin} from '@/helpers/character'
 import store from '@/store'; //vuex
 import { useRouter } from 'vue-router'; 
 
@@ -87,16 +87,21 @@ export default defineComponent({
             // 登录情况提醒
             const res = await auth.login(loginForm.account,loginForm.password);
             result(res)
-                .success(( { msg ,data :{ user,token }} ) =>{
+                .success(async ( { msg ,data :{ user,token }} ) =>{
                     message.success(msg);
+                    //token 存入localStorage
+                    setToken(token);
+                    await store.dispatch('getCharacterInfo'); //确保有权限表
                     //将登录用户信息存入全局
                     store.commit('setUserInfo',user);
                     store.commit('setUserCharacter',getCharacterInfoById(user.character));
                     
-                    //token 存入localStorage
-                    setToken(token);
-                    //登录成功后跳转到首页
-                    router.replace('/blood-pressure'); //进入下一页后不能通过回退按钮回到上页
+                    //登录成功后跳转到首页 管理员总览 普通用户是血压数据
+                    if(isAdmin()){
+                        router.replace('/dashboard'); //进入下一页后不能通过回退按钮回到上页
+                    }else{
+                        router.replace('/dashboard-health'); //进入下一页后不能通过回退按钮回到上页
+                    }
                 });
 
         }

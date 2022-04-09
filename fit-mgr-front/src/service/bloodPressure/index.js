@@ -3,18 +3,18 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:46:37
+ * @LastEditTime: 2022-03-29 18:08:20
  */
-import axios from "axios"; //axios 请求库可以帮助简化请求
-import {getToken} from '@/helpers/token';
-
-//统一为请求添加headers
-axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
+import{
+    get,
+    post,
+    del,
+} from '@/helpers/request';
 
 //添加血压
 export const add = (addForm) =>{
-    return axios.post(
-        'http://localhost:3000/bp/add',
+    return post(
+        '/bp/add',
         addForm,
         );
 }; 
@@ -22,8 +22,8 @@ export const add = (addForm) =>{
 
 //批量添加血压
 export const addMany = (fileKey , userAccount) =>{
-    return axios.post(
-        'http://localhost:3000/bp/add/many',{
+    return post(
+        '/bp/add/many',{
             fileKey,
             userAccount,
         });
@@ -31,47 +31,39 @@ export const addMany = (fileKey , userAccount) =>{
 
 //血压数据列表
 export const list = (userAdmin, account, page ,size , starDay ,endDay) =>{
-    return axios.get(
-        'http://localhost:3000/bp/list',
+    return get(
+        '/bp/list',
         {
-            params : {
-                userAdmin,
-                account,
-                page,
-                size,
-                starDay,
-                endDay,
-            },
+            userAdmin,
+            account,
+            page,
+            size,
+            starDay,
+            endDay,
         }
     );
 };
 
 //删除一条血压数据
 export const deleteOne = (id) =>{
-    return axios.delete(
-        `http://localhost:3000/bp/${id}`,
+    return del(
+        `/bp/${id}`,
     );
 };
 
 //更新一条血压数据
 export const updateCount = (data = {}) =>{
-    return axios.post(
-        `http://localhost:3000/bp/update/count`,
+    return post(
+        `/bp/update/count`,
         data,
     );
 };
 
 //修改一条血压数据
 export const update = (data = {}) =>{
-    return axios.post(
-        `http://localhost:3000/bp/update`,
+    return post(
+        `/bp/update`,
         data,
     );
 };
 
-// 血压详情
-export const detail = (id)=>{
-    return axios.get(
-        `http://localhost:3000/bp/detail/${id}`,
-        );
-}

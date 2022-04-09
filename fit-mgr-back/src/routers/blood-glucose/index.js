@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:40:20
+ * @LastEditTime: 2022-04-08 23:12:50
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody,formatTimestamp } = require('../../helpers/utils');
+const { getBody, formatTimestamp,formatExcelDate,  findNumFromBGExcel} = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
 const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
 
@@ -35,11 +35,15 @@ bgRouter.post('/add',async (ctx)=>{
     const {
         userAccount,
         glucose,
-        recordDate,
         timeTag,
         note,
     } =getBody(ctx);
 
+    let {
+        recordDate,
+    } = ctx.request.body;
+    recordDate = (new Date(formatTimestamp(recordDate))).getTime();
+    
     
     const bloodGlucose = new BloodGlucose({
         userAccount,
@@ -84,14 +88,12 @@ bgRouter.post('/add/many', async (ctx)=>{
         ] = sheet[i]; 
         
         //把时间字符串转为时间戳
-        let rDate = recordDate;
-        //purchaseDate 2022-03-16T15:59:17.000Z
-        rDate = (new Date(rDate)).getTime();
-    
+        let rDate = (new Date((formatExcelDate((new Date(recordDate)).getTime())))).getTime();
+
         arr.push({
             userAccount,
-            recordDate,
-            timeTag,
+            recordDate : rDate,
+            timeTag: findNumFromBGExcel(timeTag),
             glucose,
             note,
         });
@@ -148,6 +150,7 @@ bgRouter.get('/list',async (ctx) =>{
         .find(query)
         .sort({
             recordDate:-1, //倒序排放
+            timeTag : -1,
         })
         .skip((page - 1) * size) //跳过目标页之前的的文档
         .limit(size) //查几条
@@ -225,28 +228,6 @@ bgRouter.post('/update' , async(ctx)=>{
     };
 });
 
-//详情
-bgRouter.get('/detail/:id',async (ctx)=>{
-    const{
-        id,
-    } = ctx.params;
-
-    const one = await findBloodGOne(id);
-
-    if(!one){
-        ctx.body = {
-            code:0,
-            msg:'没有找对该条血糖数据',
-        }
-        return;
-    }
-
-    ctx.body = {
-        code:1,
-        msg : '查询成功',
-        data : one,
-    }
-});
 
 module.exports = bgRouter;
 

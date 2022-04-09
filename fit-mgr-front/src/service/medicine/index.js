@@ -3,26 +3,26 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:30:34
+ * @LastEditTime: 2022-03-28 10:41:25
  */
-import axios from "axios"; //axios 请求库可以帮助简化请求
-import {getToken} from '@/helpers/token';
-
-//统一为请求添加headers
-axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
+import{
+    get,
+    post,
+    del,
+} from '@/helpers/request';
 
 //添加药剂
 export const add = (addForm) =>{
-    return axios.post(
-        'http://localhost:3000/medicine/add',
+    return post(
+        '/medicine/add',
         addForm,
         );
 }; 
 
 //批量添加药剂
 export const addMany = (fileKey , userAccount) =>{
-    return axios.post(
-        'http://localhost:3000/medicine/add/many',{
+    return post(
+        '/medicine/add/many',{
             fileKey,
             userAccount,
         });
@@ -30,44 +30,41 @@ export const addMany = (fileKey , userAccount) =>{
 
 //药剂数据列表
 export const list = (userAdmin, account, page ,size , keyword) =>{
-    return axios.get(
-        'http://localhost:3000/medicine/list',
+    return get(
+        '/medicine/list',
         {
-            params : {
-                userAdmin,
-                account,
-                page,
-                size,
-                keyword,
-            },
-        }
-    );
+            userAdmin,
+            account,
+            page,
+            size,
+            keyword,
+        });
 };
 
 //删除一条药剂数据
 export const deleteOne = (id) =>{
-    return axios.delete(
-        `http://localhost:3000/medicine/${id}`,
+    return del(
+        `/medicine/${id}`,
     );
 };
 
 //更新一条药剂数据
 export const updateCount = (data = {}) =>{
-    return axios.post(
-        `http://localhost:3000/medicine/update/count`,
+    return post(
+        `/medicine/update/count`,
         data,
     );
 };
 
 //修改一条药剂数据
 export const update = (data = {}) =>{
-    return axios.post(
-        `http://localhost:3000/medicine/update`,
+    return post(
+        `/medicine/update`,
         data,
     );
 };
 
 // 药剂详情
 export const detail = (id)=>{
-    return axios.get(`http://localhost:3000/medicine/detail/${id}`);
+    return get(`/medicine/detail/${id}`);
 }

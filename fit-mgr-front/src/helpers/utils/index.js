@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 21:56:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-06 20:06:21
+ * @LastEditTime: 2022-04-08 22:59:19
  */
 import { message } from 'ant-design-vue'; //提示框
 
@@ -73,3 +73,34 @@ export const formatTimestampPlus = (timestamp)=>{
     return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss} `;
 };
 
+//血压 数组对应文字
+export const bpNumberToTag = (num) =>{
+    if(num === '0'){
+        return "早上"
+    }else if(num === '1'){
+        return "中午"
+    }else if(num === '2'){
+        return "下午"
+    }else if(num === '3'){
+        return "晚上"
+    }
+};
+
+//血糖 数组对应文字
+export const bgNumberToTag = (num) =>{
+    if(num === '0'){
+        return "早餐前"
+    }else if(num === '1'){
+        return "早餐后"
+    }else if(num === '2'){
+        return "中餐前"
+    }else if(num === '3'){
+        return "中餐后"
+    }else if(num === '4'){
+        return "晚餐前"
+    }else if(num === '5'){
+        return "晚餐后"
+    }else if(num === '6'){
+        return "睡前"
+    }
+};

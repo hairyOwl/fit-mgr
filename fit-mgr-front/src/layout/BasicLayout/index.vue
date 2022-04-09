@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 18:32:47
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 21:34:24
+ * @LastEditTime: 2022-03-28 22:01:51
 -->
 <!-- 基础布局模板 -->
 <template>
@@ -22,7 +22,7 @@
                 <div class="hello-msg">
                     你好，{{userInfo.account}}
                 </div>
-                <div class="logout" @click="toAuth">退出</div>
+                <div class="logout" @click="logout">退出</div>
             </div>
             <!-- 占位符 -->
         </div>

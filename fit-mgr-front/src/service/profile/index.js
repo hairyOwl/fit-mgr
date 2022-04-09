@@ -3,15 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-03-21 21:37:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:15:19
+ * @LastEditTime: 2022-03-28 10:41:57
  */
-import axios from 'axios';
-import {getToken} from '@/helpers/token';
+import{ post } from '@/helpers/request';
 
-//统一为请求添加headers
-axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 export const resetPassword = (password , oldPassword)=>{
-    return axios.post('http://localhost:3000/profile/update/password',{
+    return post('/profile/update/password',{
         password,
         oldPassword,
     });

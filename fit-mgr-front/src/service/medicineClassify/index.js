@@ -3,32 +3,33 @@
  * @Author: hairyOwl
  * @Date: 2022-03-20 15:48:37
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:15:13
+ * @LastEditTime: 2022-03-28 10:22:31
  */
-import axios from 'axios';
-import {getToken} from '@/helpers/token';
+import{
+    get,
+    post,
+    del,
+} from '@/helpers/request';
 
-//统一为请求添加headers
-axios.defaults.headers['Authorization'] = `Bearer ${getToken() }`
 //列表查询
 export const list = ()=>{
-    return axios.get('http://localhost:3000/medicine-classify/list');
+    return get('/medicine-classify/list');
 };
 //添加药剂分类
 export const add = (title)=>{
-    return axios.post(
-        'http://localhost:3000/medicine-classify/add',{
+    return post(
+        '/medicine-classify/add',{
             title,
         }
     );
 };
 //删除药剂分类
 export const remove = (id)=>{
-    return axios.delete(`http://localhost:3000/medicine-classify/${id}`);
+    return del(`/medicine-classify/${id}`);
 };
 //编辑药剂分类
 export const update = (id , title)=>{
-    return axios.post('http://localhost:3000/medicine-classify/update/title',{
+    return post('/medicine-classify/update/title',{
         id,
         title,
     });

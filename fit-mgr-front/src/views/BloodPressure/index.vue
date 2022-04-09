@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:47:21
+ * @LastEditTime: 2022-03-31 09:18:19
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -63,10 +63,15 @@
                 <template #recordDate = "data">
                     {{ formatTimestamp(data.record.recordDate) }}
                 </template>
+
+                <!-- 时间段处理 -->
+                <template #timeTag = "data">
+                    {{ bpNumberToTag(data.record.timeTag) }}
+                </template>
+
                 <!-- 操作 -->
                 <template #actions = "record" v-if="!simple">
                     <a href="javascript:;" @click="updateOne(record)">编辑</a> &nbsp;
-                    <a href="javascript:;" @click="toDetail(record)">详情</a> &nbsp;
                     <a href="javascript:;" @click="deleteOne(record)">删除</a>
                 </template>
             </a-table>    

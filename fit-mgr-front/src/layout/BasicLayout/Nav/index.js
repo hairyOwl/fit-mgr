@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 20:11:43
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-12 15:10:52
+ * @LastEditTime: 2022-03-27 22:36:34
  */
 import {defineComponent , ref , onMounted} from 'vue';
 import { useRouter ,useRoute } from 'vue-router';
@@ -29,6 +29,14 @@ export default defineComponent({
         onMounted(()=>{
             //刷新后保持高亮
             selectedKeys.value = [route.path];
+
+            menu.forEach((item)=>{
+                (item.children || []).forEach((child)=>{
+                    if(child.url === route.path){ //说明被选中
+                        openKeys.value.push(item.title); //保持改二级菜单展开
+                    }
+                });
+            });
         });
 
         return{

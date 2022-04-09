@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:45:20
+ * @LastEditTime: 2022-03-31 21:33:57
  */
 import {
     defineComponent , 
@@ -14,9 +14,9 @@ import { useRouter } from 'vue-router'; //操作路由的方法 前进一页后�
 import AddOne from './AddOne/index.vue'; //添加信息弹窗
 import Update from './Update/index.vue'; //修改信息弹窗
 import { bloodGlucose } from '@/service'
-import { message , Modal ,Input} from 'ant-design-vue';
+import { message} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import { result , formatTimestamp } from '@/helpers/utils';
+import { result , formatTimestamp , bgNumberToTag } from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
 import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
@@ -25,14 +25,15 @@ import store from '@/store'; //vuex
 const columns = [
     {
         title : '日期',
-        // dataIndex : 'recordDate',
         slots :{
             customRender:'recordDate',
         }
     },
     {
         title : '时间段',
-        dataIndex : 'timeTag',
+        slots :{
+            customRender:'timeTag',
+        }
     },
     {
         title : '血糖',
@@ -55,29 +56,29 @@ if(isAdmin()){
         }
     },);
 };
-//时间段列表
+//时间段列表 0~6 依次对应 早餐前 中餐后 中餐前 中餐后 晚餐前 晚餐后 睡前
 const TimeTagList = [
     {
-        timeTag : "早餐前",
+        timeTag : '0',
     },
     {
-        timeTag : "早餐后",
+        timeTag : '1',
     },
     {
-        timeTag : "中餐前",
+        timeTag : '2',
     },
     {
-        timeTag : "中餐后",
+        timeTag : '3',
     },
     {
-        timeTag : "晚餐前",
+        timeTag : '4',
     },
     {
-        timeTag : "晚餐后",
+        timeTag : '5',
     },
     {
-        timeTag : "睡前",
-    },
+        timeTag : '6',
+    },    
 ];
 export default defineComponent({
     //组件注册
@@ -182,10 +183,6 @@ export default defineComponent({
             Object.assign(curEditBG.value , newData);
         };
 
-        //跳转详情页面
-        const toDetail = ({record}) =>{
-            router.push(`/blood-glucose/${record._id}`);
-        }
 
         //excel 添加血糖信息
         //上传状态发生变化  e : file.response.target就是响应返回内容
@@ -227,11 +224,11 @@ export default defineComponent({
             updateOne, //修改
             curEditBG, //要修改的那条
             updateCurBloodG,
-            toDetail, //跳转详情页面
             isAdmin,
             simple : props.simple, //控制在总览显示
             onUploadChange,
             headers : getHeaders(),
+            bgNumberToTag,
         }
     },
 });

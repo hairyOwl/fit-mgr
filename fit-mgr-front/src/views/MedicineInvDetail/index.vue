@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-05 17:07:44
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 22:18:54
+ * @LastEditTime: 2022-03-30 11:20:45
 -->
 <template>
     <div>
@@ -37,7 +37,7 @@
                 <div class="items">
                     <div class="item">
                         <div class="title">种类</div>
-                        <div class="content">{{ d.tag }}</div>
+                        <div class="content">{{ getClassifyTitleById(d.tag) }}</div>
                     </div>
                     <div class="item">
                         <div class="title">备注</div>

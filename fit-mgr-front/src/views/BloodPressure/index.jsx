@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:50:46
+ * @LastEditTime: 2022-03-31 09:24:45
  */
 import {
     defineComponent , 
@@ -14,9 +14,9 @@ import { useRouter } from 'vue-router'; //操作路由的方法 前进一页后�
 import AddOne from './AddOne/index.vue'; //添加信息弹窗
 import Update from './Update/index.vue'; //修改信息弹窗
 import { bloodPressure } from '@/service'
-import { message , Modal ,Input} from 'ant-design-vue';
+import { message} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import { result , formatTimestamp } from '@/helpers/utils';
+import { result , formatTimestamp ,bpNumberToTag} from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
 import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
@@ -31,7 +31,9 @@ const columns = [
     },
     {
         title : '时间段',
-        dataIndex : 'timeTag',
+        slots :{
+            customRender:'timeTag',
+        }
     },
     {
         title : '高压',
@@ -62,19 +64,19 @@ if(isAdmin()){
         }
     },);
 };
-//时间段列表
+//时间段列表 0早上 1中午 2下午 3晚上 
 const TimeTagList = [
     {
-        timeTag : "早上",
+        timeTag : '0',
     },
     {
-        timeTag : "中午",
+        timeTag : '1',
     },
     {
-        timeTag : "下午",
+        timeTag : '2',
     },
     {
-        timeTag : "晚上",
+        timeTag : '3',
     },
 ];
 export default defineComponent({
@@ -187,10 +189,6 @@ export default defineComponent({
             Object.assign(curEditBP.value , newData);
         };
 
-        //跳转详情页面
-        const toDetail = ({record}) =>{
-            router.push(`/blood-pressure/${record._id}`);
-        };
 
         //excel 添加血压信息
         //上传状态发生变化  e : file.response.target就是响应返回内容
@@ -231,12 +229,12 @@ export default defineComponent({
             updateOne, //修改
             curEditBP, //要修改的那条
             updateCurBloodP,
-            toDetail, //跳转详情页面
             isAdmin,
             TimeTagList,
             simple : props.simple, //组件显示部分设置
             onUploadChange,
             headers : getHeaders(),
+            bpNumberToTag,
         }
     },
 });

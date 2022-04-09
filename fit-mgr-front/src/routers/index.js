@@ -3,10 +3,15 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 16:06:43
+ * @LastEditTime: 2022-03-29 22:43:32
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { user } from '@/service';
 import store from '../store';
+import { message } from 'ant-design-vue';
+import { isAdmin } from '@/helpers/character';
+
+
 //路由配置顺序从上到下，如果已匹配就不会向下走
 const routes = [
   {
@@ -17,6 +22,7 @@ const routes = [
   {
     path: '/',
     name: 'BasicLayout',
+    redirect : '/auth', //重定向到auth
     component: () => import(/* webpackChunkName: "BasicLayout" */ '../layout/BasicLayout/index.vue'),
     //孩子路由
     children : [
@@ -26,29 +32,23 @@ const routes = [
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard/index.vue'),
       },
+      //健康数据总览
+      {
+        path: 'dashboard-health',
+        name: 'DashboardHealth',
+        component: () => import(/* webpackChunkName: "DashboardHealth" */ '../views/DashboardHealth/index.vue'),
+      },
       //血压信息
       {
         path: 'blood-pressure',
         name: 'BloodPressure ',
         component: () => import(/* webpackChunkName: "BloodPressure" */ '../views/BloodPressure/index.vue'),
       },
-      //血压详情
-      {
-        path: 'blood-pressure/:id',
-        name: 'BloodPreDetail ',
-        component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodPreDetail/index.vue'),
-      },
       //血糖信息
       {
         path: 'blood-glucose',
         name: 'BloodGlucose ',
         component: () => import(/* webpackChunkName: "BloodGlucose" */ '../views/BloodGlucose/index.vue'),
-      },
-      //血糖详情
-      {
-        path: 'blood-glucose/:id',
-        name: 'BloodGluDetail ',
-        component: () => import(/* webpackChunkName: "BloodPreDetail" */ '../views/BloodGluDetail/index.vue'),
       },
       //药品信息
       {
@@ -111,6 +111,38 @@ const router = createRouter({
 //在遍历路由前执行
 //to目标页 from发起页是对象。next是函数
 router.beforeEach(async (to,from,next)=>{
+  /* 
+    认证登录相关
+    未登录状态(如清除localStorage) 提示并跳转到登录页面
+  */
+  //捕捉错误
+  let res = {};
+  try {
+    res = await user.info();
+  } catch (error) {
+    if(error.message.includes('code 401')){
+      res.code = 401;
+    }
+  }
+  const { code } = res;
+
+  if(code === 401){
+    //跳转到认证登录页面时不需要权限列表等信息
+    if(to.path === '/auth'){
+      next();
+      return;
+    }
+
+    //非认证页路由 且未登录 需要跳转到登录页
+    message.error('认证失败，请重新登入');
+    next('/auth');
+    return;
+  }
+
+
+  /* 
+    全局信息相关
+  */
   //请求数组
   const reqArr = []; // promise数据store.dispatch返回一个promise
 
@@ -126,6 +158,22 @@ router.beforeEach(async (to,from,next)=>{
     reqArr.push(store.dispatch('getMedicineClassify'));
   }
   await Promise.all(reqArr); //获取上述信息成功后执行next
+
+
+  /* 
+    认证优化
+  */
+  //已经登录就不能跳转登录页路由 
+  if (to.path === '/auth') {
+    if(isAdmin()){
+      next('/dashboard');
+      return;
+    }else{
+      next('/dashboard-health');
+      return;
+    }
+  }
+
   next();
 });
 

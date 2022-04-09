@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-21 15:37:43
+ * @LastEditTime: 2022-03-31 09:25:51
 -->
 <!-- 添加血压弹窗模板 -->
 <template>
@@ -54,7 +54,7 @@
                             :value = "item.timeTag"
                             :key = "item.timeTag"
                         >
-                            {{ item.timeTag }}
+                            {{ bpNumberToTag(item.timeTag) }}
                         </a-select-option>
                     </a-select>
                 </a-form-item>
