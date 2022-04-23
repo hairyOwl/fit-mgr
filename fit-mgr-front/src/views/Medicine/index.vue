@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:31:52
+ * @LastEditTime: 2022-04-11 14:10:12
 -->
 <!-- 药品信息模板 -->
 <template>
@@ -38,9 +38,12 @@
                             action="http://localhost:3000/upload/file"
                             :headers = "headers"
                         >
-                            <a-button type="primary">上传 Excel添加</a-button>
+                            <a-button type="primary">上传Excel 批量添加</a-button>
+                            <a-button type="primary" style="margin-left:5px;">导出Excel 数据表</a-button>
                         </a-upload>
+                        
                     </div>
+                    <!-- 文件导出 -->
                 </space-between>
                 <!-- 分割线 -->
                 <a-divider/> 

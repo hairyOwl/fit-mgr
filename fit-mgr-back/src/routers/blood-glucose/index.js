@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-08 23:12:50
+ * @LastEditTime: 2022-04-19 10:34:33
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -86,7 +86,6 @@ bgRouter.post('/add/many', async (ctx)=>{
             glucose,
             note,
         ] = sheet[i]; 
-        
         //把时间字符串转为时间戳
         let rDate = (new Date((formatExcelDate((new Date(recordDate)).getTime())))).getTime();
 

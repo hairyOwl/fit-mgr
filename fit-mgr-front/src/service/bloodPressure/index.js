@@ -3,12 +3,13 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-29 18:08:20
+ * @LastEditTime: 2022-04-22 23:11:58
  */
 import{
     get,
     post,
     del,
+    downloadExcel,
 } from '@/helpers/request';
 
 //添加血压
@@ -19,7 +20,6 @@ export const add = (addForm) =>{
         );
 }; 
 
-
 //批量添加血压
 export const addMany = (fileKey , userAccount) =>{
     return post(
@@ -29,19 +29,28 @@ export const addMany = (fileKey , userAccount) =>{
         });
 }; 
 
+//批量导出文件获取
+export const exportList = (userAdmin, account)=>{
+    return downloadExcel('/bp/export/list',{
+        userAdmin,
+        account,
+    });
+}
+//批量导出文件下载
+export const getExportFile = (url) =>{
+    return get(url);
+}
+
 //血压数据列表
 export const list = (userAdmin, account, page ,size , starDay ,endDay) =>{
-    return get(
-        '/bp/list',
-        {
+    return get('/bp/list',{
             userAdmin,
             account,
             page,
             size,
             starDay,
             endDay,
-        }
-    );
+        });
 };
 
 //删除一条血压数据

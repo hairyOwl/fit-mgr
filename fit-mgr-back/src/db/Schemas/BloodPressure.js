@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 09:27:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-17 22:36:27
+ * @LastEditTime: 2022-04-10 23:37:45
  */
 const mongoose = require('mongoose');
 const { getMeta ,preSave } = require('../helpers');
@@ -23,8 +23,6 @@ const BPSchema = new mongoose.Schema({
     timeTag : String,
     //备注
     note : String,
-    //计数
-    count :Number,
 
     meta: getMeta(),
 });

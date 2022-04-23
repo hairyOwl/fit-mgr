@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-31 09:24:45
+ * @LastEditTime: 2022-04-22 23:56:45
  */
 import {
     defineComponent , 
@@ -16,7 +16,7 @@ import Update from './Update/index.vue'; //修改信息弹窗
 import { bloodPressure } from '@/service'
 import { message} from 'ant-design-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import { result , formatTimestamp ,bpNumberToTag} from '@/helpers/utils';
+import { result , formatTimestamp ,bpNumberToTag , downloadExcel} from '@/helpers/utils';
 import { isAdmin } from '@/helpers/character';
 import { getHeaders } from '@/helpers/request';
 import store from '@/store'; //vuex
@@ -189,7 +189,6 @@ export default defineComponent({
             Object.assign(curEditBP.value , newData);
         };
 
-
         //excel 添加血压信息
         //上传状态发生变化  e : file.response.target就是响应返回内容
         const onUploadChange = ({ file })=>{
@@ -208,6 +207,11 @@ export default defineComponent({
             }
         };
 
+        //批量导出 下载路径简单的为浏览器默认下载路径 
+        const toExportList = async () =>{
+            await bloodPressure.exportList(userAdmin,account);
+            
+        }
 
         return{
             //弹窗点击事件flag
@@ -229,12 +233,15 @@ export default defineComponent({
             updateOne, //修改
             curEditBP, //要修改的那条
             updateCurBloodP,
+            toExportList, //数据导出
+
             isAdmin,
             TimeTagList,
             simple : props.simple, //组件显示部分设置
             onUploadChange,
             headers : getHeaders(),
-            bpNumberToTag,
+            bpNumberToTag,//时间段数字转文字
+
         }
     },
 });

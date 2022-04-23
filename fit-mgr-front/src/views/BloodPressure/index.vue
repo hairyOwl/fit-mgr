@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-31 09:18:19
+ * @LastEditTime: 2022-04-19 14:58:29
 -->
 <!-- 血压信息模板 -->
 <template>
@@ -32,7 +32,10 @@
                     
                     <!-- 添加按钮 -->
                     <div >
+                        
                         <a-button @click="show = true">添加一条</a-button>&nbsp;
+                        <a-button @click="toExportList()">批量导出</a-button>&nbsp;
+                        
                         <!-- 文件上传 -->
                         <a-upload v-only-member
                             @change="onUploadChange"

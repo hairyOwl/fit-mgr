@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-30 11:27:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-08 23:58:35
+ * @LastEditTime: 2022-04-11 13:48:16
  */
 import { ref , reactive , onMounted, defineComponent} from 'vue'
 import * as echarts from 'echarts';
@@ -24,7 +24,7 @@ export default defineComponent({
 
         //挂载函数
         onMounted(async ()=>{
-            await init();
+            init();
         });
 
         //指定图表的配置和数据

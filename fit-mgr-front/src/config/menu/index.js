@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-12 14:32:58
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-29 22:32:57
+ * @LastEditTime: 2022-04-10 18:57:47
  */
 // 导航栏列表
 export default[
@@ -59,6 +59,8 @@ export default[
     },
     {
         title : '杂项',
+        onlyAdmin : true,
+        onlyMember : false,
         children : [
             {
                 title: '重置密码列表',
@@ -72,13 +74,13 @@ export default[
                 onlyAdmin : true,
                 onlyMember : false,
             },
-            {
-                title: '药剂分类管理',
-                url : '/medicine-classify',
-                onlyAdmin : true,
-                onlyMember : false,
-            },
         ],
+    },
+    {
+        title: '药剂分类管理',
+        url : '/medicine-classify',
+        onlyAdmin : false,
+        onlyMember : true,
     },
     {
         title: '个人设置',

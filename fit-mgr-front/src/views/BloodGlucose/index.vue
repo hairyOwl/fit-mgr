@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-31 21:35:44
+ * @LastEditTime: 2022-04-11 14:12:35
 -->
 <!-- 血糖信息模板 -->
 <template>
@@ -38,7 +38,8 @@
                             action="http://localhost:3000/upload/file"
                             :headers = "headers"
                         >
-                            <a-button type="primary">上传 Excel添加</a-button>
+                            <a-button type="primary">上传Excel批量添加</a-button>
+                            <a-button type="primary" style="margin-left:5px;">导出Excel数据表</a-button>
                         </a-upload>
                     </div>
                 </space-between>

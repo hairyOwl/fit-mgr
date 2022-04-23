@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-29 18:10:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-08 23:56:21
+ * @LastEditTime: 2022-04-11 13:16:56
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
@@ -124,8 +124,6 @@ const bpLineChartData = async ( account, before3Day , now ) =>{
         bpSeriesDia.push(bloodPList[i].dia);
         bpSeriesPul.push(bloodPList[i].pul);
     }
-
-    console.log(bpXAxisData);
 
     return {
         bpXAxisData, //横轴数据

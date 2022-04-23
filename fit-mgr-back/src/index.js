@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-28 22:27:22
+ * @LastEditTime: 2022-04-22 23:04:22
  */
 //每个文件都是一个模块 
 //导入依赖
@@ -14,6 +14,8 @@ const registerRouters = require('./routers'); //等同./routers/index.js
 const cors = require('@koa/cors'); //@koa/cors 解决数据跨域
 const { middleware: koaJwtMiddleware  , checkUser, catchTokenError} = require('./helpers/token'); //jwt中间件
 const { actionLogMiddleware } = require('./helpers/actionLog'); //操作日志 中间件
+const staticFiles = require('koa-static'); //静态资源文件
+const path = require('path');
 
 //实例化
 const app = new Koa(); //实列化一个koa对象
@@ -32,6 +34,7 @@ connect().then(()=>{
     koaJwtMiddleware(app);//校验token合法性
     app.use(checkUser);
     app.use(actionLogMiddleware);//操作日志 中间件
+    app.use(staticFiles(path.join(__dirname , '../public/')));
     
     //注册路由
     registerRouters(app);

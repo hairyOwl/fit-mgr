@@ -3,14 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-08 20:09:04
+ * @LastEditTime: 2022-04-23 16:40:36
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody,formatTimestamp ,formatExcelDate, findNumFromBPExcel} = require('../../helpers/utils');
+const { getBody,formatTimestamp ,formatExcelDate, findNumFromBPExcel,bpNumberToTag ,nowTime } = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
-const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
+const { loadExcel , getFirstSheet ,toExcelFile } = require('../../helpers/excel'); //解析excel帮助类
 
 
 //拿到model
@@ -119,6 +119,64 @@ bpRouter.post('/add/many', async (ctx)=>{
             addCount : arr.length,
         }
     }
+});
+
+//批量导出
+bpRouter.post('/export/list',async (ctx)=>{
+    let{
+        userAdmin,
+        account,
+    } = ctx.request.body;
+    //数据表格
+    let data = [];
+    const fileName = `${account}血压`+ nowTime();
+    //判断是否有查询条件
+    const query = {};
+    //非管理员用户只导出自己的血压
+    if(userAdmin === false){
+        query.userAccount = account;
+        data[0] = ['日期','时间段','高压','低压','心跳','备注'];
+    }else{//管理员表头不同
+        data[0] = ['用户','日期','时间段','高压','低压','心跳','备注'];
+    }
+
+    //获取导出列表
+    const list = await BloodPressure
+        .find(query)
+        .sort({
+            recordDate : -1,
+            timeTag : -1,
+        })
+        .exec();
+    
+    //导出列表 按表头添加到列表
+    list.forEach((element) =>{
+        let arrInner = [];
+        if(userAdmin === true){
+            arrInner.push(element.userAccount);
+        }
+        arrInner.push(formatTimestamp(element.recordDate));
+        arrInner.push(bpNumberToTag(element.timeTag));
+        arrInner.push(element.sys);
+        arrInner.push(element.dia);
+        arrInner.push(element.pul);
+        arrInner.push(element.note);
+
+        data.push(arrInner);
+    });
+    
+    /* 
+    响应体设置
+    */
+    // request.headers['content-disposition'] = `attachment; filename=${fileName}`; //设置文件名
+    //前端允许Content-Disposition
+    ctx.set("Access-Control-Expose-Headers", "Content-Disposition"); 
+    //设置文件名
+    ctx.attachment(Buffer.from(fileName).toString('base64')); 
+    ctx.body = toExcelFile(fileName ,data); //buffer文件流
+    
+    
+    
 });
 
 //获取列表接口 分页列表 日期范围搜索

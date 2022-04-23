@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-11 17:46:40
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-29 22:40:19
+ * @LastEditTime: 2022-04-22 23:29:22
  */
 const jwt = require('jsonwebtoken');
 const config = require('../../project.config');
@@ -43,6 +43,7 @@ const middleware = (app) =>{
             /^\/auth\/login/, //登录接口
             /^\/auth\/register/, //注册接口
             /^\/reset-password\/add/, //注册接口
+            /^\/exportExcel\/^/, //下载文件
         ],  
     }));
 };
@@ -53,6 +54,8 @@ const res401 = (ctx) =>{
         code : '401',
         msg : '用户校验失败',
     };
+
+    
 };
 
 
@@ -60,7 +63,9 @@ const res401 = (ctx) =>{
 const checkUser = async (ctx , next) =>{
     const { path } = ctx;
     //过滤登录和注册
-    if(path === '/auth/login' || path === '/auth/register' || path === '/reset-password/add'){
+    if(path === '/auth/login' 
+        || path === '/auth/register' 
+        || path === '/reset-password/add'){
         await next();
         return;
     }

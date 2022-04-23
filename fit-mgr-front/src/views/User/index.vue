@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:33
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:21:57
+ * @LastEditTime: 2022-04-11 09:45:36
 -->
 <template>
     <div>
@@ -57,6 +57,7 @@
                     </template>
                     <!-- 操作插槽 -->
                     <template #actions=" {record} ">
+                        <a href="javascript:;"  >添加照顾者</a>&nbsp;
                         <a href="javascript:;" @click="resetPassword(record)" >重置密码</a>&nbsp;
                         <a href="javascript:;" @click="remove(record)">删除</a>
                     </template>

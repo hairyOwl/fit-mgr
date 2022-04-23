@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-21 16:11:04
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-08 19:28:35
+ * @LastEditTime: 2022-04-21 22:34:19
  */
 //
 const getBody = (ctx) =>{
@@ -21,6 +21,21 @@ const formatTimestamp = (timestamp)=>{
 
     return `${YYYY}-${MM}-${DD}`;
 };
+
+//获取当前时间精确到秒
+const nowTime = () =>{
+    const date = new Date();
+    //获得年月日并拼接
+    const YYYY = date.getFullYear();
+    const MM = date.getMonth() +1 ; //月从9开始
+    const DD = date.getDate();
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    const ss = date.getSeconds();
+    
+
+    return `${YYYY}年${MM}月${DD}日${hh}h${mm}m${ss}s`;
+}
 
 //血压时间戳 批量上传时 文字转数字
 const findNumFromBPExcel = (timeTag) =>{
@@ -83,6 +98,7 @@ function formatExcelDate(num) {
 module.exports = {
     getBody,
     formatTimestamp,
+    nowTime,
     findNumFromBPExcel,
     findNumFromBGExcel,
     bpNumberToTag,
