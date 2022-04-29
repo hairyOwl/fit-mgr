@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-31 21:33:57
+ * @LastEditTime: 2022-04-26 16:39:25
  */
 import {
     defineComponent , 
@@ -202,6 +202,12 @@ export default defineComponent({
             }
         }
 
+        //批量导出 下载路径简单的为浏览器默认下载路径 
+        const toExportList = async () =>{
+            await bloodGlucose.exportList(userAdmin,account);
+            
+        }
+
 
         return{
             //弹窗点击事件flag
@@ -229,6 +235,7 @@ export default defineComponent({
             onUploadChange,
             headers : getHeaders(),
             bgNumberToTag,
+            toExportList,
         }
     },
 });

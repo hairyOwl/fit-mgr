@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-23 14:18:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-29 22:43:32
+ * @LastEditTime: 2022-04-29 14:31:34
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { user } from '@/service';
@@ -67,6 +67,12 @@ const routes = [
         path: 'user',
         name: 'User ',
         component: () => import(/* webpackChunkName: "user" */ '../views/User/index.vue'),
+      },
+      //角色管理-照顾者列表
+      {
+        path: 'minder/detail/:id',
+        name: 'UserMinderInfo ',
+        component: () => import(/* webpackChunkName: "UserMinderInfo" */ '../views/UserMinderInfo/index.vue'),
       },
       //日志管理
       {

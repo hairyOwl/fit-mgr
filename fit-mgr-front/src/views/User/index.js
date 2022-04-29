@@ -3,9 +3,10 @@
  * @Author: hairyOwl
  * @Date: 2022-03-06 22:35:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:26:22
+ * @LastEditTime: 2022-04-28 14:37:50
  */
 import { defineComponent ,onMounted,ref, reactive } from 'vue';
+import { useRouter } from 'vue-router'; //操作路由的方法 前进一页后退一页跳转某一页
 import { user } from '@/service';
 import { result , formatTimestampPlus } from '@/helpers/utils';
 import { message } from 'ant-design-vue'; //antd提示
@@ -47,6 +48,7 @@ export default defineComponent({
         EditOutlined, //编辑icon
     },
     setup(){
+        const router = useRouter();
         //响应式数据
         const list = ref([]);
         const total = ref(0);
@@ -108,6 +110,7 @@ export default defineComponent({
             isSearch.value = !!keyword.value; //根据关键词的有无作为是否在搜索的判断
             getUserList();
         };
+
         //查询结束返回
         const backAll = async ()=>{
             isSearch.value = false;
@@ -131,6 +134,11 @@ export default defineComponent({
                     showEditCharacterModal.value = false;
                     editFrom.current.character = editFrom.character;
                 });
+        }
+
+        //跳转到用户的照顾者
+        const toDetail = ({_id}) =>{
+            router.push(`/minder/detail/${_id}`);
         }
 
         //上传状态发生变化  e : file.response.target就是响应返回内容
@@ -175,6 +183,7 @@ export default defineComponent({
             showEditCharacterModal,
             editFrom,
             onEdit,
+            toDetail,
             characterInfo : store.state.characterInfo,
             editCharacter,
             //上传

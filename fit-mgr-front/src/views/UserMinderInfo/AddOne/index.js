@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:35
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-28 16:53:37
+ * @LastEditTime: 2022-04-29 14:00:17
  */
 import { defineComponent ,reactive} from 'vue';
 import { user } from '@/service';
@@ -22,6 +22,7 @@ export default defineComponent({
     //父组件传递的自定义属性名(str)
     props: {
         show : Boolean,
+        father : Object,
     },
     
     //初始化时执行一次 ，生命周期的钩子
@@ -29,22 +30,27 @@ export default defineComponent({
         const { characterInfo } = store.state;
 
         const addForm = reactive(clone(defaultFormData)); //防止reactive直接操作defaultFormData
-        addForm.character = characterInfo[1]._id; //默认角色是成员
+        const minderCharacter = characterInfo[1]._id; //默认角色是成员
+        
 
         //点击提交按钮事件
         const submit = async () =>{
             const form = clone(addForm); //深拷贝
-            const res = await user.addUser(form.account , 
+            
+            const res = await user.addUser(
+                form.account , 
                 form.password , 
-                form.character,
-                false);
+                minderCharacter,
+                true,
+                props.father.account,
+            );
 
             result(res)
                 .success((data) =>{ //添加数据成功后清空表单
                     Object.assign(addForm ,defaultFormData); //合并数组
                     message.success(data.msg);
                     close();
-                    context.emit('getList');
+                    context.emit('getUserMinderList');
                 });
         };
 

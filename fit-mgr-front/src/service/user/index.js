@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 11:05:02
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-28 10:42:38
+ * @LastEditTime: 2022-04-28 16:53:01
  */
 import{
     get,
@@ -28,11 +28,13 @@ export const deleteUser = (id)=>{
 };
 
 //添加用户
-export const addUser = (account , password ,character) =>{
+export const addUser = (account , password ,character,isMinder,minder) =>{
     return post('/user/add',{
         account,
         password,
         character,
+        isMinder,
+        minder,
     });
 };
 
@@ -62,3 +64,8 @@ export const updateCharacter = (userId , character) =>{
 export const info = () =>{
     return get('/user/info');
 };
+
+// 照顾者详情
+export const detail = (id)=>{
+    return get(`/user/minder/detail/${id}`);
+}

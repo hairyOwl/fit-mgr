@@ -3,14 +3,14 @@
  * @Author: hairyOwl
  * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 21:27:11
+ * @LastEditTime: 2022-04-28 10:54:00
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody,formatTimestamp } = require('../../helpers/utils');
+const { getBody,formatTimestamp ,nowTime } = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
-const { loadExcel , getFirstSheet  } = require('../../helpers/excel'); //解析excel帮助类
+const { loadExcel , getFirstSheet , toExcelFile  } = require('../../helpers/excel'); //解析excel帮助类
 
 
 //常量
@@ -99,10 +99,13 @@ medicineRouter.post('/add/many', async (ctx)=>{
         ] = sheet[i]; 
         
         //把时间字符串转为时间戳
-        let pDate = purchaseDate;
-        //purchaseDate 2022-03-16T15:59:17.000Z
-        pDate = (new Date(pDate)).getTime();
-    
+        let pDate;
+        if(typeof purchaseDate === 'string'){
+            pDate = new Date(purchaseDate).getTime();
+        }else{
+            pDate  = (new Date((formatExcelDate((new Date(purchaseDate)).getTime())))).getTime();
+        }
+
         //因为excel中药品种类是名字数据库需要种类id
         let tangId = tag;
         const one = await MedicineClassify.findOne({
@@ -133,6 +136,64 @@ medicineRouter.post('/add/many', async (ctx)=>{
             addCount : arr.length,
         }
     }
+});
+
+//批量导出
+medicineRouter.post('/export/list',async (ctx)=>{
+    let{
+        userAdmin,
+        account,
+    } = ctx.request.body;
+    //数据表格
+    let data = [];
+    const fileName = `${account}药`+ nowTime();
+    //判断是否有查询条件
+    const query = {};
+    //非管理员用户只导出自己的血压
+    if(userAdmin === false){
+        query.userAccount = account;
+        data[0] = ['药品/试剂','种类','购买日期','保质期','数量','备注'];
+    }else{//管理员表头不同
+        data[0] = ['用户','药品/试剂','种类','购买日期','保质期','数量','备注'];
+    }
+
+    //获取导出列表
+    const list = await Medicine.find(query).exec();
+    const classifyList = await MedicineClassify.find().exec();
+    
+    
+    //导出列表 按表头添加到列表
+    list.forEach(async (element) =>{
+        let arrInner = [];
+        if(userAdmin === true){
+            arrInner.push(element.userAccount);
+        }
+        //获取分类名字 返回的是一个分类对象
+        const classify = classifyList.find((value)=>{
+            if((value._id).toString() === element.tag){
+                return value.title;
+            }
+        });
+        arrInner.push(element.name);
+        arrInner.push(classify.title);
+        arrInner.push(formatTimestamp(element.purchaseDate));
+        arrInner.push(element.shelfLife);
+        arrInner.push(element.count);
+        arrInner.push(element.note);
+
+        data.push(arrInner);
+        
+    });
+        
+    /* 
+    响应体设置
+    */
+    // request.headers['content-disposition'] = `attachment; filename=${fileName}`; //设置文件名
+    //前端允许Content-Disposition
+    ctx.set("Access-Control-Expose-Headers", "Content-Disposition"); 
+    //设置文件名
+    ctx.attachment(Buffer.from(fileName).toString('base64')); 
+    ctx.body = toExcelFile(fileName ,data); //buffer文件流
 });
 
 //获取列表接口 分页列表

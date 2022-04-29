@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-17 17:07:19
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 10:13:30
+ * @LastEditTime: 2022-04-29 15:07:58
  */
 const mongoose = require('mongoose');
 const { getMeta ,preSave } = require('../helpers');
@@ -11,6 +11,8 @@ const { getMeta ,preSave } = require('../helpers');
 const BGSchema = new mongoose.Schema({
     //用户id
     userAccount : String, 
+    //记录者账户
+    recordAccount : String,
     //血糖
     glucose : Number,
     //日期

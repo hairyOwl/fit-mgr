@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 15:48:26
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-28 16:00:09
+ * @LastEditTime: 2022-04-28 16:01:20
 -->
 <!-- 添加血压弹窗模板 -->
 <template>
@@ -11,7 +11,7 @@
         <!-- 对话框是个弹窗 -->
         <a-modal
             :visible = "props.show"
-            title="添加一个用户" 
+            title="添加照顾者" 
             @ok="submit"
             @cancel = "close"
         >    
@@ -31,20 +31,6 @@
                     <a-input
                         v-model:value="addForm.password"
                         :min="0" :max="200" />
-                </a-form-item>
-
-                <a-form-item label="角色">
-                    <a-select
-                        v-model:value="addForm.character"
-                        >
-                        <a-select-option
-                            v-for="item in characterInfo"
-                            :key = "item._id"
-                            :value = "item._id"
-                        >
-                            {{ item.title }}
-                        </a-select-option>
-                    </a-select>
                 </a-form-item>
 
             </a-form>

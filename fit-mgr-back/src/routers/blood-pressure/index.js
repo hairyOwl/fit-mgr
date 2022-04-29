@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-23 16:40:36
+ * @LastEditTime: 2022-04-29 15:06:14
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
@@ -15,7 +15,7 @@ const { loadExcel , getFirstSheet ,toExcelFile } = require('../../helpers/excel'
 
 //拿到model
 const BloodPressure = mongoose.model('BloodPressure');
-const InventoryLog = mongoose.model('InventoryLog');
+const User = mongoose.model('User');
 
 //抽取通过id找单条文档的方法
 const findBloodPOne = async (id) =>{
@@ -49,6 +49,8 @@ bpRouter.post('/add',async (ctx)=>{
 
     recordDate = (new Date(formatTimestamp(recordDate))).getTime();
     
+    
+
     const bloodPressure = new BloodPressure({
         userAccount,
         sys,
@@ -96,8 +98,12 @@ bpRouter.post('/add/many', async (ctx)=>{
         ] = sheet[i]; 
         
         //把时间字符串转为时间戳
-        let rDate = (new Date((formatExcelDate((new Date(recordDate)).getTime())))).getTime();
-
+        let rDate;
+        if(typeof recordDate === 'string'){
+            rDate = new Date(recordDate).getTime();
+        }else{
+            rDate  = (new Date((formatExcelDate((new Date(recordDate)).getTime())))).getTime();
+        }
         arr.push({
             userAccount,
             recordDate: rDate,
@@ -121,7 +127,7 @@ bpRouter.post('/add/many', async (ctx)=>{
     }
 });
 
-//批量导出
+//批量导出 为Excel文件
 bpRouter.post('/export/list',async (ctx)=>{
     let{
         userAdmin,
@@ -174,9 +180,6 @@ bpRouter.post('/export/list',async (ctx)=>{
     //设置文件名
     ctx.attachment(Buffer.from(fileName).toString('base64')); 
     ctx.body = toExcelFile(fileName ,data); //buffer文件流
-    
-    
-    
 });
 
 //获取列表接口 分页列表 日期范围搜索

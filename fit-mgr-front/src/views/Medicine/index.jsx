@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-27 21:26:00
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 20:29:25
+ * @LastEditTime: 2022-04-27 15:58:38
  */
 import {
     defineComponent , 
@@ -237,6 +237,12 @@ export default defineComponent({
             }
         }
 
+        //批量导出 下载路径简单的为浏览器默认下载路径 
+        const toExportList = async () =>{
+            await medicine.exportList(userAdmin,account);
+            
+        }
+
         return{
             //弹窗点击事件flag
             show, //添加
@@ -268,6 +274,7 @@ export default defineComponent({
             simple : props.simple,
             onUploadChange,
             headers : getHeaders(),
+            toExportList,
         }
     },
 });

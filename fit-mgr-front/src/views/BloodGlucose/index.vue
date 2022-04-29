@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-04 21:25:49
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-11 14:12:35
+ * @LastEditTime: 2022-04-26 16:52:54
 -->
 <!-- 血糖信息模板 -->
 <template>
@@ -32,14 +32,14 @@
                     <!-- 添加按钮 -->
                     <div >
                         <a-button @click="show = true">添加一条</a-button>&nbsp;
+                        <a-button @click="toExportList()">批量导出</a-button>&nbsp;
                         <!-- 文件上传 -->
                         <a-upload v-only-member
                             @change="onUploadChange"
                             action="http://localhost:3000/upload/file"
                             :headers = "headers"
                         >
-                            <a-button type="primary">上传Excel批量添加</a-button>
-                            <a-button type="primary" style="margin-left:5px;">导出Excel数据表</a-button>
+                            <a-button type="primary">批量导入 Excel文件</a-button>
                         </a-upload>
                     </div>
                 </space-between>

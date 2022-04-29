@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-21 16:11:04
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-21 22:34:19
+ * @LastEditTime: 2022-04-27 17:23:54
  */
 //
 const getBody = (ctx) =>{
@@ -19,7 +19,7 @@ const formatTimestamp = (timestamp)=>{
     const MM = date.getMonth() +1 ; //月从9开始
     const DD = date.getDate();
 
-    return `${YYYY}-${MM}-${DD}`;
+    return `${YYYY}/${MM}/${DD}`;
 };
 
 //获取当前时间精确到秒
@@ -34,7 +34,7 @@ const nowTime = () =>{
     const ss = date.getSeconds();
     
 
-    return `${YYYY}年${MM}月${DD}日${hh}h${mm}m${ss}s`;
+    return `${YYYY}-${MM}-${DD} ${hh}h${mm}m${ss}s`;
 }
 
 //血压时间戳 批量上传时 文字转数字
@@ -82,6 +82,25 @@ const bpNumberToTag = (num) =>{
     }
 };
 
+//血压 数组对应文字
+const bgNumberToTag = (num) =>{
+    if(num === '0'){
+        return "早餐前"
+    }else if(num === '1'){
+        return "早餐后"
+    }else if(num === '2'){
+        return "中餐前"
+    }else if(num === '3'){
+        return "中餐后"
+    }else if(num === '4'){
+        return "晚餐前"
+    }else if(num === '5'){
+        return "晚餐后"
+    }else if(num === '6'){
+        return "睡前"
+    }
+};
+
 //批量添加时处理日期少一天的问题 因为闰年
 function formatExcelDate(num) {
     const old = num - 1;
@@ -102,6 +121,7 @@ module.exports = {
     findNumFromBPExcel,
     findNumFromBGExcel,
     bpNumberToTag,
+    bgNumberToTag,
     formatExcelDate,
 };
 

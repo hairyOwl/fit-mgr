@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 17:41:11
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-22 23:11:58
+ * @LastEditTime: 2022-04-26 16:40:16
  */
 import{
     get,
@@ -35,10 +35,6 @@ export const exportList = (userAdmin, account)=>{
         userAdmin,
         account,
     });
-}
-//批量导出文件下载
-export const getExportFile = (url) =>{
-    return get(url);
 }
 
 //血压数据列表

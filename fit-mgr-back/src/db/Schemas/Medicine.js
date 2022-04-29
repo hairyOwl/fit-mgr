@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-17 17:08:24
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-19 11:36:09
+ * @LastEditTime: 2022-04-29 15:08:05
  */
 const mongoose = require('mongoose');
 const { getMeta ,preSave } = require('../helpers');
@@ -11,6 +11,8 @@ const { getMeta ,preSave } = require('../helpers');
 const MedicineSchema = new mongoose.Schema({
     //用户id
     userAccount : String, 
+    //记录者账户
+    recordAccount : String,
     //药品
     name : String,
     //购买日期

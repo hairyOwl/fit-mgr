@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-03-07 10:02:28
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-03-27 18:45:41
+ * @LastEditTime: 2022-04-29 14:01:28
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
@@ -33,6 +33,8 @@ userRouter.get('/list',async (ctx)=>{
     if(keyword !=''){
         query.account =keyword;
     }
+    query.isMinder = false;
+    
 
     //分页查询
     const list = await User
@@ -71,6 +73,14 @@ userRouter.delete('/:id',async (ctx)=>{
         id,
     }=ctx.params;
 
+    //普通用户删除关联的照顾者
+    const one = await User.findOne({_id:id}).exec();
+    if(!one.isMinder){
+        const delManyMsg = await User.deleteMany({minder : one.account,});
+        console.log(delManyMsg);
+    }
+
+
     const delMsg = await User.deleteOne({
         _id : id,
     });
@@ -88,6 +98,8 @@ userRouter.post('/add',async (ctx)=>{
         account,
         password,
         character,
+        isMinder,
+        minder,
     } = ctx.request.body;
 
     //判断角色是否存在
@@ -126,6 +138,8 @@ userRouter.post('/add',async (ctx)=>{
         account,
         password : password || config.DEFAULT_PASSWORD,
         character,
+        isMinder,
+        minder,
     });
 
     const res = await user.save();
@@ -283,5 +297,35 @@ userRouter.get('/info',async (ctx)=>{
     };
 });
 
+//用户的照顾者详情
+userRouter.get('/minder/detail/:id',async (ctx)=>{
+    const{
+        id,
+    } = ctx.params;
+
+    const one = await User.findById(id);
+
+    
+    const minders = await User.find({
+        minder : one.account,
+    }).exec();
+
+    if(!one){
+        ctx.body = {
+            code:0,
+            msg:'没有找对该条药品数据',
+        }
+        return;
+    }
+
+    ctx.body = {
+        code:1,
+        msg : '查询成功',
+        data : {
+            user : one,
+            minderList : minders,
+        },
+    }
+});
 
 module.exports = userRouter;

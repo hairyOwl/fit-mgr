@@ -3,7 +3,7 @@
  * @Author: hairyOwl
  * @Date: 2022-02-26 21:56:23
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-22 23:16:23
+ * @LastEditTime: 2022-04-27 15:05:22
  */
 import { message } from 'ant-design-vue'; //提示框
 
@@ -54,7 +54,7 @@ export const formatTimestamp = (timestamp)=>{
     const YYYY = date.getFullYear();
     const MM = timestampPadStart(date.getMonth() +1) ; //月从9开始
     const DD = timestampPadStart(date.getDate());
-    return `${YYYY}-${MM}-${DD}`;
+    return `${YYYY}/${MM}/${DD}`;
 };
 
 //格式化时间戳
@@ -70,7 +70,7 @@ export const formatTimestampPlus = (timestamp)=>{
     const mm = timestampPadStart(date.getMinutes());
     const ss = timestampPadStart(date.getSeconds());
 
-    return `${YYYY}-${MM}-${DD} ${hh}:${mm}:${ss} `;
+    return `${YYYY}/${MM}/${DD} ${hh}:${mm}:${ss} `;
 };
 
 //血压 数组对应文字
