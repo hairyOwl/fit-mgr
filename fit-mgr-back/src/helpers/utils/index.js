@@ -3,13 +3,36 @@
  * @Author: hairyOwl
  * @Date: 2022-02-21 16:11:04
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-27 17:23:54
+ * @LastEditTime: 2022-04-29 15:40:35
  */
-//
+const mongoose = require('mongoose');
+
+const User = mongoose.model('User');
+
+/* 
+    响应处理相关
+*/
+//获取响应体Body
 const getBody = (ctx) =>{
     return ctx.request.body || {}; //返回返回体body 或空
 }
 
+//判断记录者
+const getUserAccount = async(userAccount) =>{
+    const one = await User.findOne({
+        account : userAccount,
+    }).exec();
+    //如果是照顾者 记录者是照顾者反之是用户本身
+    if(one.isMinder){
+        return one.minder;
+    }else{
+        return userAccount;
+    }
+}
+
+/* 
+    时间戳预处理
+*/
 //格式化时间戳
 const formatTimestamp = (timestamp)=>{
     const date = new Date(Number(timestamp));
@@ -37,7 +60,22 @@ const nowTime = () =>{
     return `${YYYY}-${MM}-${DD} ${hh}h${mm}m${ss}s`;
 }
 
-//血压时间戳 批量上传时 文字转数字
+//批量添加时处理日期少一天的问题 因为闰年
+function formatExcelDate(num) {
+    const old = num - 1;
+    const t = Math.round((old - Math.floor(old)) * 24 * 60 * 60);
+    const time = new Date(1900, 0, old, 0, 0, t);
+    const year = time.getFullYear();
+    const month = time.getMonth() + 1;
+    const date = time.getDate()
+
+    return year + '/' + (month < 10 ? '0' + month : month) + '/' + (date < 10 ? '0' + date : date)
+}
+
+/* 
+    导入导出字段转换
+*/
+//血压时间段 批量上传时 文字转数字
 const findNumFromBPExcel = (timeTag) =>{
     if(timeTag === '早上'){
         return '0';
@@ -50,7 +88,7 @@ const findNumFromBPExcel = (timeTag) =>{
     }
 }
 
-//血糖时间戳 批量上传时 文字转数字
+//血糖时间段 批量上传时 文字转数字
 const findNumFromBGExcel = (timeTag) =>{
     if(timeTag === '早餐前'){
         return '0';
@@ -69,7 +107,7 @@ const findNumFromBGExcel = (timeTag) =>{
     }
 }
 
-//血压 数组对应文字
+//血压时间段 数组对应文字
 const bpNumberToTag = (num) =>{
     if(num === '0'){
         return "早上"
@@ -82,7 +120,7 @@ const bpNumberToTag = (num) =>{
     }
 };
 
-//血压 数组对应文字
+//血糖时间段 数组对应文字
 const bgNumberToTag = (num) =>{
     if(num === '0'){
         return "早餐前"
@@ -101,27 +139,20 @@ const bgNumberToTag = (num) =>{
     }
 };
 
-//批量添加时处理日期少一天的问题 因为闰年
-function formatExcelDate(num) {
-    const old = num - 1;
-    const t = Math.round((old - Math.floor(old)) * 24 * 60 * 60);
-    const time = new Date(1900, 0, old, 0, 0, t);
-    const year = time.getFullYear();
-    const month = time.getMonth() + 1;
-    const date = time.getDate()
 
-    return year + '/' + (month < 10 ? '0' + month : month) + '/' + (date < 10 ? '0' + date : date)
-}
 
 //导出方法工文件外调用
 module.exports = {
     getBody,
+    getUserAccount,
+
     formatTimestamp,
     nowTime,
+    formatExcelDate,
+
     findNumFromBPExcel,
     findNumFromBGExcel,
     bpNumberToTag,
     bgNumberToTag,
-    formatExcelDate,
 };
 

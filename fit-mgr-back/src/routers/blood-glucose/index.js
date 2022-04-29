@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-02-28 10:59:45
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-27 15:28:26
+ * @LastEditTime: 2022-04-29 16:29:02
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody, formatTimestamp,formatExcelDate, findNumFromBGExcel,nowTime,bgNumberToTag} = require('../../helpers/utils');
+const { getBody, getUserAccount,formatTimestamp,formatExcelDate, findNumFromBGExcel,nowTime,bgNumberToTag} = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
 const { loadExcel , getFirstSheet,toExcelFile  } = require('../../helpers/excel'); //解析excel帮助类
 
@@ -43,10 +43,11 @@ bgRouter.post('/add',async (ctx)=>{
         recordDate,
     } = ctx.request.body;
     recordDate = (new Date(formatTimestamp(recordDate))).getTime();
-    
+    const uAccount = await getUserAccount(userAccount);
     
     const bloodGlucose = new BloodGlucose({
-        userAccount,
+        userAccount : uAccount,
+        recordAccount : userAccount,
         glucose,
         recordDate,
         timeTag,
@@ -77,6 +78,7 @@ bgRouter.post('/add/many', async (ctx)=>{
     const sheet = getFirstSheet(excel);
 
     //解析到的用户数据重组为数组
+    const uAccount = await getUserAccount(userAccount);
     const arr = [];    
     for(let i=1 ; i<sheet.length ; i++){
          //每一行数据 封装为对象 
@@ -96,7 +98,8 @@ bgRouter.post('/add/many', async (ctx)=>{
         
 
         arr.push({
-            userAccount,
+            userAccount : uAccount,
+            recordAccount : userAccount,
             recordDate : rDate,
             timeTag: findNumFromBGExcel(timeTag),
             glucose,
@@ -128,11 +131,18 @@ bgRouter.post('/export/list',async (ctx)=>{
     //判断是否有查询条件
     const query = {};
     //非管理员用户只导出自己的血糖
+    const uAccount = await getUserAccount(account);
     if(userAdmin === false){
-        query.userAccount = account;
-        data[0] = ['日期','时间段','血糖','备注'];
+        //照顾者查看主用户的信息
+        if(account !== uAccount){
+            query.userAccount = uAccount;
+        }else{
+            //主用户看自己的信息
+            query.userAccount = account;
+        }
+        data[0] = ['记录者','日期','时间段','血糖','备注'];
     }else{//管理员表头不同
-        data[0] = ['用户','日期','时间段','血糖','备注'];
+        data[0] = ['用户','记录者','日期','时间段','血糖','备注'];
     }
 
     //获取导出列表
@@ -150,6 +160,7 @@ bgRouter.post('/export/list',async (ctx)=>{
         if(userAdmin === true){
             arrInner.push(element.userAccount);
         }
+        arrInner.push(element.recordAccount);
         arrInner.push(formatTimestamp(element.recordDate));
         arrInner.push(bgNumberToTag(element.timeTag));
         arrInner.push(element.glucose);
@@ -182,12 +193,19 @@ bgRouter.get('/list',async (ctx) =>{
 
     page = Number(page);
     size = Number(size);
+    const uAccount = await getUserAccount(account);
 
     //判断是否有查询条件
     const query = {};
     //非管理员用户只能看自己的血糖
     if(userAdmin === 'false'){
-        query.userAccount = account;
+        //照顾者查看主用户的信息
+        if(account !== uAccount){
+            query.userAccount = uAccount;
+        }else{
+            //主用户看自己的信息
+            query.userAccount = account;
+        }
     }
 
     //有日期查询

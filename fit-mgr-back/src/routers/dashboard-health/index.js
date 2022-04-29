@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-03-29 18:10:18
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-11 13:16:56
+ * @LastEditTime: 2022-04-29 15:54:14
  */
 const Router = require('@koa/router');
 const mongoose = require('mongoose');
 const {getToken ,verifyToken } = require('../../helpers/token');
-const { formatTimestamp, bpNumberToTag } = require('../../helpers/utils');
+const { formatTimestamp, bpNumberToTag , getUserAccount } = require('../../helpers/utils');
 
 
 const BloodPressure  = mongoose.model('BloodPressure');
@@ -21,7 +21,10 @@ const dashBoardHealthRouter = new Router({
 //获取基础数据
 dashBoardHealthRouter.get('/info', async (ctx)=>{
     //获取当前用户account
-    const { account } = await verifyToken(getToken(ctx));    
+    let { account } = await verifyToken(getToken(ctx));    
+
+    //照顾者看主用户的信息
+    account = await getUserAccount(account);
 
     const bloodPTotal = await BloodPressure.countDocuments( {userAccount : account} ).exec();
     const bloodGTotal = await BloodGlucose.countDocuments( {userAccount : account} ).exec();

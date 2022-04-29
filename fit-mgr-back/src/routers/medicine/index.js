@@ -3,12 +3,12 @@
  * @Author: hairyOwl
  * @Date: 2022-03-18 14:40:42
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-04-28 10:54:00
+ * @LastEditTime: 2022-04-29 16:28:37
  */
 //导入依赖
 const Router = require('@koa/router'); //路由
 const mongoose = require('mongoose'); 
-const { getBody,formatTimestamp ,nowTime } = require('../../helpers/utils');
+const { getBody,getUserAccount,formatExcelDate, formatTimestamp ,nowTime } = require('../../helpers/utils');
 const config = require('../../project.config'); //默认配置
 const { loadExcel , getFirstSheet , toExcelFile  } = require('../../helpers/excel'); //解析excel帮助类
 
@@ -51,9 +51,11 @@ medicineRouter.post('/add',async (ctx)=>{
         note,
     } =getBody(ctx);
 
+    const uAccount = await getUserAccount(userAccount);
     
     const medicine = new Medicine({
-        userAccount,
+        userAccount : uAccount,
+        recordAccount : userAccount,
         name,
         tag,
         purchaseDate,
@@ -86,6 +88,7 @@ medicineRouter.post('/add/many', async (ctx)=>{
     const sheet = getFirstSheet(excel);
 
     //解析到的用户数据重组为数组
+    const uAccount = await getUserAccount(userAccount);
     const arr = [];    
     for(let i=1 ; i<sheet.length ; i++){
          //每一行数据 封装为对象 
@@ -116,7 +119,8 @@ medicineRouter.post('/add/many', async (ctx)=>{
         }
 
         arr.push({
-            userAccount,
+            userAccount : uAccount,
+            recordAccount : userAccount,
             name,
             tag : tangId,
             purchaseDate : pDate,
@@ -150,11 +154,18 @@ medicineRouter.post('/export/list',async (ctx)=>{
     //判断是否有查询条件
     const query = {};
     //非管理员用户只导出自己的血压
+    const uAccount = await getUserAccount(account);
     if(userAdmin === false){
-        query.userAccount = account;
-        data[0] = ['药品/试剂','种类','购买日期','保质期','数量','备注'];
+        //照顾者查看主用户的信息
+        if(account !== uAccount){
+            query.userAccount = uAccount;
+        }else{
+            //主用户看自己的信息
+            query.userAccount = account;
+        }
+        data[0] = ['记录者','药品/试剂','种类','购买日期','保质期','数量','备注'];
     }else{//管理员表头不同
-        data[0] = ['用户','药品/试剂','种类','购买日期','保质期','数量','备注'];
+        data[0] = ['用户','记录者','药品/试剂','种类','购买日期','保质期','数量','备注'];
     }
 
     //获取导出列表
@@ -174,7 +185,8 @@ medicineRouter.post('/export/list',async (ctx)=>{
                 return value.title;
             }
         });
-        arrInner.push(element.name);
+        arrInner.push(element.recordAccount);
+        arrInner.push(element.name);'记录者',
         arrInner.push(classify.title);
         arrInner.push(formatTimestamp(element.purchaseDate));
         arrInner.push(element.shelfLife);
@@ -206,11 +218,21 @@ medicineRouter.get('/list',async (ctx) =>{
         keyword,
     } = ctx.query;
 
+    page = Number(page);
+    size = Number(size);
+    const uAccount = await getUserAccount(account);
+
     //判断是否有查询条件
     const query = {};
     //非管理员用户只能看自己的药品
     if(userAdmin === 'false'){
-        query.userAccount = account;
+        //照顾者查看主用户的信息
+        if(account !== uAccount){
+            query.userAccount = uAccount;
+        }else{
+            //主用户看自己的信息
+            query.userAccount = account;
+        }
     }
     if(keyword !=''){
         query.name =keyword;
