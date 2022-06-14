@@ -1,0 +1,39 @@
+/*
+ * @Description: 总览 页面逻辑
+ * @Author: hairyOwl
+ * @Date: 2022-03-22 22:44:02
+ * @LastEditors: hairyOwl
+ * @LastEditTime: 2022-03-25 14:21:42
+ */
+.list{
+    display: flex;
+    // 行内元素
+    .item{
+        flex :1;
+
+        .title{
+            color: #666;
+        }
+
+        .count{
+            font-weight: 700; //粗体
+            font-size: 22px; //粗体
+        }
+    }
+}
+
+.tableList{
+    display: flex;
+    margin-top: 24px;
+
+    .left{
+        flex : 1;
+        width: 50%;
+    }
+
+    .right{
+        flex : 1;
+        width: 50%;
+        margin-left: 16px;
+    }
+}

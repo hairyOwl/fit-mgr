@@ -3,43 +3,37 @@
  * @Author: hairyOwl
  * @Date: 2022-02-20 22:28:12
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-21 14:14:10
+ * @LastEditTime: 2022-03-20 10:03:08
  */
+//注册模型
+require('./Schemas/User') //执行User.js
+require('./Schemas/InviteCode') //执行InviteCode.js
+require('./Schemas/BloodPressure') //执行 BloodPressure.js
+require('./Schemas/InventoryLog') //执行 InventoryLog.js
+require('./Schemas/Character') //执行 Character.js
+require('./Schemas/ActionLog') //执行 ActionLog.js
+require('./Schemas/ActionLogResponse') //执行 ActionLogResponse.js
+require('./Schemas/ResetPassword') //执行 ForgetPassword.js
+require('./Schemas/BloodGlucose') //执行 BloodGlucose.js
+require('./Schemas/Medicine') //执行 Medicine.js
+require('./Schemas/MedicineClassify') //执行 MedicineClassify.js
+
 //导入mongoose
 const mongoose = require('mongoose');
-
-/* 
-数据库数据创建
-*/
-//schema 传入对象，对象描述每个文档信息
-const UserSchema = new mongoose.Schema({
-    nickname:String,
-    password:String,
-    age:Number,
-});
-//创建Model
-const UserModal = mongoose.model('User',UserSchema); //是个类
-
-/* 
-对目标集合进行操作
-*/
 //连接数据库
 const connect = ()=>{
-    //连接数据库
-    mongoose.connect('mongodb://localhost:27017/fit-mgr'); 
-    //监听open。当数据库被打开的时候做一些事情
-    mongoose.connection.on('open',()=>{
-        console.log('连接成功');
-        //创建一条文档
-        const user = new UserModal({
-            nickname:'小白',
-            password:'123123',
-            age:12,
+    // promise 对象 保证数据库连接成功后再进行后续操作
+    return new Promise((resolve)=>{
+        //连接数据库
+        mongoose.connect('mongodb://localhost:27017/fit-mgr'); 
+        //监听open。当数据库被打开的时候做一些事情
+        mongoose.connection.on('open',()=>{
+            console.log('数据库连接成功');
+            resolve();
         });
-        //保存、同步到mongodb
-        user.age = 22
-        user.save() 
     });
 }
-//调用函数                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-connect();
+//暴露函数
+module.exports = {
+    connect,
+};                                             

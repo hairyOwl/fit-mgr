@@ -1,7 +1,57 @@
 /*
  * @Description: 认证页面样式
  * @Author: hairyOwl
- * @Date: 2022-02-23 14:36:42
+ * @Date: 2022-02-23 15:41:27
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-23 14:37:08
+ * @LastEditTime: 2022-02-24 15:28:55
  */
+//认证样式
+.bg{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+
+    background-image: url("data:image/svg+xml,%3Csvg xlink='http://www.w3.org/1999/xlink' viewBox='0 0 5000 5000' xmlns='http://www.w3.org/2000/svg' style='transform: scale(1.92)%3B'%3E%3Cdefs%3E%3Cfilter id='goo'%3E%3CfeGaussianBlur in='SourceGraphic' stdDeviation='6.875000000000001' result='blur'%3E%3C/feGaussianBlur%3E%3CfeColorMatrix in='blur' type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9' result='good'%3E%3C/feColorMatrix%3E%3CfeComposite in='SourceGraphic' in2='goo' operator='atop'%3E%3C/feComposite%3E%3C/filter%3E%3Cpath d='M219 284C206 271 223 252 226 244C228 236 219 213 236 206C253 201 261 226 267 232C274 239 299 247 295 261C291 276 267 270 258 274C248 277 229 294 219 284z' id='P0'%3E%3C/path%3E%3Cpath d='M189 258C187 242 223 239 228 232C233 226 227 191 242 189C258 187 261 223 268 228C274 233 309 227 311 242C313 258 277 261 272 268C267 274 273 309 258 311C242 313 239 277 232 272C226 267 191 273 189 258z' id='P1'%3E%3C/path%3E%3Cpath d='M267 276C262 280 254 272 249 272C244 272 236 279 230 274C225 270 230 261 228 256C227 251 218 246 221 239C223 233 233 234 238 231C242 229 244 219 252 219C258 219 260 229 264 233C268 235 278 235 280 242C282 248 273 253 271 258C269 262 273 272 267 276z' id='P2'%3E%3C/path%3E%3Cpath d='M238 287C224 282 228 262 227 254C225 247 213 233 223 222C235 212 250 225 257 227C266 231 286 230 288 243C291 255 273 261 266 267C259 273 250 291 238 287z' id='P3'%3E%3C/path%3E%3Cpath d='M368 265C365 296 283 274 275 281C268 287 273 372 235 368C204 365 226 283 218 273C212 265 127 266 132 235C135 204 217 226 227 218C235 212 234 127 265 132C296 135 274 217 282 227C288 235 373 234 368 265z' id='P4'%3E%3C/path%3E%3Cpath d='M207 281C201 273 223 257 223 250C223 245 199 230 207 219C213 210 235 227 242 225C247 223 253 196 266 200C276 202 267 229 272 234C275 238 303 236 303 250C304 260 275 260 272 266C269 270 279 296 266 300C257 304 248 277 242 275C237 274 215 292 207 281z' id='P5'%3E%3C/path%3E%3Cpath d='M303 334C270 353 246 272 240 268C234 265 156 294 151 256C150 218 233 236 239 232C246 228 270 147 298 163C326 179 270 241 271 249C271 257 331 317 303 334z' id='P6'%3E%3C/path%3E%3Cpath d='M363 236C368 265 288 265 280 275C274 283 294 360 264 363C235 368 235 288 227 281C219 276 143 300 137 264C132 235 212 235 220 225C226 217 206 140 236 137C265 132 265 212 275 220C283 226 360 206 363 236z' id='P7'%3E%3C/path%3E%3Cpath d='M333 190C345 205 286 241 286 250C287 257 348 289 333 310C322 327 270 282 261 285C255 287 243 355 218 347C199 342 226 279 221 271C216 266 148 276 148 250C147 230 215 236 221 229C224 223 194 161 218 153C237 146 252 213 261 215C268 217 317 169 333 190z' id='P8'%3E%3C/path%3E%3C/defs%3E%3Cg id='group' fill='%232ACB0E' filter='url(%23goo)' opacity='0.14'%3E%3Cuse x='331' y='-88' href='%23P5'%3E%3C/use%3E%3Cuse x='190' y='828' href='%23P1'%3E%3C/use%3E%3Cuse x='84' y='1042' href='%23P0'%3E%3C/use%3E%3Cuse x='-125' y='2012' href='%23P6'%3E%3C/use%3E%3Cuse x='-22' y='2653' href='%23P8'%3E%3C/use%3E%3Cuse x='411' y='3444' href='%23P8'%3E%3C/use%3E%3Cuse x='-145' y='3764' href='%23P8'%3E%3C/use%3E%3Cuse x='190' y='4460' href='%23P2'%3E%3C/use%3E%3Cuse x='-146' y='4867' href='%23P7'%3E%3C/use%3E%3Cuse x='771' y='-149' href='%23P4'%3E%3C/use%3E%3Cuse x='1096' y='641' href='%23P7'%3E%3C/use%3E%3Cuse x='617' y='1491' href='%23P4'%3E%3C/use%3E%3Cuse x='960' y='2043' href='%23P8'%3E%3C/use%3E%3Cuse x='568' y='2416' href='%23P2'%3E%3C/use%3E%3Cuse x='485' y='3451' href='%23P7'%3E%3C/use%3E%3Cuse x='849' y='3949' href='%23P6'%3E%3C/use%3E%3Cuse x='1111' y='4751' href='%23P8'%3E%3C/use%3E%3Cuse x='608' y='5192' href='%23P5'%3E%3C/use%3E%3Cuse x='1623' y='322' href='%23P5'%3E%3C/use%3E%3Cuse x='1284' y='898' href='%23P5'%3E%3C/use%3E%3Cuse x='1377' y='1384' href='%23P5'%3E%3C/use%3E%3Cuse x='1538' y='1819' href='%23P7'%3E%3C/use%3E%3Cuse x='1692' y='2836' href='%23P4'%3E%3C/use%3E%3Cuse x='1400' y='2989' href='%23P6'%3E%3C/use%3E%3Cuse x='1292' y='4085' href='%23P3'%3E%3C/use%3E%3Cuse x='1129' y='4523' href='%23P4'%3E%3C/use%3E%3Cuse x='1131' y='5381' href='%23P8'%3E%3C/use%3E%3Cuse x='1898' y='-199' href='%23P1'%3E%3C/use%3E%3Cuse x='2366' y='615' href='%23P8'%3E%3C/use%3E%3Cuse x='2282' y='1464' href='%23P4'%3E%3C/use%3E%3Cuse x='1987' y='2015' href='%23P4'%3E%3C/use%3E%3Cuse x='2171' y='2467' href='%23P8'%3E%3C/use%3E%3Cuse x='1893' y='3354' href='%23P8'%3E%3C/use%3E%3Cuse x='2377' y='3959' href='%23P5'%3E%3C/use%3E%3Cuse x='2031' y='4324' href='%23P6'%3E%3C/use%3E%3Cuse x='2173' y='4857' href='%23P3'%3E%3C/use%3E%3Cuse x='2882' y='-116' href='%23P8'%3E%3C/use%3E%3Cuse x='2815' y='997' href='%23P5'%3E%3C/use%3E%3Cuse x='2823' y='1381' href='%23P3'%3E%3C/use%3E%3Cuse x='2707' y='2205' href='%23P5'%3E%3C/use%3E%3Cuse x='2667' y='2695' href='%23P2'%3E%3C/use%3E%3Cuse x='2714' y='3276' href='%23P1'%3E%3C/use%3E%3Cuse x='2927' y='4041' href='%23P2'%3E%3C/use%3E%3Cuse x='2656' y='4535' href='%23P1'%3E%3C/use%3E%3Cuse x='2817' y='5188' href='%23P4'%3E%3C/use%3E%3Cuse x='3673' y='-10' href='%23P3'%3E%3C/use%3E%3Cuse x='3254' y='1001' href='%23P3'%3E%3C/use%3E%3Cuse x='3498' y='1087' href='%23P3'%3E%3C/use%3E%3Cuse x='3399' y='2197' href='%23P1'%3E%3C/use%3E%3Cuse x='3523' y='2734' href='%23P4'%3E%3C/use%3E%3Cuse x='3399' y='2916' href='%23P4'%3E%3C/use%3E%3Cuse x='3862' y='4140' href='%23P3'%3E%3C/use%3E%3Cuse x='3362' y='4256' href='%23P7'%3E%3C/use%3E%3Cuse x='3653' y='5052' href='%23P2'%3E%3C/use%3E%3Cuse x='4000' y='153' href='%23P0'%3E%3C/use%3E%3Cuse x='4550' y='507' href='%23P3'%3E%3C/use%3E%3Cuse x='4329' y='1480' href='%23P2'%3E%3C/use%3E%3Cuse x='4186' y='2217' href='%23P3'%3E%3C/use%3E%3Cuse x='4195' y='2307' href='%23P6'%3E%3C/use%3E%3Cuse x='4145' y='3368' href='%23P5'%3E%3C/use%3E%3Cuse x='4517' y='3711' href='%23P0'%3E%3C/use%3E%3Cuse x='4351' y='4475' href='%23P4'%3E%3C/use%3E%3Cuse x='4220' y='5027' href='%23P8'%3E%3C/use%3E%3Cuse x='4883' y='52' href='%23P7'%3E%3C/use%3E%3Cuse x='4568' y='779' href='%23P5'%3E%3C/use%3E%3Cuse x='4791' y='1527' href='%23P6'%3E%3C/use%3E%3Cuse x='5033' y='2057' href='%23P1'%3E%3C/use%3E%3Cuse x='5006' y='2756' href='%23P2'%3E%3C/use%3E%3Cuse x='4889' y='3270' href='%23P7'%3E%3C/use%3E%3Cuse x='5146' y='4095' href='%23P3'%3E%3C/use%3E%3Cuse x='4865' y='4594' href='%23P6'%3E%3C/use%3E%3Cuse x='5159' y='5119' href='%23P1'%3E%3C/use%3E%3C/g%3E%3C/svg%3E");
+    // background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.auth{
+    // 标题样式
+    .title-info{
+        margin-top: 100px;
+        //水平垂直居中
+        display: flex;  
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 32px;
+
+        img{
+            width: 60px;
+            height: 60px;
+        }
+
+        h2{
+            margin: 0;
+            margin-left: 18px;
+        }
+	}
+
+    //表单样式
+    .form{
+        width: 400px;
+        margin: 0 auto; //居中
+        //统一管理边距
+        .item{
+            margin-bottom: 16px;
+
+            button{
+                width: 100%;
+            }
+        }
+    }
+
+};

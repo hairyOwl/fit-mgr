@@ -1,48 +1,48 @@
 /*
- * @Description: 初始化koa,mong
+ * @Description: 初始化koa,mongo
  * @Author: hairyOwl
  * @Date: 2022-02-19 10:51:48
  * @LastEditors: hairyOwl
- * @LastEditTime: 2022-02-22 14:56:16
+ * @LastEditTime: 2022-04-22 23:04:22
  */
-
-/*
-每个文件都是一个模块 
- */
-
+//每个文件都是一个模块 
 //导入依赖
 const Koa = require('koa'); //导入koa
-//实例化一个koa对象
-const app = new Koa();
-//通过app.use 注册中间件 。中间件本质上是一个函数
-//每次请求进来中间件就会执行。
-app.use(async(context , next) => {
-    const {request:req} = context;
-    const {url} = req;
+const koaBody = require('koa-body'); //获取页面数据
+const { connect } = require('./db'); //导入 db/index.js
+const registerRouters = require('./routers'); //等同./routers/index.js
+const cors = require('@koa/cors'); //@koa/cors 解决数据跨域
+const { middleware: koaJwtMiddleware  , checkUser, catchTokenError} = require('./helpers/token'); //jwt中间件
+const { actionLogMiddleware } = require('./helpers/actionLog'); //操作日志 中间件
+const staticFiles = require('koa-static'); //静态资源文件
+const path = require('path');
 
-    if(url === '/'){
-        context.body = '<h1>主页</h1>';
-        return;
-    }
-    ///user/list 路由
-    if(url === '/user/list'){
-        context.body = '<h1>用户列表</h1>';
-        return;
-    }
+//实例化
+const app = new Koa(); //实列化一个koa对象
 
-    context.body = '404';
-    console.log(1);
-    await next();
-    console.log(3);
-    context.status = 404;
+//数据库连接成功后再进行请求处理
+connect().then(()=>{
+    //执行函数 中间件
+    app.use(koaBody({
+        multipart : true, //开启支持文件上传
+        formidable : { //文件大小阈值
+            maxFileSize : 200 * 1024 * 1024, //200M
+        }
+    })); //body请求头 页面数据
+    app.use(cors()); //跨域
+    app.use(catchTokenError); //自定义koaJwt报错
+    koaJwtMiddleware(app);//校验token合法性
+    app.use(checkUser);
+    app.use(actionLogMiddleware);//操作日志 中间件
+    app.use(staticFiles(path.join(__dirname , '../public/')));
+    
+    //注册路由
+    registerRouters(app);
+    //监听3000端口
+    app.listen(3000,()=>{
+        console.log('启动成功');
+    });
+
 });
 
-app.use(async (context) =>{
-    console.log(2);
-    context.body = '找不到资源';
-});
-//开启一个http服务，接收http请求 并作处理 处理完后响应  https默认端口是443，http默认端口是80
-//监听函数 listen(端口,ip)
-app.listen(3000,()=>{
-    console.log('启动成功'); //默认在本地
-});
+

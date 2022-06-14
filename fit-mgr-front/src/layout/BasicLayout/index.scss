@@ -1,0 +1,82 @@
+/*
+ * @Description: 基础布局模板样式
+ * @Author: hairyOwl
+ * @Date: 2022-02-27 18:32:37
+ * @LastEditors: hairyOwl
+ * @LastEditTime: 2022-03-05 20:02:40
+ */
+.basic-layout{
+    //上部分
+    .app-header{
+        height: 64px;
+        position: fixed; //相对浏览器绝对定位
+        top: 0;  //固定在左上角
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 2px 8px #f0f0f0;
+        display: flex; //弹性盒子
+        align-items: center; //弹性盒子 y轴垂直水平
+        justify-content: space-between; //两端对齐
+        padding: 0 16px;
+        width: 100%;
+        z-index: 1; //z轴堆叠层级1
+
+        .left{
+            display: flex;
+            align-items: center; //弹性盒子 y轴垂直水平
+            img{
+                // width: 60px;
+                height: 50px;
+                margin-left: 16px;
+            }
+
+            .title{
+                margin-left: 10px;
+                font-size: 18px;
+                color: rgba(0,0,0,0.87); 
+            }
+        }
+
+        .right{
+            display: flex;
+            align-items: center;
+
+            .logout{
+                width: 80px;
+                height: 64px;
+                line-height: 64px;
+                text-align: center;
+                cursor: pointer; //小手指
+                margin-left: 16px;
+
+                &:hover{ //&:hover = .logout:hover
+                    background-color: #eee;
+                }
+            }
+        }
+    }
+    //占位符
+    .app-header-placeholder{
+        height: 64px;
+        width: 100%;
+    }
+    //下部分
+    .app-content{
+        display: flex;
+        // background-color: #f6f6f6;
+        //导航栏
+        .left{
+            width: 256px;
+            background-color: white;
+            position: fixed; //相对浏览器绝对定位
+            top: 64px;
+            bottom: 0;
+        }
+        //列表
+        .right{
+            flex : 1; //把剩余的空间都占满
+            padding: 24px;
+            margin-left: 256px; //导航栏绝对定位，不占位置了
+        }
+    }
+}
